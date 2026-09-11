@@ -1,6 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { Check, ArrowRight, TrendingUp, DollarSign, Clock, Shield, Users } from 'lucide-react';
 import { Button } from '../ui/Button';
 
@@ -19,11 +18,7 @@ export const ForNurses = () => {
       <div className="container-custom">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Image Side */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+          <div
             className="relative"
           >
             <div className="relative rounded-3xl overflow-hidden shadow-2xl">
@@ -35,14 +30,10 @@ export const ForNurses = () => {
                 />
               </div>
             </div>
-          </motion.div>
+          </div>
 
           {/* Content Side */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+          <div
           >
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-primary mb-4">
               Rejoignez Notre Équipe d'Infirmières
@@ -54,19 +45,15 @@ export const ForNurses = () => {
 
             <div className="grid sm:grid-cols-2 gap-4 mb-8">
               {benefits.map((benefit, index) => (
-                <motion.div
+                <div
                   key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
                   className="flex items-center gap-3 p-4 bg-white rounded-xl shadow-sm border border-gray-100"
                 >
                   <div className="w-10 h-10 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary">
                     {benefit.icon}
                   </div>
                   <span className="font-medium text-gray-700">{benefit.text}</span>
-                </motion.div>
+                </div>
               ))}
             </div>
 
@@ -88,7 +75,7 @@ export const ForNurses = () => {
               Postuler Maintenant
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>

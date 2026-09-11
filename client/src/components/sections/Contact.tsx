@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { motion } from 'framer-motion';
 import { Label } from '../ui/label';
 import { Textarea } from '../ui/textarea';
 import { useLanguage } from '../../contexts/LanguageContext';
@@ -79,11 +78,7 @@ export const Contact = () => {
         <div className="mx-auto flex max-w-screen-xl flex-col sm:flex-row justify-between gap-6 sm:gap-8 lg:gap-20">
 
           {/* Left: Title + photo + Contact Details */}
-          <motion.div
-            initial={{ opacity: 0, x: -24 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          <div
             className="flex w-full sm:max-w-[15rem] lg:max-w-sm flex-col gap-4 sm:gap-6 shrink-0"
           >
             <div className="text-left">
@@ -131,14 +126,10 @@ export const Contact = () => {
                 ))}
               </ul>
             </div>
-          </motion.div>
+          </div>
 
           {/* Right: Glass Form */}
-          <motion.div
-            initial={{ opacity: 0, x: 24 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+          <div
             className="w-full sm:flex-1 lg:max-w-lg"
           >
             <form
@@ -201,7 +192,7 @@ export const Contact = () => {
                 </p>
               )}
             </form>
-          </motion.div>
+          </div>
 
         </div>
       </div>

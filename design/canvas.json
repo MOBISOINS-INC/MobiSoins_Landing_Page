@@ -1,0 +1,54 @@
+{
+  "artboards": [
+    {
+      "file": "Main.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 4050,
+      "title": "Page complète — bureau"
+    },
+    {
+      "file": "Mobile.dc.html",
+      "x": 1600,
+      "y": 0,
+      "w": 390,
+      "h": 2560,
+      "title": "Mobile 390"
+    },
+    {
+      "file": "Colour.dc.html",
+      "x": 2150,
+      "y": 0,
+      "w": 1240,
+      "h": 720,
+      "title": "Directions de couleur"
+    }
+  ],
+  "annotations": [
+    {
+      "id": "note-brief",
+      "x": 0,
+      "y": -190,
+      "w": 520,
+      "text": "Deux changements.\n\n1) Le fondu blanc du héros commence maintenant à 84 % (au lieu de 52 %) : la vidéo garde sa force et ne se dissout que sur les derniers pourcents. Le bloc suivant redescend donc sous le héros au lieu de remonter dedans.\n\n2) La section « Nos patients » devient « Soins offerts ». Nous n’avons pas encore de vraies citations de patients, et il est hors de question d’en inventer pour un service de santé — alors ce bloc répond plutôt à la vraie question du visiteur : est-ce qu’ils font ce dont j’ai besoin ? Le contenu vient de vos propres textes de services."
+    },
+    {
+      "id": "note-colour",
+      "x": 2150,
+      "y": -190,
+      "w": 460,
+      "text": "Réponse à la question sur le bleu : voir les trois options ci-dessous. B est ma recommandation."
+    },
+    {
+      "id": "note-placeholders",
+      "x": 1600,
+      "y": -190,
+      "w": 460,
+      "text": "Tout ce qui est [ENTRE CROCHETS] est un fait que je n'ai pas : noms, permis, quartiers, villes desservies, citations. À remplir — rien n'a été inventé."
+    }
+  ],
+  "launch": {
+    "view": "canvas"
+  }
+}

@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import { motion } from 'framer-motion';
 import {
   Stethoscope, Syringe, HeartPulse, ClipboardCheck,
   ShieldCheck, Baby, HeartHandshake, FlaskConical, Building2, ArrowRight,
@@ -53,10 +52,7 @@ export function ServicesCatalog() {
     <section className="relative py-12 sm:py-16 lg:py-20 overflow-hidden">
       <div className="container-custom relative">
         {/* Intro */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        <div
           className="max-w-2xl mb-8 sm:mb-12"
         >
           <p className="text-xs sm:text-sm font-semibold uppercase tracking-wider mb-2 sm:mb-3 text-[#98B690]">{c.badge}</p>
@@ -64,13 +60,10 @@ export function ServicesCatalog() {
             {c.title}
           </h1>
           <p className="text-base sm:text-lg font-light leading-relaxed text-white/65">{c.subtitle}</p>
-        </motion.div>
+        </div>
 
         {/* Feature image band */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+        <div
           className="grid md:grid-cols-3 gap-4 mb-14"
         >
           <figure className="md:col-span-2 relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl h-[190px] sm:h-[280px] md:h-[420px] group">
@@ -91,7 +84,7 @@ export function ServicesCatalog() {
             <div className="absolute inset-0 bg-gradient-to-t from-black/55 to-transparent pointer-events-none" />
             <figcaption className="absolute bottom-3 left-3 text-xs font-medium text-white/90">{c.seniorCaption}</figcaption>
           </figure>
-        </motion.div>
+        </div>
 
         <p className="text-xs font-medium uppercase tracking-widest text-white/35 mb-5">{c.hint}</p>
 
@@ -100,12 +93,8 @@ export function ServicesCatalog() {
           {SERVICE_CATEGORIES.map((cat, ci) => {
             const Icon = ICONS[cat.icon];
             return (
-              <motion.div
+              <div
                 key={cat.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: (ci % 2) * 0.06, ease: 'easeOut' }}
                 className="glass-dark !rounded-2xl p-3.5 sm:p-6"
               >
                 <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
@@ -131,17 +120,13 @@ export function ServicesCatalog() {
                     </li>
                   ))}
                 </ul>
-              </motion.div>
+              </div>
             );
           })}
         </div>
 
         {/* CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
+        <div
           className="glass-dark !rounded-3xl mt-14 px-8 py-12 flex flex-col items-center text-center gap-6"
         >
           <h2 className="text-2xl md:text-3xl font-semibold text-white tracking-tight" style={{ letterSpacing: '-0.02em' }}>
@@ -157,7 +142,7 @@ export function ServicesCatalog() {
             {c.ctaButton}
             <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
           </a>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

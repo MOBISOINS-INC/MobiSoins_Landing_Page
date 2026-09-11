@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { useLanguage } from '../../contexts/LanguageContext';
 
@@ -48,11 +47,7 @@ export const Blog = () => {
       <div className="container-custom">
 
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, ease: 'easeOut' }}
+        <div
           className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10"
         >
           <div>
@@ -69,17 +64,13 @@ export const Blog = () => {
           <p className="text-sm font-light max-w-xs text-right hidden md:block text-white/45">
             {t('blog.subtitle')}
           </p>
-        </motion.div>
+        </div>
 
         {/* Bento grid */}
         <div className="grid md:grid-cols-5 gap-4">
 
           {/* Featured — large card, left 3 cols */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, ease: 'easeOut' }}
+          <div
             className="md:col-span-3"
           >
             <Link
@@ -143,17 +134,13 @@ export const Blog = () => {
                 </div>
               </div>
             </Link>
-          </motion.div>
+          </div>
 
           {/* Two smaller cards — right 2 cols */}
           <div className="md:col-span-2 flex flex-col gap-4">
             {rest.map((article, i) => (
-              <motion.div
+              <div
                 key={i}
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1, duration: 0.55, ease: 'easeOut' }}
                 className="flex-1"
               >
                 <Link
@@ -208,7 +195,7 @@ export const Blog = () => {
                     </p>
                   </div>
                 </Link>
-              </motion.div>
+              </div>
             ))}
           </div>
 

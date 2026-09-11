@@ -4,8 +4,7 @@ import dynamic from 'next/dynamic';
 import { Header } from '../components/layout/Header';
 import { Footer } from '../components/layout/Footer';
 import { Hero } from '../components/sections/Hero';
-import { LogoCloud } from '../components/sections/LogoCloud';
-import { MobileSectionDivider } from '../components/ui/MobileSectionDivider';
+import { Credentials } from '../components/sections/Credentials';
 
 function SectionLoader() {
   return (
@@ -19,8 +18,8 @@ const HowItWorks = dynamic(
   () => import('../components/sections/HowItWorks').then((m) => ({ default: m.HowItWorks })),
   { loading: () => <SectionLoader /> }
 );
-const PatientsSection = dynamic(
-  () => import('../components/sections/PatientsSection').then((m) => ({ default: m.PatientsSection })),
+const ServicesAtHome = dynamic(
+  () => import('../components/sections/ServicesAtHome').then((m) => ({ default: m.ServicesAtHome })),
   { loading: () => <SectionLoader /> }
 );
 const Newsletter = dynamic(
@@ -34,26 +33,17 @@ const NursingMapSection = dynamic(
 
 export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: '#0a1f38' }}>
+    <div className="min-h-screen flex flex-col bg-white">
       <Header />
       <main className="flex-grow">
         <Hero />
 
-        {/* Dark body — a short gradient blends the hero seam into one flat navy,
-            so the whole content area reads as a single clean shade */}
-        <div
-          className="relative"
-          style={{ background: 'linear-gradient(180deg, #031226 0%, #0a1f38 22%, #0a1f38 100%)' }}
-        >
-          <LogoCloud />
-          <HowItWorks />
-        </div>
-
-        <MobileSectionDivider />
+        {/* The hero dissolves into white on desktop, so the page below is one
+            continuous light ground — no gradient seam to manage any more. */}
+        <HowItWorks />
+        <Credentials />
         <NursingMapSection />
-        <MobileSectionDivider variant="route" />
-        <PatientsSection />
-        <MobileSectionDivider variant="plane" />
+        <ServicesAtHome />
         <Newsletter />
       </main>
       <Footer />

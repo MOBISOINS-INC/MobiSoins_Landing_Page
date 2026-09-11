@@ -75,12 +75,8 @@ export const FAQ = () => {
         <div className="space-y-4">
           {filteredFaqs.length > 0 ? (
             filteredFaqs.map((faq, index) => (
-              <motion.div
+              <div
                 key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.05 }}
                 className="glass-dark !rounded-2xl overflow-hidden transition-all duration-200"
               >
                 <button
@@ -107,7 +103,7 @@ export const FAQ = () => {
                     {faq.answer}
                   </div>
                 </motion.div>
-              </motion.div>
+              </div>
             ))
           ) : (
             <p className="text-center text-white/50 py-12">{t('faq.noResults')}</p>

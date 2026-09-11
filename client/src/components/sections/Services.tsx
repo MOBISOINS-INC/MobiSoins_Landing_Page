@@ -1,6 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Activity, Check, Filter, Layout, ArrowRight } from 'lucide-react';
@@ -27,17 +26,13 @@ function AnimatedWords({
       {words.map((word, i) => {
         const isHighlight = highlightWords.includes(word.replace(/[.,]/g, ''));
         return (
-          <motion.span
+          <span
             key={i}
-            initial={{ opacity: 0, y: 16, filter: 'blur(4px)' }}
-            whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: delay + i * 0.07, ease: [0.16, 1, 0.3, 1] }}
             className="inline-block mr-[0.25em]"
             style={isHighlight ? { color: highlightColor, fontWeight: 600 } : undefined}
           >
             {word}
-          </motion.span>
+          </span>
         );
       })}
     </span>
@@ -45,15 +40,6 @@ function AnimatedWords({
 }
 
 /* ─── Service cards ───────────────────────────────────────────── */
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5, delay: i * 0.12, ease: 'easeOut' as const },
-  }),
-};
 
 /* ─── Main section ───────────────────────────────────────────── */
 
@@ -123,27 +109,18 @@ export const Services = ({ showViewAll = true }: { showViewAll?: boolean } = {})
               delay={0.2}
             />
           </h2>
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.4 }}
+          <p
             className="text-base font-light text-white/60"
           >
             {t('services.badge')}
-          </motion.p>
+          </p>
         </div>
 
         {/* ── 3 service cards — triangle (2 + 1 centered) on mobile ── */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-6 mb-10 sm:mb-16 [&>*:nth-child(3)]:col-span-2 [&>*:nth-child(3)]:w-1/2 [&>*:nth-child(3)]:mx-auto md:[&>*:nth-child(3)]:col-span-1 md:[&>*:nth-child(3)]:w-full">
           {cards.map((card, i) => (
-            <motion.div
+            <div
               key={i}
-              custom={i}
-              variants={cardVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
               className="glass-dark !rounded-2xl p-3 sm:p-7 flex flex-col"
             >
               {/* Real photo */}
@@ -190,17 +167,13 @@ export const Services = ({ showViewAll = true }: { showViewAll?: boolean } = {})
                   ))}
                 </ul>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
 
         {/* View all services → dedicated page (hidden when already on that page) */}
         {showViewAll && (
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, ease: 'easeOut' }}
+          <div
             className="mt-12 flex justify-center"
           >
             <Link
@@ -211,7 +184,7 @@ export const Services = ({ showViewAll = true }: { showViewAll?: boolean } = {})
               {t('services.seeAll')}
               <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5" />
             </Link>
-          </motion.div>
+          </div>
         )}
 
       </div>

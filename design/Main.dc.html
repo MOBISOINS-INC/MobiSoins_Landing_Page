@@ -1,0 +1,292 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap">
+  <style>
+    body { margin: 0; }
+    * { box-sizing: border-box; }
+    a { color: #003366; text-decoration: none; }
+    a:hover { color: #0a4a85; }
+    .h { font-family: "Instrument Sans", -apple-system, "Helvetica Neue", sans-serif; letter-spacing: -0.035em; }
+    .b { font-family: Inter, -apple-system, "Helvetica Neue", sans-serif; }
+    .eyebrow { font-family: Inter, sans-serif; font-size: 12px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; }
+  </style>
+</helmet>
+
+<div class="b" style="width: 1440px; background: #ffffff; color: #1a1a24;">
+
+  <!-- HERO — full-bleed video; bottom dissolves into the white page -->
+  <div style="position: relative; height: 900px; background: #031226; overflow: hidden;">
+    <img src="hero-still.jpg" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;">
+    <div style="position: absolute; inset: 0; background: radial-gradient(105% 85% at 0% 45%, rgba(2,9,20,0.9) 0%, rgba(2,9,20,0.66) 30%, rgba(2,9,20,0.26) 56%, rgba(2,9,20,0) 78%);"></div>
+    <div style="position: absolute; inset: 0; background: rgba(3,10,22,0.18);"></div>
+    <!-- the dissolve: video -> white, over the bottom third -->
+    <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,0) 84%, rgba(255,255,255,0.08) 90%, rgba(255,255,255,0.30) 95%, rgba(255,255,255,0.72) 98.5%, #ffffff 100%);"></div>
+
+    <div style="position: relative; display: flex; align-items: center; justify-content: space-between; height: 72px; padding: 0 72px;">
+      <div class="h" style="font-size: 21px; font-weight: 600; color: #fff;">MobiSoins</div>
+      <div style="display: flex; gap: 34px; font-size: 14px; color: rgba(255,255,255,0.82);">
+        <span>Services</span><span>Comment ça marche</span><span>Pour les infirmières</span><span>FAQ</span>
+      </div>
+      <div style="display: flex; gap: 14px; align-items: center;">
+        <span style="font-size: 13px; color: rgba(255,255,255,0.55);">FR / EN</span>
+        <div style="background: linear-gradient(180deg, #0a4a85 0%, #003366 55%, #00264d 100%); box-shadow: 0 10px 30px rgba(0,51,102,0.45), inset 0 1px 0 rgba(255,255,255,0.18); color: #fff; font-size: 13.5px; font-weight: 500; padding: 10px 18px; border-radius: 8px;">Rejoindre la liste</div>
+      </div>
+    </div>
+
+    <div style="position: absolute; left: 72px; top: 268px; max-width: 680px;">
+      <div style="display: flex; align-items: center; gap: 9px; border: 1px solid rgba(255,255,255,0.24); border-radius: 999px; padding: 7px 15px 7px 11px; width: fit-content;">
+        <span style="width: 6px; height: 6px; border-radius: 999px; background: #98B690; display: inline-block;"></span>
+        <span style="font-size: 12.5px; color: rgba(255,255,255,0.9);">Infirmières autorisées OIIQ · Québec</span>
+      </div>
+      <h1 class="h" style="margin: 26px 0 0; font-size: 62px; line-height: 1.08; font-weight: 600; color: #fff; text-shadow: 0 2px 30px rgba(2,9,20,0.55);">Une infirmière chez vous<br><span style="font-weight: 300; color: rgba(255,255,255,0.9);">en quelques minutes</span></h1>
+      <p style="margin: 24px 0 0; font-size: 18px; line-height: 1.6; color: rgba(255,255,255,0.85); font-weight: 300; max-width: 500px;">Réservez en deux minutes, suivez son trajet en direct, recevez le rapport clinique dans l'app.</p>
+      <div style="display: flex; gap: 14px; margin-top: 40px;">
+        <div style="background: linear-gradient(180deg, #0a4a85 0%, #003366 55%, #00264d 100%); box-shadow: 0 10px 30px rgba(0,51,102,0.45), inset 0 1px 0 rgba(255,255,255,0.18); color: #fff; font-size: 15px; font-weight: 500; padding: 14px 26px; border-radius: 10px;">Rejoindre la liste d'attente</div>
+        <div style="border: 1px solid rgba(255,255,255,0.32); color: #fff; font-size: 15px; font-weight: 500; padding: 14px 26px; border-radius: 10px;">Voir comment ça marche</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS — lifted into the dissolve, so there is no seam at all -->
+  <div style="background: #fff; padding: 0 72px 128px;">
+    <div style="margin-top: 56px; position: relative;">
+      <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 48px;">
+        <h2 class="h" style="margin: 0; font-size: 30px; line-height: 1.1; font-weight: 600; color: #0a1f38;">Trois étapes, aucune salle d'attente.</h2>
+        <span class="eyebrow" style="color: #94a3b8;">Comment ça marche</span>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 30px;">
+
+        <div style="background: #fff; border: 1px solid #e8edf1; border-radius: 16px; box-shadow: 0 24px 50px -24px rgba(10,31,56,0.28); padding: 30px;">
+          <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <span class="h" style="font-size: 13px; font-weight: 600; color: #0a1f38;">01</span>
+            <span class="eyebrow" style="color: #94a3b8;">2 minutes</span>
+          </div>
+          <div class="h" style="font-size: 19px; font-weight: 500; margin-top: 12px; color: #0a1f38;">Décrivez le soin</div>
+          <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 16px;">
+            <div style="border: 1px solid #4e6645; background: #f4f7f2; border-radius: 9px; padding: 11px 13px; font-size: 13.5px; color: #0a1f38; display: flex; justify-content: space-between;"><span>Prise de sang</span><span style="color: #4e6645;">✓</span></div>
+            <div style="border: 1px solid #eef2f5; border-radius: 9px; padding: 11px 13px; font-size: 13.5px; color: #5a5a6a;">Pansement / plaie</div>
+            <div style="border: 1px solid #eef2f5; border-radius: 9px; padding: 11px 13px; font-size: 13.5px; color: #5a5a6a;">Injection / vaccin</div>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 13px; color: #5a5a6a; margin-top: 16px; padding-top: 13px; border-top: 1px solid #eef2f5;"><span>Aujourd'hui</span><span style="color: #0a1f38;">14 h 30 · [ADRESSE]</span></div>
+        </div>
+
+        <div style="background: #fff; border: 1px solid #e8edf1; border-radius: 16px; box-shadow: 0 24px 50px -24px rgba(10,31,56,0.28); padding: 30px;">
+          <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <span class="h" style="font-size: 13px; font-weight: 600; color: #0a1f38;">02</span>
+            <span class="eyebrow" style="color: #94a3b8;">Moins de 60 s</span>
+          </div>
+          <div class="h" style="font-size: 19px; font-weight: 500; margin-top: 12px; color: #0a1f38;">On trouve l'infirmière</div>
+          <div style="margin-top: 16px; border-radius: 11px; overflow: hidden; height: 128px; background: #edf2ee; position: relative;">
+            <svg width="100%" height="128" viewBox="0 0 380 128" fill="none" preserveAspectRatio="xMidYMid slice">
+              <rect width="380" height="128" fill="#edf2ee"/>
+              <g stroke="#dde5df" stroke-width="13" fill="none">
+                <path d="M-10 38 L150 48 L200 96 L400 90"/>
+                <path d="M70 -10 L84 60 L74 138"/>
+                <path d="M290 -10 L300 68 L292 138"/>
+              </g>
+              <path d="M84 60 L150 48 L200 96 L285 88 L300 68" stroke="#98B690" stroke-width="3" stroke-dasharray="6 5" fill="none"/>
+              <circle cx="84" cy="60" r="6" fill="#4e6645"/>
+              <circle cx="300" cy="68" r="8" fill="#fff" stroke="#4e6645" stroke-width="3"/>
+            </svg>
+            <div style="position: absolute; left: 11px; bottom: 11px; background: #fff; border-radius: 8px; padding: 6px 10px; font-size: 11.5px; font-weight: 500; color: #0a1f38;">En route · 8 min</div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 11px; margin-top: 16px; padding-top: 13px; border-top: 1px solid #eef2f5;">
+            <div style="width: 32px; height: 32px; border-radius: 999px; background: #dde5df;"></div>
+            <div>
+              <div class="h" style="font-size: 14px; font-weight: 500; color: #0a1f38;">[NOM]</div>
+              <div style="font-size: 11.5px; color: #94a3b8; margin-top: 2px;">Autorisée OIIQ · [N° DE PERMIS]</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="background: #fff; border: 1px solid #e8edf1; border-radius: 16px; box-shadow: 0 24px 50px -24px rgba(10,31,56,0.28); padding: 30px;">
+          <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <span class="h" style="font-size: 13px; font-weight: 600; color: #0a1f38;">03</span>
+            <span class="eyebrow" style="color: #94a3b8;">Après la visite</span>
+          </div>
+          <div class="h" style="font-size: 19px; font-weight: 500; margin-top: 12px; color: #0a1f38;">Le soin, puis le rapport</div>
+          <div style="display: flex; flex-direction: column; gap: 11px; margin-top: 16px;">
+            <div style="display: flex; justify-content: space-between; font-size: 13.5px; color: #5a5a6a;"><span>Tension</span><span style="color: #0a1f38;">[VALEUR]</span></div>
+            <div style="height: 1px; background: #eef2f5;"></div>
+            <div style="display: flex; justify-content: space-between; font-size: 13.5px; color: #5a5a6a;"><span>Prélèvement</span><span style="color: #0a1f38;">[VALEUR]</span></div>
+            <div style="height: 1px; background: #eef2f5;"></div>
+            <div style="display: flex; justify-content: space-between; font-size: 13.5px; color: #5a5a6a;"><span>Transmis au médecin</span><span style="color: #4e6645;">Oui</span></div>
+            <div style="height: 1px; background: #eef2f5;"></div>
+            <div style="display: flex; justify-content: space-between; font-size: 13.5px; color: #5a5a6a;"><span>Reçu d'assurance</span><span style="color: #0a1f38;">PDF</span></div>
+          </div>
+          <div style="margin-top: 16px; border: 1px solid #dbe2e8; color: #0a1f38; text-align: center; font-size: 14px; font-weight: 500; padding: 11px; border-radius: 9px;">Télécharger</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- CREDENTIALS (replaces fake logo cloud) -->
+  <div style="border-top: 1px solid #e8edf1; border-bottom: 1px solid #e8edf1; background: #fff;">
+    <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); padding: 0 72px;">
+      <div style="padding: 46px 34px 46px 0; border-right: 1px solid #eef2f5;">
+        <div class="h" style="font-size: 15.5px; font-weight: 500; color: #0a1f38;">Infirmières autorisées</div>
+        <div style="font-size: 13px; color: #5a5a6a; margin-top: 6px; line-height: 1.5;">Permis OIIQ vérifié avant la première visite.</div>
+      </div>
+      <div style="padding: 46px 34px; border-right: 1px solid #eef2f5;">
+        <div class="h" style="font-size: 15.5px; font-weight: 500; color: #0a1f38;">Données au Québec</div>
+        <div style="font-size: 13px; color: #5a5a6a; margin-top: 6px; line-height: 1.5;">Dossiers hébergés et chiffrés, conformes à la Loi 25.</div>
+      </div>
+      <div style="padding: 46px 34px; border-right: 1px solid #eef2f5;">
+        <div class="h" style="font-size: 15.5px; font-weight: 500; color: #0a1f38;">Assurance responsabilité</div>
+        <div style="font-size: 13px; color: #5a5a6a; margin-top: 6px; line-height: 1.5;">Chaque visite est couverte, sans démarche de votre part.</div>
+      </div>
+      <div style="padding: 46px 0 46px 34px;">
+        <div class="h" style="font-size: 15.5px; font-weight: 500; color: #0a1f38;">Reçus pour assurance</div>
+        <div style="font-size: 13px; color: #5a5a6a; margin-top: 6px; line-height: 1.5;">Reçu admissible émis automatiquement après chaque soin.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DISPATCH — inset dark card, so the page keeps one continuous white ground -->
+  <div style="padding: 0 72px 128px; background: #fff;">
+    <div style="background: #0a1f38; border-radius: 22px; padding: 56px; display: grid; grid-template-columns: 1fr 1.2fr; gap: 56px; align-items: center; color: #fff;">
+      <div>
+        <div class="eyebrow" style="color: #98B690;">Répartition en direct</div>
+        <h2 class="h" style="margin: 18px 0 0; font-size: 36px; line-height: 1.08; font-weight: 600; color: #fff;">Vous savez où elle est,<br>à la minute près.</h2>
+        <p style="font-size: 15.5px; line-height: 1.6; color: #a8bacd; margin: 16px 0 0; font-weight: 300; max-width: 400px; text-wrap: pretty;">Pas d'appel, pas de fenêtre de quatre heures. Une alerte cinq minutes avant qu'elle sonne.</p>
+        <div style="display: flex; flex-direction: column; margin-top: 26px;">
+          <div style="display: flex; justify-content: space-between; padding: 13px 0; border-top: 1px solid rgba(255,255,255,0.12); font-size: 14px;"><span>Jumelage</span><span style="color: #a8bacd;">moins de 60 s</span></div>
+          <div style="display: flex; justify-content: space-between; padding: 13px 0; border-top: 1px solid rgba(255,255,255,0.12); font-size: 14px;"><span>Couverture</span><span style="color: #a8bacd;">[VILLES DESSERVIES]</span></div>
+          <div style="display: flex; justify-content: space-between; padding: 13px 0; border-top: 1px solid rgba(255,255,255,0.12); border-bottom: 1px solid rgba(255,255,255,0.12); font-size: 14px;"><span>Disponibilité</span><span style="color: #a8bacd;">7 jours sur 7</span></div>
+        </div>
+      </div>
+      <div style="border-radius: 14px; overflow: hidden; position: relative; height: 330px; background: #10304f;">
+        <svg width="100%" height="330" viewBox="0 0 700 330" fill="none" preserveAspectRatio="xMidYMid slice">
+          <rect width="700" height="330" fill="#10304f"/>
+          <g stroke="#17405f" stroke-width="16" fill="none">
+            <path d="M-20 74 L240 88 L330 206 L740 194"/>
+            <path d="M-20 264 L200 272 L420 248 L740 260"/>
+            <path d="M120 -20 L140 116 L120 350"/>
+            <path d="M480 -20 L500 148 L470 350"/>
+            <path d="M620 -20 L636 166 L620 350"/>
+          </g>
+          <path d="M140 116 L240 88 L330 206 L470 192 L500 148" stroke="#98B690" stroke-width="4" stroke-linecap="round" stroke-dasharray="9 8" fill="none"/>
+          <circle cx="140" cy="116" r="9" fill="#98B690"/>
+          <circle cx="500" cy="148" r="14" fill="#0a1f38" stroke="#98B690" stroke-width="4"/>
+          <circle cx="500" cy="148" r="32" fill="none" stroke="#98B690" stroke-opacity="0.28" stroke-width="2"/>
+        </svg>
+        <div style="position: absolute; top: 16px; left: 16px; background: rgba(10,31,56,0.9); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 11px 14px;">
+          <div style="font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: #98B690;">Arrivée estimée</div>
+          <div class="h" style="font-size: 24px; font-weight: 500; color: #fff; margin-top: 3px;">8 min</div>
+        </div>
+        <div style="position: absolute; bottom: 16px; left: 16px; right: 16px; background: rgba(10,31,56,0.92); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 12px 15px; display: flex; align-items: center; justify-content: space-between;">
+          <div style="display: flex; align-items: center; gap: 11px;">
+            <div style="width: 32px; height: 32px; border-radius: 999px; background: #1b3d5e;"></div>
+            <div>
+              <div class="h" style="font-size: 14px; font-weight: 500; color: #fff;">[NOM DE L'INFIRMIÈRE]</div>
+              <div style="font-size: 11.5px; color: #a8bacd; margin-top: 2px;">Autorisée OIIQ · en route</div>
+            </div>
+          </div>
+          <div style="border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 7px 13px; font-size: 12.5px; color: #fff;">Message</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CARE OFFERED (replaces the patients/testimonials slot — no real quotes yet) -->
+  <div style="padding: 0 72px 128px; background: #fff;">
+    <div style="max-width: 640px;">
+      <div class="eyebrow" style="color: #94a3b8;">Soins offerts</div>
+      <h2 class="h" style="margin: 20px 0 0; font-size: 44px; line-height: 1.08; font-weight: 600; color: #0a1f38;">Ce qu'une infirmière peut faire chez vous.</h2>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 30px; row-gap: 40px; margin-top: 48px;">
+        <div style="border-top: 1px solid #0a1f38; padding-top: 20px;">
+          <div class="h" style="font-size: 18px; font-weight: 500; color: #0a1f38;">Soins infirmiers</div>
+          <div style="font-size: 14.5px; line-height: 1.6; color: #5a5a6a; margin-top: 10px; font-weight: 300;">Pansements, retrait de points, administration de médicaments, soins post-opératoires et suivi clinique.</div>
+        </div>
+        <div style="border-top: 1px solid #0a1f38; padding-top: 20px;">
+          <div class="h" style="font-size: 18px; font-weight: 500; color: #0a1f38;">Suivi des maladies chroniques</div>
+          <div style="font-size: 14.5px; line-height: 1.6; color: #5a5a6a; margin-top: 10px; font-weight: 300;">Suivi du diabète, de l'hypertension et autres conditions, avec enseignement et prévention des complications.</div>
+        </div>
+        <div style="border-top: 1px solid #0a1f38; padding-top: 20px;">
+          <div class="h" style="font-size: 18px; font-weight: 500; color: #0a1f38;">Bilan de santé</div>
+          <div style="font-size: 14.5px; line-height: 1.6; color: #5a5a6a; margin-top: 10px; font-weight: 300;">Évaluation complète, prise des signes vitaux et conseils personnalisés pour votre santé.</div>
+        </div>
+        <div style="border-top: 1px solid #0a1f38; padding-top: 20px;">
+          <div class="h" style="font-size: 18px; font-weight: 500; color: #0a1f38;">Santé sexuelle</div>
+          <div style="font-size: 14.5px; line-height: 1.6; color: #5a5a6a; margin-top: 10px; font-weight: 300;">Dépistage ITSS, contraception, éducation et suivi.</div>
+        </div>
+        <div style="border-top: 1px solid #0a1f38; padding-top: 20px;">
+          <div class="h" style="font-size: 18px; font-weight: 500; color: #0a1f38;">Soins aux aînés</div>
+          <div style="font-size: 14.5px; line-height: 1.6; color: #5a5a6a; margin-top: 10px; font-weight: 300;">Surveillance de la santé, gestion de la médication et soutien à domicile.</div>
+        </div>
+        <div style="border-top: 1px solid #0a1f38; padding-top: 20px;">
+          <div class="h" style="font-size: 18px; font-weight: 500; color: #0a1f38;">Analyses et prélèvements</div>
+          <div style="font-size: 14.5px; line-height: 1.6; color: #5a5a6a; margin-top: 10px; font-weight: 300;">Prélèvements sanguins et tests diagnostiques, selon ordonnance.</div>
+        </div>
+    </div>
+
+    <div style="font-size: 13px; color: #5a5a6a; margin-top: 48px;">Certains soins sont admissibles au remboursement par assurances privées. Reçu officiel fourni après chaque visite.</div>
+
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 24px; background: #0a1f38; border-radius: 16px; padding: 40px; margin-top: 56px;">
+      <div>
+        <div class="eyebrow" style="color: #98B690;">Pour les infirmières</div>
+        <div class="h" style="font-size: 24px; line-height: 1.35; font-weight: 400; color: #fff; margin-top: 14px; max-width: 520px;">Choisissez vos quarts, vos secteurs et vos types de soins.</div>
+      </div>
+      <div style="flex-shrink: 0; border: 1px solid rgba(255,255,255,0.25); border-radius: 9px; padding: 12px 24px; font-size: 14px; color: #fff;">Rejoindre le réseau</div>
+    </div>
+  </div>
+
+  <!-- WAITLIST CTA -->
+  <div style="padding: 128px 72px; background: #f7f9fa; border-top: 1px solid #e8edf1;">
+    <div style="max-width: 660px; margin: 0 auto; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 18px;">
+      <h2 class="h" style="margin: 0; font-size: 44px; line-height: 1.1; font-weight: 600; color: #0a1f38;">Nous lançons bientôt<br>au Québec.</h2>
+      <p style="font-size: 17px; line-height: 1.55; color: #5a5a6a; margin: 0; font-weight: 300; max-width: 460px;">Inscrivez-vous pour être parmi les premiers servis dans votre secteur.</p>
+      <div style="display: flex; gap: 10px; margin-top: 10px; width: 100%; max-width: 460px;">
+        <div style="flex-grow: 1; background: #fff; border: 1px solid #dbe2e8; border-radius: 10px; padding: 15px 17px; font-size: 14.5px; color: #94a3b8; text-align: left;">votre@courriel.com</div>
+        <div style="background: #0a1f38; color: #fff; font-size: 14.5px; font-weight: 500; padding: 15px 26px; border-radius: 10px; white-space: nowrap;">M'inscrire</div>
+      </div>
+      <div style="font-size: 12.5px; color: #94a3b8; margin-top: 2px;">Aucune carte requise. Désabonnement en un clic.</div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div style="background: #04142a; color: #fff; padding: 54px 72px 30px;">
+    <div style="display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 48px;">
+      <div>
+        <div class="h" style="font-size: 20px; font-weight: 600;">MobiSoins</div>
+        <div style="font-size: 13.5px; line-height: 1.6; color: #8da4bd; margin-top: 12px; max-width: 280px; font-weight: 300;">Soins infirmiers à domicile, partout au Québec.</div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 11px;">
+        <div class="eyebrow" style="color: #5f7a96;">Service</div>
+        <span style="font-size: 13.5px; color: #c3d2e0;">Soins offerts</span>
+        <span style="font-size: 13.5px; color: #c3d2e0;">Secteurs desservis</span>
+        <span style="font-size: 13.5px; color: #c3d2e0;">Tarifs</span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 11px;">
+        <div class="eyebrow" style="color: #5f7a96;">Infirmières</div>
+        <span style="font-size: 13.5px; color: #c3d2e0;">Rejoindre le réseau</span>
+        <span style="font-size: 13.5px; color: #c3d2e0;">Exigences OIIQ</span>
+        <span style="font-size: 13.5px; color: #c3d2e0;">Rémunération</span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 11px;">
+        <div class="eyebrow" style="color: #5f7a96;">Légal</div>
+        <span style="font-size: 13.5px; color: #c3d2e0;">Confidentialité</span>
+        <span style="font-size: 13.5px; color: #c3d2e0;">Conditions</span>
+        <span style="font-size: 13.5px; color: #c3d2e0;">Sécurité des données</span>
+      </div>
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 36px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 12.5px; color: #5f7a96;">
+      <span>© 2026 MobiSoins</span>
+      <span>Fait au Québec</span>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>

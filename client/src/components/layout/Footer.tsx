@@ -68,15 +68,11 @@ function AnimatedContainer({ className, delay = 0.1, children }: AnimatedContain
   if (shouldReduceMotion) return <>{children}</>;
 
   return (
-    <motion.div
-      initial={{ filter: 'blur(4px)', translateY: -8, opacity: 0 }}
-      whileInView={{ filter: 'blur(0px)', translateY: 0, opacity: 1 }}
-      viewport={{ once: true }}
-      transition={{ delay, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+    <div
       className={className}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }
 

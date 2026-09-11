@@ -1,6 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
 
 const plans = [
   {
@@ -40,10 +39,7 @@ export const Pricing = () => {
   return (
     <section id="pricing" className="py-32" style={{ background: '#f7f9fa' }}>
       <div className="container-custom">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+        <div
           className="text-center mb-16"
         >
           <h2
@@ -55,16 +51,12 @@ export const Pricing = () => {
           <p className="text-lg max-w-xl mx-auto font-light" style={{ color: '#5a5a6a' }}>
             Commencez gratuitement. Évoluez selon vos besoins en soins.
           </p>
-        </motion.div>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
           {plans.map((plan, i) => (
-            <motion.div
+            <div
               key={i}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
               className={`rounded-[2rem] p-8 flex flex-col backdrop-blur-xl ${
                 plan.highlighted
                   ? 'bg-white/80 border-2 border-slate-200 shadow-[0_20px_60px_rgba(0,0,0,0.08)]'
@@ -116,7 +108,7 @@ export const Pricing = () => {
               >
                 {plan.cta}
               </button>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

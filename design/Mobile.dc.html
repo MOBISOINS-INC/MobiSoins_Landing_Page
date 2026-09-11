@@ -1,0 +1,187 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap">
+  <style>
+    body { margin: 0; }
+    * { box-sizing: border-box; }
+    a { color: #003366; } a:hover { color: #0a4a85; }
+    .h { font-family: "Instrument Sans", -apple-system, sans-serif; letter-spacing: -0.03em; }
+    .b { font-family: Inter, -apple-system, sans-serif; }
+    .eyebrow { font-family: Inter, sans-serif; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; }
+  </style>
+</helmet>
+
+<div class="b" style="width: 390px; background: #fff; color: #1a1a24;">
+
+  <!-- HERO — full-bleed video, dark -->
+  <div style="position: relative; height: 640px; background: #031226; overflow: hidden;">
+    <img src="hero-still-mobile.jpg" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;">
+    <div style="position: absolute; inset: 0; background: radial-gradient(130% 80% at 0% 100%, rgba(2,9,20,0.94) 0%, rgba(2,9,20,0.76) 32%, rgba(2,9,20,0.3) 62%, rgba(2,9,20,0) 88%);"></div>
+    <div style="position: absolute; inset: 0; background: rgba(3,10,22,0.2);"></div>
+    <!-- the dissolve: video -> white -->
+    <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,0) 54%, rgba(255,255,255,0.3) 72%, rgba(255,255,255,0.75) 87%, rgba(255,255,255,0.96) 95%, #ffffff 100%);"></div>
+
+    <div style="position: relative; display: flex; align-items: center; justify-content: space-between; height: 60px; padding: 0 20px;">
+      <div class="h" style="font-size: 18px; font-weight: 600; color: #fff;">MobiSoins</div>
+      <div style="display: flex; flex-direction: column; gap: 4px;">
+        <div style="width: 20px; height: 1.5px; background: #fff;"></div>
+        <div style="width: 20px; height: 1.5px; background: #fff;"></div>
+      </div>
+    </div>
+
+    <div style="position: absolute; left: 20px; right: 20px; top: 150px;">
+      <div style="display: flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,0.24); border-radius: 999px; padding: 6px 13px 6px 10px; width: fit-content;">
+        <span style="width: 5px; height: 5px; border-radius: 999px; background: #98B690;"></span>
+        <span style="font-size: 11.5px; color: rgba(255,255,255,0.9);">Autorisées OIIQ</span>
+      </div>
+      <h1 class="h" style="margin: 16px 0 0; font-size: 38px; line-height: 1.05; font-weight: 600; color: #fff; text-shadow: 0 2px 26px rgba(2,9,20,0.5);">Une infirmière chez vous<br><span style="font-weight: 300; color: rgba(255,255,255,0.9);">en quelques minutes</span></h1>
+      <p style="margin: 12px 0 0; font-size: 14.5px; line-height: 1.5; color: rgba(255,255,255,0.85); font-weight: 300;">Réservez en deux minutes, suivez son trajet en direct.</p>
+      <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
+        <div style="background: #fff; color: #0a1f38; font-size: 15px; font-weight: 500; padding: 15px; border-radius: 10px; text-align: center; min-height: 48px; box-shadow: 0 10px 28px -10px rgba(2,9,20,0.5);">Rejoindre la liste d'attente</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BRIDGE card straddling the seam -->
+  <div style="background: #fff; padding: 0 20px 30px;">
+    <div style="margin-top: -96px; background: #fff; border: 1px solid #e8edf1; border-radius: 16px; box-shadow: 0 22px 44px -20px rgba(10,31,56,0.32); padding: 18px;">
+      <div class="eyebrow" style="color: #94a3b8;">En route</div>
+      <div style="margin-top: 12px; border-radius: 11px; overflow: hidden; height: 120px; background: #edf2ee; position: relative;">
+        <svg width="100%" height="120" viewBox="0 0 320 120" fill="none" preserveAspectRatio="xMidYMid slice">
+          <rect width="320" height="120" fill="#edf2ee"/>
+          <g stroke="#dde5df" stroke-width="12" fill="none">
+            <path d="M-10 36 L130 46 L176 92 L340 86"/>
+            <path d="M60 -10 L72 56 L62 130"/>
+            <path d="M246 -10 L256 64 L248 130"/>
+          </g>
+          <path d="M72 56 L130 46 L176 92 L242 84 L256 64" stroke="#98B690" stroke-width="3" stroke-dasharray="6 5" fill="none"/>
+          <circle cx="72" cy="56" r="6" fill="#4e6645"/>
+          <circle cx="256" cy="64" r="8" fill="#fff" stroke="#4e6645" stroke-width="3"/>
+        </svg>
+        <div style="position: absolute; left: 11px; bottom: 11px; background: #fff; border-radius: 8px; padding: 6px 10px; font-size: 11.5px; font-weight: 500; color: #0a1f38;">8 min</div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 10px; margin-top: 14px;">
+        <div style="width: 34px; height: 34px; border-radius: 999px; background: #dde5df;"></div>
+        <div>
+          <div class="h" style="font-size: 13.5px; font-weight: 500; color: #0a1f38;">[NOM]</div>
+          <div style="font-size: 11px; color: #94a3b8;">Autorisée OIIQ · en route</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top: 40px; border-top: 1px solid #e8edf1; border-bottom: 1px solid #e8edf1;">
+    <div style="display: flex; flex-direction: column;">
+      <div style="padding: 20px; border-bottom: 1px solid #f1f5f8;">
+        <div class="h" style="font-size: 15px; font-weight: 500; color: #0a1f38;">Infirmières autorisées</div>
+        <div style="font-size: 13px; color: #5a5a6a; margin-top: 5px;">Permis OIIQ vérifié avant la première visite.</div>
+      </div>
+      <div style="padding: 20px; border-bottom: 1px solid #f1f5f8;">
+        <div class="h" style="font-size: 15px; font-weight: 500; color: #0a1f38;">Données au Québec</div>
+        <div style="font-size: 13px; color: #5a5a6a; margin-top: 5px;">Dossiers chiffrés, conformes à la Loi 25.</div>
+      </div>
+      <div style="padding: 20px;">
+        <div class="h" style="font-size: 15px; font-weight: 500; color: #0a1f38;">Reçus pour assurance</div>
+        <div style="font-size: 13px; color: #5a5a6a; margin-top: 5px;">Émis automatiquement après chaque soin.</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="padding: 40px 20px; background: #f7f9fa;">
+    <div class="eyebrow" style="color: #94a3b8;">Comment ça marche</div>
+    <h2 class="h" style="margin: 12px 0 0; font-size: 32px; line-height: 1.1; font-weight: 600; color: #0a1f38;">Trois étapes, aucune salle d'attente.</h2>
+    <div style="display: flex; flex-direction: column; gap: 26px; margin-top: 32px;">
+      <div>
+        <div style="border-top: 1px solid #0a1f38; padding-top: 13px; display: flex; justify-content: space-between; align-items: baseline;">
+          <span class="h" style="font-size: 12.5px; font-weight: 500; color: #0a1f38;">01</span>
+          <span class="eyebrow" style="color: #94a3b8;">2 minutes</span>
+        </div>
+        <div class="h" style="font-size: 20px; font-weight: 500; color: #0a1f38; margin-top: 12px;">Décrivez le soin</div>
+        <div style="font-size: 14px; line-height: 1.55; color: #5a5a6a; margin-top: 7px; font-weight: 300;">Choisissez le service, l'heure et l'adresse.</div>
+      </div>
+      <div>
+        <div style="border-top: 1px solid #0a1f38; padding-top: 13px; display: flex; justify-content: space-between; align-items: baseline;">
+          <span class="h" style="font-size: 12.5px; font-weight: 500; color: #0a1f38;">02</span>
+          <span class="eyebrow" style="color: #94a3b8;">Moins de 60 s</span>
+        </div>
+        <div class="h" style="font-size: 20px; font-weight: 500; color: #0a1f38; margin-top: 12px;">On trouve l'infirmière</div>
+        <div style="font-size: 14px; line-height: 1.55; color: #5a5a6a; margin-top: 7px; font-weight: 300;">La plus proche et qualifiée pour ce soin précis.</div>
+      </div>
+      <div>
+        <div style="border-top: 1px solid #0a1f38; padding-top: 13px; display: flex; justify-content: space-between; align-items: baseline;">
+          <span class="h" style="font-size: 12.5px; font-weight: 500; color: #0a1f38;">03</span>
+          <span class="eyebrow" style="color: #94a3b8;">Après la visite</span>
+        </div>
+        <div class="h" style="font-size: 20px; font-weight: 500; color: #0a1f38; margin-top: 12px;">Le soin, puis le rapport</div>
+        <div style="font-size: 14px; line-height: 1.55; color: #5a5a6a; margin-top: 7px; font-weight: 300;">Le rapport clinique arrive dans l'app.</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="padding: 40px 20px; background: #0a1f38; color: #fff;">
+    <div class="eyebrow" style="color: #98B690;">Répartition en direct</div>
+    <h2 class="h" style="margin: 12px 0 0; font-size: 32px; line-height: 1.1; font-weight: 600;">Vous savez où elle est, à la minute près.</h2>
+    <p style="font-size: 15px; line-height: 1.6; color: #a8bacd; margin: 14px 0 0; font-weight: 300;">Pas d'appel, pas de fenêtre de quatre heures. Une alerte cinq minutes avant qu'elle sonne.</p>
+    <div style="margin-top: 26px; border-radius: 14px; overflow: hidden; position: relative; height: 220px; background: #10304f;">
+      <svg width="100%" height="220" viewBox="0 0 350 220" fill="none" preserveAspectRatio="xMidYMid slice">
+        <rect width="350" height="220" fill="#10304f"/>
+        <g stroke="#17405f" stroke-width="14" fill="none">
+          <path d="M-20 60 L120 72 L170 150 L370 142"/>
+          <path d="M-20 186 L110 192 L240 176 L370 184"/>
+          <path d="M70 -20 L82 96 L70 240"/>
+          <path d="M250 -20 L262 110 L250 240"/>
+        </g>
+        <path d="M82 96 L120 72 L170 150 L245 138 L262 110" stroke="#98B690" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="8 7" fill="none"/>
+        <circle cx="82" cy="96" r="8" fill="#98B690"/>
+        <circle cx="262" cy="110" r="12" fill="#0a1f38" stroke="#98B690" stroke-width="3.5"/>
+      </svg>
+      <div style="position: absolute; top: 14px; left: 14px; background: rgba(10,31,56,0.9); border: 1px solid rgba(255,255,255,0.12); border-radius: 9px; padding: 10px 13px;">
+        <div style="font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #98B690;">Arrivée</div>
+        <div class="h" style="font-size: 21px; font-weight: 500; color: #fff; margin-top: 3px;">8 min</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="padding: 40px 20px; background: #fff;">
+    <div class="eyebrow" style="color: #94a3b8;">Nos patients</div>
+    <h2 class="h" style="margin: 12px 0 0; font-size: 32px; line-height: 1.1; font-weight: 600; color: #0a1f38;">Les soins viennent à ceux qui ne peuvent plus se déplacer.</h2>
+    <div style="background: #f7f9fa; border-radius: 16px; padding: 24px; margin-top: 26px;">
+      <p class="h" style="font-size: 19px; line-height: 1.35; font-weight: 400; color: #0a1f38; margin: 0;">« [CITATION PATIENT — à recueillir] »</p>
+      <div style="display: flex; align-items: center; gap: 10px; margin-top: 20px;">
+        <div style="width: 34px; height: 34px; border-radius: 999px; background: #e3e8ec;"></div>
+        <div style="font-size: 13px; color: #5a5a6a;">[PRÉNOM], [QUARTIER]</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="padding: 40px 20px; background: #f7f9fa; border-top: 1px solid #e8edf1;">
+    <h2 class="h" style="margin: 0; font-size: 32px; line-height: 1.1; font-weight: 600; color: #0a1f38; text-align: center;">Nous lançons bientôt au Québec.</h2>
+    <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 22px;">
+      <div style="background: #fff; border: 1px solid #dbe2e8; border-radius: 10px; padding: 15px 16px; font-size: 14.5px; color: #94a3b8; min-height: 48px;">votre@courriel.com</div>
+      <div style="background: #0a1f38; color: #fff; font-size: 15px; font-weight: 500; padding: 15px; border-radius: 10px; text-align: center; min-height: 48px;">M'inscrire</div>
+    </div>
+    <div style="font-size: 12px; color: #94a3b8; margin-top: 12px; text-align: center;">Aucune carte requise.</div>
+  </div>
+
+  <div style="background: #04142a; color: #fff; padding: 36px 20px 24px;">
+    <div class="h" style="font-size: 18px; font-weight: 600;">MobiSoins</div>
+    <div style="font-size: 13px; color: #8da4bd; margin-top: 10px; font-weight: 300;">Soins infirmiers à domicile, partout au Québec.</div>
+    <div style="display: flex; gap: 18px; flex-wrap: wrap; margin-top: 22px;">
+      <span style="font-size: 13px; color: #c3d2e0;">Soins offerts</span>
+      <span style="font-size: 13px; color: #c3d2e0;">Infirmières</span>
+      <span style="font-size: 13px; color: #c3d2e0;">Confidentialité</span>
+    </div>
+    <div style="margin-top: 26px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 12px; color: #5f7a96;">© 2026 MobiSoins · Fait au Québec</div>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>
