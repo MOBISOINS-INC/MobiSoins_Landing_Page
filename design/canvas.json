@@ -6,7 +6,8 @@
       "y": 0,
       "w": 1440,
       "h": 4050,
-      "title": "Page complète — bureau"
+      "page": "page-1",
+      "title": "Accueil — bureau"
     },
     {
       "file": "Mobile.dc.html",
@@ -14,7 +15,8 @@
       "y": 0,
       "w": 390,
       "h": 2560,
-      "title": "Mobile 390"
+      "page": "page-1",
+      "title": "Accueil — mobile"
     },
     {
       "file": "Colour.dc.html",
@@ -22,33 +24,162 @@
       "y": 0,
       "w": 1240,
       "h": 720,
+      "page": "page-1",
       "title": "Directions de couleur"
+    },
+    {
+      "file": "About.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 2600,
+      "page": "page-2",
+      "title": "À propos — bureau"
+    },
+    {
+      "file": "AboutMobile.dc.html",
+      "x": 1600,
+      "y": 0,
+      "w": 390,
+      "h": 2900,
+      "page": "page-2",
+      "title": "À propos — mobile"
+    },
+    {
+      "file": "Services.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 2200,
+      "page": "page-3",
+      "title": "Services — bureau"
+    },
+    {
+      "file": "ServicesMobile.dc.html",
+      "x": 1600,
+      "y": 0,
+      "w": 390,
+      "h": 2600,
+      "page": "page-3",
+      "title": "Services — mobile"
+    },
+    {
+      "file": "Faq.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 2000,
+      "page": "page-4",
+      "title": "FAQ — bureau"
+    },
+    {
+      "file": "FaqMobile.dc.html",
+      "x": 1600,
+      "y": 0,
+      "w": 390,
+      "h": 2200,
+      "page": "page-4",
+      "title": "FAQ — mobile"
+    },
+    {
+      "file": "Contact.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 1800,
+      "page": "page-5",
+      "title": "Contact — bureau"
+    },
+    {
+      "file": "ContactMobile.dc.html",
+      "x": 1600,
+      "y": 0,
+      "w": 390,
+      "h": 2100,
+      "page": "page-5",
+      "title": "Contact — mobile"
+    },
+    {
+      "file": "Articles.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 2000,
+      "page": "page-6",
+      "title": "Articles — bureau"
+    },
+    {
+      "file": "ArticlesMobile.dc.html",
+      "x": 1600,
+      "y": 0,
+      "w": 390,
+      "h": 2800,
+      "page": "page-6",
+      "title": "Articles — mobile"
     }
   ],
   "annotations": [
     {
-      "id": "note-brief",
+      "id": "note-accueil",
       "x": 0,
-      "y": -190,
-      "w": 520,
-      "text": "Deux changements.\n\n1) Le fondu blanc du héros commence maintenant à 84 % (au lieu de 52 %) : la vidéo garde sa force et ne se dissout que sur les derniers pourcents. Le bloc suivant redescend donc sous le héros au lieu de remonter dedans.\n\n2) La section « Nos patients » devient « Soins offerts ». Nous n’avons pas encore de vraies citations de patients, et il est hors de question d’en inventer pour un service de santé — alors ce bloc répond plutôt à la vraie question du visiteur : est-ce qu’ils font ce dont j’ai besoin ? Le contenu vient de vos propres textes de services."
+      "y": -210,
+      "w": 560,
+      "page": "page-1",
+      "text": "Accueil. Héros vidéo plein cadre qui se dissout dans le blanc, puis page claire.\n\nLes onglets en haut mènent aux autres pages : chacune a sa version bureau ET mobile côte à côte."
     },
     {
-      "id": "note-colour",
-      "x": 2150,
-      "y": -190,
-      "w": 460,
-      "text": "Réponse à la question sur le bleu : voir les trois options ci-dessous. B est ma recommandation."
-    },
-    {
-      "id": "note-placeholders",
+      "id": "note-system",
       "x": 1600,
-      "y": -190,
-      "w": 460,
-      "text": "Tout ce qui est [ENTRE CROCHETS] est un fait que je n'ai pas : noms, permis, quartiers, villes desservies, citations. À remplir — rien n'a été inventé."
+      "y": -210,
+      "w": 520,
+      "page": "page-2",
+      "text": "Système commun à toutes les pages secondaires.\n\nEn-tête de page marine (pas de vidéo — la vidéo reste la signature de l'accueil), puis fond blanc, titres Instrument Sans, filets fins plutôt que des cartes, sections à 96 px, blocs à 30 px d'écart.\n\nMobile : une seule colonne, cibles tactiles d'au moins 48 px, corps de texte jamais sous 14 px."
+    },
+    {
+      "id": "note-contenu",
+      "x": 0,
+      "y": -210,
+      "w": 520,
+      "page": "page-3",
+      "text": "Tout le contenu vient de vos propres textes (LanguageContext). Rien n'est inventé : ce qui manquait reste [ENTRE CROCHETS] — numéro de téléphone, adresse, temps de lecture des articles."
+    },
+    {
+      "id": "note-faq",
+      "x": 0,
+      "y": -210,
+      "w": 520,
+      "page": "page-4",
+      "text": "Les 8 questions existent déjà dans le code. Seule la première est ouverte ici pour montrer l'état déplié ; les 7 autres montrent l'état replié."
+    }
+  ],
+  "pages": [
+    {
+      "id": "page-1",
+      "name": "Accueil"
+    },
+    {
+      "id": "page-2",
+      "name": "À propos"
+    },
+    {
+      "id": "page-3",
+      "name": "Services"
+    },
+    {
+      "id": "page-4",
+      "name": "FAQ"
+    },
+    {
+      "id": "page-5",
+      "name": "Contact"
+    },
+    {
+      "id": "page-6",
+      "name": "Articles"
     }
   ],
   "launch": {
-    "view": "canvas"
+    "view": "canvas",
+    "page": "page-2"
   }
 }
