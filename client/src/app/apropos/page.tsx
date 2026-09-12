@@ -1,17 +1,12 @@
 'use client';
 
-import { Header } from '../../components/layout/Header';
-import { Footer } from '../../components/layout/Footer';
+import { PageShell } from '../../components/layout/PageShell';
 import { About } from '../../components/sections/About';
 
-export default function AproposPage() {
+export default function AboutPage() {
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: '#0a1f38' }}>
-      <Header />
-      <main className="flex-grow pt-16">
-        <About />
-      </main>
-      <Footer />
-    </div>
+    <PageShell>
+      <About />
+    </PageShell>
   );
 }

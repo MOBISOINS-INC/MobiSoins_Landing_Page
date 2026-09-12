@@ -188,14 +188,9 @@ export const Hero = () => {
               href="https://docs.google.com/forms/d/1TaBNJ9M7Ks6LW5_Vfyqx5DodEPQZbo06bxX8PvJFLiw/viewform"
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative inline-flex items-center gap-2.5 px-8 py-4 rounded-full font-semibold text-white overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-0.5"
-              style={{
-                background: 'linear-gradient(180deg, #0a4a85 0%, #003366 55%, #00264d 100%)',
-                boxShadow: '0 10px 30px rgba(0,51,102,0.45), inset 0 1px 0 rgba(255,255,255,0.18)',
-              }}
+              className="cta-navy group relative inline-flex items-center gap-2.5 px-8 py-4 rounded-full font-semibold cursor-pointer"
+             
             >
-              {/* shine sweep */}
-              <span className="absolute top-0 -left-full w-1/2 h-full bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-[-20deg] group-hover:left-[150%] transition-all duration-700" />
               <span className="relative">{t('hero.bookNow')}</span>
               <svg
                 className="relative transition-transform duration-300 group-hover:translate-x-1"

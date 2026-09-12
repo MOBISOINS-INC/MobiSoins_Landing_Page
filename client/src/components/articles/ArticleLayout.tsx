@@ -2,10 +2,10 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { Header } from '../layout/Header';
-import { Footer } from '../layout/Footer';
+import { ArrowLeft } from 'lucide-react';
+import { PageShell, EYEBROW, BODY, FRAME } from '../layout/PageShell';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { useReveal } from '../../hooks/useReveal';
 
 export interface ArticleSection {
   title: string;
@@ -43,170 +43,123 @@ interface ArticleLayoutProps {
 }
 
 export const ArticleLayout: React.FC<ArticleLayoutProps> = ({ article }) => {
-  const { language, t } = useLanguage();
+  const { language } = useLanguage();
   const data = article[language];
+  const { ref, style } = useReveal();
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: '#0a1f38' }}>
-      <Header />
-      <main className="flex-grow pt-20">
-        {/* Hero image */}
-        <div className="relative w-full" style={{ height: 'clamp(280px, 45vw, 520px)' }}>
-          <img
-            src={data.image}
-            alt={data.title}
-            className="w-full h-full object-cover"
-            onError={(e) => { if (data.fallbackImage) (e.target as HTMLImageElement).src = data.fallbackImage; }}
-          />
-          <div
-            className="absolute inset-0"
-            style={{
-              background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.2) 50%, transparent 100%)',
-            }}
-          />
-          <div className="absolute bottom-0 left-0 right-0 p-6 md:p-12 max-w-4xl mx-auto">
-            <div className="flex items-center gap-3 mb-4">
-              <span
-                className="px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider"
-                style={{ background: 'rgba(78,102,69,0.9)', color: '#fff' }}
-              >
-                {data.tag}
-              </span>
-              <span className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.7)' }}>
-                {data.date}
-              </span>
-              <span className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.7)' }}>
-                &middot; {data.readTime}
-              </span>
+    <PageShell>
+      <article className="bg-white pt-10 pb-20 sm:pt-12 lg:pt-16 lg:pb-28">
+        <div ref={ref} style={style} className="container-custom">
+          {/* Title block */}
+          <header className="mx-auto max-w-[820px]">
+            <div className="flex flex-wrap items-center gap-2 text-[12px] font-medium uppercase tracking-[0.14em] text-slate-500">
+              <span className="text-[#4e6645]">{data.tag}</span>
+              <span aria-hidden="true">·</span>
+              <span>{data.date}</span>
+              <span aria-hidden="true">·</span>
+              <span>{data.readTime}</span>
             </div>
-            <h1
-              className="text-2xl md:text-4xl lg:text-5xl font-bold text-white leading-tight tracking-tight"
-              style={{ letterSpacing: '-0.03em' }}
-            >
+            <h1 className="mt-5 text-[32px] font-semibold leading-[1.08] tracking-[-0.035em] text-[#0a1f38] sm:text-[42px] lg:text-[52px]">
               {data.title}
             </h1>
+            <p className="mt-6 text-[17px] font-light leading-relaxed text-[#5a5a6a] sm:text-[19px]">
+              {data.subtitle}
+            </p>
+          </header>
+
+          {/* Hero image */}
+          <div className={`${FRAME} mx-auto mt-10 aspect-[16/9] max-w-[1100px] sm:mt-12`}>
+            <img
+              src={data.image}
+              alt={data.title}
+              className="absolute inset-0 h-full w-full object-cover"
+              onError={(e) => { if (data.fallbackImage) (e.target as HTMLImageElement).src = data.fallbackImage; }}
+            />
           </div>
-        </div>
 
-        {/* Article body */}
-        <motion.article
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="max-w-3xl mx-auto px-6 md:px-8 py-12 md:py-16"
-        >
-          {/* Subtitle / lede */}
-          <p
-            className="text-lg md:text-xl font-medium leading-relaxed mb-10"
-            style={{ color: '#ffffff', letterSpacing: '-0.01em' }}
-          >
-            {data.subtitle}
-          </p>
+          {/* Body */}
+          <div className="mx-auto mt-12 max-w-[720px] sm:mt-16">
+            {data.sections.map((section) => (
+              <section key={section.title} className="mb-10">
+                <h2 className="text-[22px] font-medium leading-snug tracking-[-0.02em] text-[#0a1f38] sm:text-[24px]">
+                  {section.title}
+                </h2>
+                {section.content.map((paragraph, j) => (
+                  <p key={j} className={`${BODY} mt-4`}>
+                    {paragraph}
+                  </p>
+                ))}
+                {section.list && (
+                  <ul className="mt-4 list-disc space-y-2 pl-6 marker:text-slate-400">
+                    {section.list.map((item) => (
+                      <li key={item} className={BODY}>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </section>
+            ))}
 
-          {/* Sections */}
-          {data.sections.map((section, i) => (
-            <section key={i} className="mb-10">
-              <h2
-                className="text-xl md:text-2xl font-semibold mb-4 tracking-tight"
-                style={{ color: '#ffffff', letterSpacing: '-0.02em' }}
-              >
-                {section.title}
-              </h2>
-              {section.content.map((paragraph, j) => (
+            {/* Conclusion */}
+            <section className="rounded-[22px] bg-[#0a1f38] p-7 text-white sm:p-9">
+              <span className="text-[12px] font-medium uppercase tracking-[0.14em] text-[#98B690]">
+                {data.conclusion.title}
+              </span>
+              {data.conclusion.content.map((paragraph, j) => (
                 <p
                   key={j}
-                  className="text-base leading-relaxed mb-4"
-                  style={{ color: 'rgba(255,255,255,0.65)' }}
+                  className="mt-4 text-[17px] font-normal leading-[1.45] tracking-[-0.01em] text-white sm:text-[19px]"
                 >
                   {paragraph}
                 </p>
               ))}
-              {section.list && (
-                <ul className="list-disc pl-6 mb-4 space-y-2">
-                  {section.list.map((item, k) => (
-                    <li key={k} className="text-base leading-relaxed" style={{ color: 'rgba(255,255,255,0.65)' }}>
-                      {item}
+            </section>
+
+            {/* Sources */}
+            {data.sources && data.sources.length > 0 && (
+              <section className="mt-12 border-t border-slate-200/70 pt-8">
+                <h2 className={EYEBROW}>Sources</h2>
+                <ul className="mt-4 space-y-2">
+                  {data.sources.map((source) => (
+                    <li key={source.url}>
+                      <a
+                        href={source.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="break-words text-[14px] text-[#0a1f38] underline decoration-slate-300 underline-offset-4 transition-colors hover:decoration-[#0a1f38]"
+                      >
+                        {source.label}
+                      </a>
                     </li>
                   ))}
                 </ul>
-              )}
-            </section>
-          ))}
+              </section>
+            )}
 
-          {/* Sources */}
-          {data.sources && data.sources.length > 0 && (
-            <section className="mb-10">
-              <h2
-                className="text-lg font-semibold mb-4 tracking-tight"
-                style={{ color: '#ffffff', letterSpacing: '-0.02em' }}
-              >
-                {language === 'FR' ? 'Sources' : 'Sources'}
-              </h2>
-              <ul className="space-y-2">
-                {data.sources.map((source, i) => (
-                  <li key={i}>
-                    <a
-                      href={source.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-sm underline underline-offset-2 break-all transition-colors duration-200"
-                      style={{ color: '#98B690' }}
-                      onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#ffffff'; }}
-                      onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = '#98B690'; }}
-                    >
-                      {source.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )}
-
-          {/* Conclusion */}
-          <section className="mb-10 p-6 md:p-8 rounded-2xl" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
-            <h2
-              className="text-xl md:text-2xl font-semibold mb-4 tracking-tight"
-              style={{ color: '#ffffff', letterSpacing: '-0.02em' }}
-            >
-              {data.conclusion.title}
-            </h2>
-            {data.conclusion.content.map((paragraph, j) => (
-              <p
-                key={j}
-                className="text-base leading-relaxed mb-3 last:mb-0"
-                style={{ color: 'rgba(255,255,255,0.65)' }}
-              >
-                {paragraph}
+            {/* Footer / copyright */}
+            <div className="mt-12 border-t border-slate-200/70 pt-6">
+              <p className="text-[12.5px] text-slate-500">
+                &copy; 2026 MobiSoins &mdash; {language === 'FR' ? 'Tous droits réservés.' : 'All rights reserved.'}
               </p>
-            ))}
-          </section>
+              <p className="mt-1 text-[12.5px] text-slate-500">
+                {language === 'FR'
+                  ? 'Ce contenu est protégé. Toute reproduction, distribution ou utilisation sans autorisation est interdite.'
+                  : 'This content is protected. Any reproduction, distribution, or use without permission is prohibited.'}
+              </p>
+            </div>
 
-          {/* Footer / copyright */}
-          <div className="border-t pt-8 mt-12" style={{ borderColor: 'rgba(255,255,255,0.1)' }}>
-            <p className="text-xs mb-2" style={{ color: 'rgba(255,255,255,0.45)' }}>
-              &copy; 2026 MobiSoins &mdash; {language === 'FR' ? 'Tous droits r\u00e9serv\u00e9s.' : 'All rights reserved.'}
-            </p>
-            <p className="text-xs" style={{ color: 'rgba(255,255,255,0.45)' }}>
-              {language === 'FR'
-                ? 'Ce contenu est prot\u00e9g\u00e9. Toute reproduction, distribution ou utilisation sans autorisation est interdite.'
-                : 'This content is protected. Any reproduction, distribution, or use without permission is prohibited.'}
-            </p>
+            <Link
+              href="/articles"
+              className="mt-8 inline-flex items-center gap-2 text-[14px] font-medium text-[#0a1f38] transition-colors hover:text-[#4e6645]"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              {language === 'FR' ? 'Tous les articles' : 'All articles'}
+            </Link>
           </div>
-
-          {/* Back link */}
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 mt-8 text-sm font-medium transition-colors duration-200"
-            style={{ color: '#98B690' }}
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-              <path d="M19 12H5M12 19l-7-7 7-7" />
-            </svg>
-            {language === 'FR' ? 'Retour \u00e0 l\u2019accueil' : 'Back to home'}
-          </Link>
-        </motion.article>
-      </main>
-      <Footer />
-    </div>
+        </div>
+      </article>
+    </PageShell>
   );
 };

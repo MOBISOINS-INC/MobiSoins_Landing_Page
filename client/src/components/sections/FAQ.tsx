@@ -1,113 +1,90 @@
 'use client';
 
 import { useState } from 'react';
-import { ChevronDown, ChevronUp, Search } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Plus, Search } from 'lucide-react';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { useReveal } from '../../hooks/useReveal';
+import { EYEBROW, H1, LEAD } from '../layout/PageShell';
+
+const QUESTIONS = [1, 2, 3, 4, 5, 6, 7, 8] as const;
 
 export const FAQ = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
   const [searchQuery, setSearchQuery] = useState('');
   const { t } = useLanguage();
+  const { ref, style } = useReveal();
 
-  const faqs = [
-    {
-      question: t('faq.question1'),
-      answer: t('faq.answer1')
-    },
-    {
-      question: t('faq.question2'),
-      answer: t('faq.answer2')
-    },
-    {
-      question: t('faq.question3'),
-      answer: t('faq.answer3')
-    },
-    {
-      question: t('faq.question4'),
-      answer: t('faq.answer4')
-    },
-    {
-      question: t('faq.question5'),
-      answer: t('faq.answer5')
-    },
-    {
-      question: t('faq.question6'),
-      answer: t('faq.answer6')
-    },
-    {
-      question: t('faq.question7'),
-      answer: t('faq.answer7')
-    },
-    {
-      question: t('faq.question8'),
-      answer: t('faq.answer8')
-    }
-  ];
+  const faqs = QUESTIONS.map((n) => ({
+    question: t(`faq.question${n}`),
+    answer: t(`faq.answer${n}`),
+  }));
 
-  const filteredFaqs = faqs.filter(faq => 
-    faq.question.toLowerCase().includes(searchQuery.toLowerCase()) || 
-    faq.answer.toLowerCase().includes(searchQuery.toLowerCase())
+  const q = searchQuery.trim().toLowerCase();
+  const filteredFaqs = faqs.filter(
+    (faq) => faq.question.toLowerCase().includes(q) || faq.answer.toLowerCase().includes(q)
   );
 
   return (
-    <section id="faq" className="relative py-16">
-      <div className="container mx-auto px-6 max-w-4xl">
-        <div className="mb-10">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight mb-3 text-white" style={{ letterSpacing: '-0.03em' }}>
-            {t('faq.title')}
-          </h2>
-          <p className="font-light text-lg mb-6 text-white/60">
-            {t('faq.subtitle')}
-          </p>
-          <div className="relative max-w-md">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-white/40" />
-            <input
-              type="text"
-              placeholder={t('faq.searchPlaceholder')}
-              className="w-full pl-12 pr-4 py-3.5 rounded-full border border-white/10 bg-white/5 text-white placeholder:text-white/40 focus:border-white/25 focus:ring-1 focus:ring-white/15 outline-none transition-all backdrop-blur-sm"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
+    <section id="faq" className="bg-white pt-12 pb-20 sm:pt-16 lg:pt-24 lg:pb-28">
+      <div className="container-custom">
+        <div ref={ref} style={style} className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
+          {/* Left: intro + search (sticky on desktop) */}
+          <div className="lg:sticky lg:top-32 lg:self-start">
+            <span className={EYEBROW}>FAQ</span>
+            <h1 className={`${H1} mt-5`}>{t('faq.title')}</h1>
+            <p className={`${LEAD} mt-5 max-w-[420px]`}>{t('faq.subtitle')}</p>
+            <label className="relative mt-8 block max-w-[420px]">
+              <span className="sr-only">{t('faq.searchPlaceholder')}</span>
+              <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+              <input
+                type="search"
+                placeholder={t('faq.searchPlaceholder')}
+                className="h-12 w-full rounded-[9px] border border-slate-200 bg-white pl-11 pr-4 text-[14.5px] text-[#0a1f38] placeholder:text-slate-400 transition-colors focus:border-[#0a1f38] focus:outline-none focus:ring-1 focus:ring-[#0a1f38]"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </label>
           </div>
-        </div>
 
-        <div className="space-y-4">
-          {filteredFaqs.length > 0 ? (
-            filteredFaqs.map((faq, index) => (
-              <div
-                key={index}
-                className="glass-dark !rounded-2xl overflow-hidden transition-all duration-200"
-              >
-                <button
-                  className="w-full px-6 py-5 text-left flex items-center justify-between focus:outline-none hover:bg-white/[0.03] transition-colors"
-                  onClick={() => setOpenIndex(openIndex === index ? null : index)}
-                >
-                  <span className="font-semibold text-base pr-4 text-white">{faq.question}</span>
-                  {openIndex === index ? (
-                    <ChevronUp className="h-4 w-4 text-white/45 flex-shrink-0" />
-                  ) : (
-                    <ChevronDown className="h-4 w-4 text-white/45 flex-shrink-0" />
-                  )}
-                </button>
-                <motion.div
-                  initial={false}
-                  animate={{
-                    height: openIndex === index ? 'auto' : 0,
-                    opacity: openIndex === index ? 1 : 0,
-                  }}
-                  transition={{ duration: 0.3 }}
-                  className="overflow-hidden"
-                >
-                  <div className="px-6 pb-6 text-white/60 leading-relaxed">
-                    {faq.answer}
+          {/* Right: accordion list */}
+          <div className="border-t border-[#0a1f38]">
+            {filteredFaqs.length > 0 ? (
+              filteredFaqs.map((faq, index) => {
+                const open = openIndex === index;
+                return (
+                  <div key={faq.question} className="border-b border-slate-200/70">
+                    <button
+                      type="button"
+                      aria-expanded={open}
+                      className="flex w-full items-start justify-between gap-6 py-5 text-left sm:py-6"
+                      onClick={() => setOpenIndex(open ? null : index)}
+                    >
+                      <span className="text-[16px] font-medium leading-snug tracking-[-0.01em] text-[#0a1f38] sm:text-[18px]">
+                        {faq.question}
+                      </span>
+                      <Plus
+                        className={`mt-1 h-4 w-4 shrink-0 text-slate-500 transition-transform duration-300 ${
+                          open ? 'rotate-45' : ''
+                        }`}
+                      />
+                    </button>
+                    <div
+                      className="grid transition-[grid-template-rows] duration-300 ease-out"
+                      style={{ gridTemplateRows: open ? '1fr' : '0fr' }}
+                    >
+                      <div className="overflow-hidden">
+                        <p className="max-w-[640px] pb-6 text-[15px] font-light leading-relaxed text-[#5a5a6a]">
+                          {faq.answer}
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                </motion.div>
-              </div>
-            ))
-          ) : (
-            <p className="text-center text-white/50 py-12">{t('faq.noResults')}</p>
-          )}
+                );
+              })
+            ) : (
+              <p className="py-12 text-center text-[15px] text-slate-500">{t('faq.noResults')}</p>
+            )}
+          </div>
         </div>
       </div>
     </section>

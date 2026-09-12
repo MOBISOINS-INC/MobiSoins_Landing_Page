@@ -12,12 +12,14 @@ type BrandLogoProps = {
   className?: string;
   /** Adds a soft dark drop-shadow for legibility over busy photos (e.g. the hero). */
   glow?: boolean;
+  /** `white` for dark grounds (hero), `navy` for the white header bar. */
+  tone?: 'white' | 'navy';
 };
 
-export function BrandLogo({ className = '', glow = false }: BrandLogoProps) {
+export function BrandLogo({ className = '', glow = false, tone = 'white' }: BrandLogoProps) {
   return (
     <img
-      src="/mobisoins-logo-clean.png"
+      src={tone === 'navy' ? '/mobisoins-logo-trim.png' : '/mobisoins-logo-clean.png'}
       alt="MobiSoins"
       className={`w-auto object-contain select-none ${className}`}
       draggable={false}

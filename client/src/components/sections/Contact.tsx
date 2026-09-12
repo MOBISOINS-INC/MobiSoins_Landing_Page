@@ -4,16 +4,21 @@ import { useState } from 'react';
 import { Label } from '../ui/label';
 import { Textarea } from '../ui/textarea';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { useReveal } from '../../hooks/useReveal';
+import { EYEBROW, H1, LEAD, CARD, FRAME } from '../layout/PageShell';
+
+const FIELD =
+  'flex h-11 w-full rounded-[9px] border border-slate-200 bg-white px-4 py-2 text-[14.5px] text-[#0a1f38] placeholder:text-slate-400 transition-colors focus-visible:outline-none focus-visible:border-[#0a1f38] focus-visible:ring-1 focus-visible:ring-[#0a1f38] disabled:cursor-not-allowed disabled:opacity-50';
 
 const RawInput = ({ className = '', ...props }: React.InputHTMLAttributes<HTMLInputElement>) => (
-  <input
-    className={`flex h-10 w-full rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm px-4 py-2 text-sm text-white placeholder:text-white/40 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/20 focus-visible:border-white/25 focus-visible:bg-white/[0.08] disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
-    {...props}
-  />
+  <input className={`${FIELD} ${className}`} {...props} />
 );
+
+const LABEL = 'text-[13px] font-medium text-[#0a1f38]';
 
 export const Contact = () => {
   const { t } = useLanguage();
+  const { ref, style } = useReveal();
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState('');
@@ -27,6 +32,7 @@ export const Contact = () => {
 
     const accessKey = process.env.NEXT_PUBLIC_FORM_ACCESS_KEY;
     if (!accessKey) {
+      console.error('[contact] NEXT_PUBLIC_FORM_ACCESS_KEY is not set; form cannot submit');
       setError(t('contact.errorConfig'));
       setSending(false);
       return;
@@ -51,9 +57,11 @@ export const Contact = () => {
         setSent(true);
         form.reset();
       } else {
+        console.error('[contact] submission rejected', result);
         setError(result.message || t('contact.errorGeneric'));
       }
-    } catch {
+    } catch (err) {
+      console.error('[contact] submission failed', err);
       setError(t('contact.errorGeneric'));
     } finally {
       setSending(false);
@@ -73,127 +81,100 @@ export const Contact = () => {
   ];
 
   return (
-    <section id="contact" className="relative py-14 sm:py-24">
+    <section id="contact" className="bg-white pt-12 pb-20 sm:pt-16 lg:pt-24 lg:pb-28">
       <div className="container-custom">
-        <div className="mx-auto flex max-w-screen-xl flex-col sm:flex-row justify-between gap-6 sm:gap-8 lg:gap-20">
-
-          {/* Left: Title + photo + Contact Details */}
-          <div
-            className="flex w-full sm:max-w-[15rem] lg:max-w-sm flex-col gap-4 sm:gap-6 shrink-0"
-          >
-            <div className="text-left">
-              <h2
-                className="mb-2 sm:mb-3 text-2xl sm:text-4xl lg:text-6xl font-semibold tracking-tight text-white"
-                style={{ letterSpacing: '-0.04em' }}
-              >
-                {t('contact.title')}
-              </h2>
-              <p className="text-xs sm:text-base font-light leading-relaxed text-white/60">
-                {t('contact.description')}
-              </p>
+        <div ref={ref} style={style} className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
+          {/* Left: title, photo, details */}
+          <div className="flex flex-col gap-8">
+            <div>
+              <span className={EYEBROW}>{t('contact.detailsTitle')}</span>
+              <h1 className={`${H1} mt-5`}>{t('contact.title')}</h1>
+              <p className={`${LEAD} mt-5 max-w-[480px]`}>{t('contact.description')}</p>
             </div>
 
-            {/* Warm care photo */}
-            <div className="overflow-hidden rounded-2xl border border-white/10 shadow-xl">
+            <div className={`${FRAME} hidden aspect-[16/9] sm:block`}>
               <img
                 src="/nurses/nurse-09.jpeg"
                 alt="Infirmière MobiSoins prodiguant des soins à domicile"
-                className="w-full h-40 sm:h-52 object-cover"
+                className="absolute inset-0 h-full w-full object-cover"
                 style={{ objectPosition: '55% 32%' }}
               />
             </div>
 
-            <div className="w-full lg:w-fit">
-              <h3
-                className="mb-2 sm:mb-6 text-left text-base sm:text-2xl font-semibold text-white"
-                style={{ letterSpacing: '-0.02em' }}
-              >
-                {t('contact.detailsTitle')}
-              </h3>
-              <ul className="space-y-2 sm:space-y-3">
-                {contactDetails.map((item) => (
-                  <li key={item.labelKey} className="flex flex-col sm:flex-row items-start gap-0 sm:gap-3 text-[12px] sm:text-sm text-white/60">
-                    <span className="font-semibold text-white/85 shrink-0 sm:w-20">{t(item.labelKey)}:</span>
+            <dl className="grid grid-cols-1 gap-x-6 sm:grid-cols-2">
+              {contactDetails.map((item) => (
+                <div key={item.labelKey} className="border-t border-slate-200/70 py-4">
+                  <dt className="text-[12px] font-medium uppercase tracking-[0.14em] text-slate-500">
+                    {t(item.labelKey)}
+                  </dt>
+                  <dd className="mt-1.5">
                     <a
                       href={item.href}
                       target={item.external ? '_blank' : undefined}
                       rel={item.external ? 'noopener noreferrer' : undefined}
-                      className="underline underline-offset-2 hover:text-white transition-colors"
+                      className="text-[15px] text-[#0a1f38] underline decoration-slate-300 underline-offset-4 transition-colors hover:decoration-[#0a1f38]"
                     >
                       {item.value}
                     </a>
-                  </li>
-                ))}
-              </ul>
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+
+          {/* Right: form */}
+          <form onSubmit={handleSubmit} className={`${CARD} flex flex-col gap-5 p-6 sm:p-8 lg:p-10`}>
+            <div className="grid gap-5 sm:grid-cols-2">
+              <div className="grid gap-2">
+                <Label htmlFor="firstname" className={LABEL}>{t('contact.firstName')}</Label>
+                <RawInput type="text" id="firstname" name="firstname" placeholder={t('contact.firstNamePlaceholder')} required />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="lastname" className={LABEL}>{t('contact.lastName')}</Label>
+                <RawInput type="text" id="lastname" name="lastname" placeholder={t('contact.lastNamePlaceholder')} required />
+              </div>
             </div>
-          </div>
 
-          {/* Right: Glass Form */}
-          <div
-            className="w-full sm:flex-1 lg:max-w-lg"
-          >
-            <form
-              onSubmit={handleSubmit}
-              className="glass-dark flex flex-col gap-3 sm:gap-5 !rounded-2xl sm:!rounded-3xl p-3.5 sm:p-6 md:p-7"
+            <div className="grid gap-2">
+              <Label htmlFor="email" className={LABEL}>{t('contact.emailLabel')}</Label>
+              <RawInput type="email" id="email" name="email" placeholder={t('contact.emailPlaceholder')} required />
+            </div>
+
+            <div className="grid gap-2">
+              <Label htmlFor="subject" className={LABEL}>{t('contact.subject')}</Label>
+              <RawInput type="text" id="subject" name="subject" placeholder={t('contact.subjectPlaceholder')} required />
+            </div>
+
+            <div className="grid gap-2">
+              <Label htmlFor="message" className={LABEL}>{t('contact.message')}</Label>
+              <Textarea
+                id="message"
+                name="message"
+                placeholder={t('contact.messagePlaceholder')}
+                className="min-h-[140px] rounded-[9px] border-slate-200 bg-white text-[14.5px] text-[#0a1f38] placeholder:text-slate-400 focus-visible:border-[#0a1f38] focus-visible:ring-1 focus-visible:ring-[#0a1f38] focus-visible:bg-white backdrop-blur-none"
+                required
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={sending || sent}
+              className="cta-navy mt-1 h-12 w-full rounded-[10px] text-[15px] font-medium disabled:cursor-not-allowed disabled:opacity-60"
             >
-              {/* Name row */}
-              <div className="flex flex-col sm:flex-row gap-4">
-                <div className="grid w-full items-center gap-2">
-                  <Label htmlFor="firstname" className="text-white/70">{t('contact.firstName')}</Label>
-                  <RawInput type="text" id="firstname" name="firstname" placeholder={t('contact.firstNamePlaceholder')} required />
-                </div>
-                <div className="grid w-full items-center gap-2">
-                  <Label htmlFor="lastname" className="text-white/70">{t('contact.lastName')}</Label>
-                  <RawInput type="text" id="lastname" name="lastname" placeholder={t('contact.lastNamePlaceholder')} required />
-                </div>
-              </div>
+              {sent ? t('contact.sent') : sending ? t('contact.sending') : t('contact.send')}
+            </button>
 
-              {/* Email */}
-              <div className="grid w-full items-center gap-2">
-                <Label htmlFor="email" className="text-white/70">{t('contact.emailLabel')}</Label>
-                <RawInput type="email" id="email" name="email" placeholder={t('contact.emailPlaceholder')} required />
-              </div>
-
-              {/* Subject */}
-              <div className="grid w-full items-center gap-2">
-                <Label htmlFor="subject" className="text-white/70">{t('contact.subject')}</Label>
-                <RawInput type="text" id="subject" name="subject" placeholder={t('contact.subjectPlaceholder')} required />
-              </div>
-
-              {/* Message */}
-              <div className="grid w-full gap-2">
-                <Label htmlFor="message" className="text-white/70">{t('contact.message')}</Label>
-                <Textarea
-                  id="message"
-                  name="message"
-                  placeholder={t('contact.messagePlaceholder')}
-                  className="min-h-[96px] border-white/10 bg-white/5 text-white placeholder:text-white/40 focus-visible:ring-white/20 focus-visible:border-white/25 focus-visible:bg-white/[0.08]"
-                  required
-                />
-              </div>
-
-              {/* Submit */}
-              <button
-                type="submit"
-                disabled={sending || sent}
-                className="w-full h-12 rounded-full text-sm font-semibold text-[#0a1f38] bg-white hover:bg-white/90 transition-all duration-300 shadow-lg shadow-black/20 hover:shadow-xl hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0"
-              >
-                {sent ? t('contact.sent') : sending ? t('contact.sending') : t('contact.send')}
-              </button>
-
-              {sent && (
-                <p className="text-center text-sm text-[#98B690] font-medium">
-                  {t('contact.sentConfirm')}
-                </p>
-              )}
-              {error && (
-                <p className="text-center text-sm font-medium" style={{ color: '#f0a6a6' }}>
-                  {error}
-                </p>
-              )}
-            </form>
-          </div>
-
+            {sent && (
+              <p className="text-center text-[14px] font-medium text-[#4e6645]" role="status">
+                {t('contact.sentConfirm')}
+              </p>
+            )}
+            {error && (
+              <p className="text-center text-[14px] font-medium text-red-600" role="alert">
+                {error}
+              </p>
+            )}
+          </form>
         </div>
       </div>
     </section>

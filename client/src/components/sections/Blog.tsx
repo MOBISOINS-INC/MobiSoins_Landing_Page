@@ -3,9 +3,12 @@
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { useReveal } from '../../hooks/useReveal';
+import { EYEBROW, H1, LEAD, FRAME } from '../layout/PageShell';
 
 export const Blog = () => {
   const { t } = useLanguage();
+  const { ref, style } = useReveal();
 
   const articles = [
     {
@@ -16,7 +19,6 @@ export const Blog = () => {
       description: t('blog.article1Description'),
       readTime: '5 min',
       link: '/articles/telesante',
-      featured: true,
     },
     {
       image: '/images/articles/premiere-visite.jpg',
@@ -26,7 +28,6 @@ export const Blog = () => {
       description: t('blog.article2Description'),
       readTime: '4 min',
       link: '/articles/premiere-visite',
-      featured: false,
     },
     {
       image: '/images/articles/soins-aines.jpg',
@@ -36,169 +37,88 @@ export const Blog = () => {
       description: t('blog.article3Description'),
       readTime: '6 min',
       link: '/articles/soins-aines',
-      featured: false,
     },
   ];
 
   const [featured, ...rest] = articles;
 
+  const Meta = ({ tags, readTime }: { tags: string[]; readTime: string }) => (
+    <div className="flex items-center gap-2 text-[12px] font-medium uppercase tracking-[0.14em] text-slate-500">
+      <span className="text-[#4e6645]">{tags[0]}</span>
+      <span aria-hidden="true">·</span>
+      <span>
+        {readTime} {t('blog.readTime')}
+      </span>
+    </div>
+  );
+
   return (
-    <section className="relative py-16">
+    <section className="bg-white pt-12 pb-20 sm:pt-16 lg:pt-24 lg:pb-28">
       <div className="container-custom">
-
-        {/* Header */}
-        <div
-          className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10"
-        >
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-widest mb-2 text-[#98B690]">
-              {t('blog.badge') || 'Ressources'}
-            </p>
-            <h2
-              className="text-3xl md:text-4xl font-semibold tracking-tight text-white"
-              style={{ letterSpacing: '-0.03em' }}
-            >
-              {t('blog.title')}
-            </h2>
+        <div ref={ref} style={style}>
+          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div>
+              <span className={EYEBROW}>{t('blog.badge') || 'Ressources'}</span>
+              <h1 className={`${H1} mt-5`}>{t('blog.title')}</h1>
+            </div>
+            <p className={`${LEAD} max-w-[380px] md:text-right`}>{t('blog.subtitle')}</p>
           </div>
-          <p className="text-sm font-light max-w-xs text-right hidden md:block text-white/45">
-            {t('blog.subtitle')}
-          </p>
-        </div>
 
-        {/* Bento grid */}
-        <div className="grid md:grid-cols-5 gap-4">
-
-          {/* Featured — large card, left 3 cols */}
-          <div
-            className="md:col-span-3"
-          >
-            <Link
-              href={featured.link}
-              className="group relative rounded-2xl overflow-hidden block"
-              style={{ minHeight: '380px' }}
-            >
-              {/* Full-bleed image */}
-              <img
-                src={featured.image}
-                alt={featured.title}
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                loading="lazy"
-                onError={(e) => { (e.target as HTMLImageElement).src = featured.fallback; }}
-              />
-              {/* Gradient overlay */}
-              <div
-                className="absolute inset-0"
-                style={{
-                  background: 'linear-gradient(to top, rgba(10,10,18,0.88) 0%, rgba(10,10,18,0.35) 55%, transparent 100%)',
-                }}
-              />
-              {/* Content pinned to bottom */}
-              <div className="absolute inset-0 flex flex-col justify-between p-7">
-                {/* Top: tags + read time */}
-                <div className="flex items-center justify-between">
-                  <div className="flex gap-2">
-                    {featured.tags.map((tag, i) => (
-                      <span
-                        key={i}
-                        className="px-2.5 py-0.5 rounded-full text-[11px] font-semibold backdrop-blur-md"
-                        style={{ background: 'rgba(255,255,255,0.15)', color: '#fff' }}
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                  <span className="text-[11px] font-medium" style={{ color: 'rgba(255,255,255,0.6)' }}>
-                    {featured.readTime} {t('blog.readTime')}
-                  </span>
-                </div>
-
-                {/* Bottom: title + arrow */}
-                <div>
-                  <h3
-                    className="text-xl md:text-2xl font-semibold leading-snug mb-3 text-white tracking-tight"
-                    style={{ letterSpacing: '-0.02em' }}
-                  >
-                    {featured.title}
-                  </h3>
-                  <p className="text-sm font-light mb-4 line-clamp-2" style={{ color: 'rgba(255,255,255,0.65)' }}>
-                    {featured.description}
-                  </p>
-                  <div
-                    className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest transition-all duration-300 group-hover:gap-3"
-                    style={{ color: '#98B690' }}
-                  >
-                    {t('blog.readMore')}
-                    <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                  </div>
-                </div>
+          <div className="mt-12 grid gap-8 lg:grid-cols-5 lg:gap-[30px]">
+            {/* Featured */}
+            <Link href={featured.link} className="group block lg:col-span-3">
+              <div className={`${FRAME} aspect-[16/10]`}>
+                <img
+                  src={featured.image}
+                  alt={featured.title}
+                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                  loading="lazy"
+                  onError={(e) => { (e.target as HTMLImageElement).src = featured.fallback; }}
+                />
+              </div>
+              <div className="mt-5">
+                <Meta tags={featured.tags} readTime={featured.readTime} />
+                <h2 className="mt-3 text-[24px] font-semibold leading-[1.15] tracking-[-0.03em] text-[#0a1f38] sm:text-[30px]">
+                  {featured.title}
+                </h2>
+                <p className="mt-3 max-w-[600px] text-[15.5px] font-light leading-relaxed text-[#5a5a6a]">
+                  {featured.description}
+                </p>
+                <span className="mt-4 inline-flex items-center gap-1.5 text-[14px] font-medium text-[#0a1f38]">
+                  {t('blog.readMore')}
+                  <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                </span>
               </div>
             </Link>
-          </div>
 
-          {/* Two smaller cards — right 2 cols */}
-          <div className="md:col-span-2 flex flex-col gap-4">
-            {rest.map((article, i) => (
-              <div
-                key={i}
-                className="flex-1"
-              >
-                <Link
-                  href={article.link}
-                  className="group flex flex-col rounded-2xl overflow-hidden border h-full"
-                  style={{ borderColor: 'rgba(0,0,0,0.08)', background: '#fff' }}
-                >
-                  {/* Image */}
-                  <div className="relative overflow-hidden" style={{ height: '140px' }}>
-                    <img
-                      src={article.image}
-                      alt={article.title}
-                      className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
-                      loading="lazy"
-                      onError={(e) => { (e.target as HTMLImageElement).src = article.fallback; }}
-                    />
-                    {/* Subtle top-right arrow badge on hover */}
-                    <div
-                      className="absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 group-hover:translate-y-0"
-                      style={{ background: 'rgba(255,255,255,0.9)', backdropFilter: 'blur(8px)' }}
-                    >
-                      <ArrowUpRight className="w-4 h-4" style={{ color: '#1a1a24' }} />
+            {/* Secondary */}
+            <div className="flex flex-col gap-8 lg:col-span-2">
+              {rest.map((article) => (
+                <Link key={article.link} href={article.link} className="group block border-t border-[#0a1f38] pt-5">
+                  <div className="grid grid-cols-[1fr_120px] gap-5 sm:grid-cols-[1fr_160px]">
+                    <div>
+                      <Meta tags={article.tags} readTime={article.readTime} />
+                      <h2 className="mt-3 text-[18px] font-medium leading-snug tracking-[-0.02em] text-[#0a1f38] sm:text-[20px]">
+                        {article.title}
+                      </h2>
+                      <p className="mt-2 line-clamp-2 text-[14px] font-light leading-relaxed text-[#5a5a6a]">
+                        {article.description}
+                      </p>
                     </div>
-                  </div>
-
-                  {/* Content */}
-                  <div className="flex flex-col flex-1 p-5">
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="flex gap-1.5">
-                        {article.tags.map((tag, j) => (
-                          <span
-                            key={j}
-                            className="px-2 py-0.5 rounded-full text-[11px] font-medium"
-                            style={{ background: 'rgba(78,102,69,0.08)', color: '#4e6645' }}
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                      <span className="text-[11px]" style={{ color: '#94a3b8' }}>
-                        {article.readTime}
-                      </span>
+                    <div className={`${FRAME} aspect-square`}>
+                      <img
+                        src={article.image}
+                        alt={article.title}
+                        className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
+                        loading="lazy"
+                        onError={(e) => { (e.target as HTMLImageElement).src = article.fallback; }}
+                      />
                     </div>
-                    <h3
-                      className="text-sm font-semibold leading-snug mb-2 transition-colors duration-200 group-hover:opacity-60"
-                      style={{ color: '#1a1a24' }}
-                    >
-                      {article.title}
-                    </h3>
-                    <p className="text-xs font-light leading-relaxed line-clamp-2 mt-auto" style={{ color: '#94a3b8' }}>
-                      {article.description}
-                    </p>
                   </div>
                 </Link>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-
         </div>
       </div>
     </section>

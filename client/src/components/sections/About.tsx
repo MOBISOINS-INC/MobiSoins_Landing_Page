@@ -10,232 +10,183 @@ import {
   Cpu,
 } from 'lucide-react';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { useReveal } from '../../hooks/useReveal';
+import { EYEBROW, H1, H2, LEAD, BODY, CARD, FRAME } from '../layout/PageShell';
 
-const fade = {
-  hidden: { opacity: 0, y: 24 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] as const },
-  }),
-};
+// White-theme rebuild of the About page, matching the home page: navy type on
+// a white ground, hairline slate borders, sage accents, one inset navy card.
+
+const Photo = ({
+  src,
+  alt,
+  className = '',
+  position,
+}: {
+  src: string;
+  alt: string;
+  className?: string;
+  position?: string;
+}) => (
+  <div className={`${FRAME} ${className}`}>
+    <img
+      src={src}
+      alt={alt}
+      className="absolute inset-0 h-full w-full object-cover"
+      style={position ? { objectPosition: position } : undefined}
+    />
+  </div>
+);
+
+const IconTile = ({ Icon }: { Icon: React.ComponentType<{ className?: string }> }) => (
+  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-[#cddcc9] bg-[#f4f7f2] text-[#4e6645]">
+    <Icon className="h-5 w-5" />
+  </span>
+);
 
 export const About = () => {
   const { t } = useLanguage();
+  const hero = useReveal();
+  const statement = useReveal();
+  const problem = useReveal();
+  const story = useReveal();
+  const founders = useReveal();
+  const team = useReveal();
+  const values = useReveal();
 
-  const team = [
+  const teamItems = [
     { icon: Stethoscope, titleKey: 'about.team1Title', descKey: 'about.team1Desc' },
     { icon: Cpu, titleKey: 'about.team2Title', descKey: 'about.team2Desc' },
     { icon: Users, titleKey: 'about.team3Title', descKey: 'about.team3Desc' },
   ];
 
-  const values = [
+  const valueItems = [
     { icon: MapPin, titleKey: 'about.value1Title', descKey: 'about.value1Desc' },
     { icon: HeartHandshake, titleKey: 'about.value2Title', descKey: 'about.value2Desc' },
     { icon: ShieldCheck, titleKey: 'about.value3Title', descKey: 'about.value3Desc' },
     { icon: Sparkles, titleKey: 'about.value4Title', descKey: 'about.value4Desc' },
   ];
 
-  const iconTile = {
-    background: 'rgba(78,102,69,0.2)',
-    border: '1px solid rgba(152,182,144,0.35)',
-  };
+  const foundersList = ['Josue Kenge', 'Gercia Pierre', 'Astrid Kenge', 'Moise Kenge'];
 
   return (
-    <div className="relative overflow-hidden">
+    <div className="bg-white">
       {/* ========== Mission hero ========== */}
-      <section className="relative py-12 sm:py-24 lg:py-32">
-        <div className="container-custom relative">
-          <div className="grid grid-cols-[1fr_0.72fr] lg:grid-cols-[1.1fr_0.9fr] gap-4 lg:gap-16 items-stretch lg:items-center">
-            {/* Left: mission text */}
-            <div
-              className="flex flex-col justify-center"
-            >
-              <p className="text-[10px] sm:text-sm font-semibold uppercase tracking-[0.2em] mb-2 sm:mb-5 text-[#98B690]">
-                {t('about.missionBadge')}
-              </p>
-              <h1 className="text-xl sm:text-3xl md:text-4xl lg:text-[clamp(2.5rem,4.5vw,4rem)] font-semibold leading-[1.1] lg:leading-[1.05] tracking-[-0.03em] text-white/90 mb-3 sm:mb-8">
-                {t('about.missionTitle')}
-              </h1>
-              <p className="text-xs sm:text-xl font-light leading-relaxed text-white/65 max-w-xl">
-                {t('about.missionLead')}
-              </p>
+      <section className="pt-12 pb-16 sm:pt-16 lg:pt-24 lg:pb-24">
+        <div className="container-custom">
+          <div
+            ref={hero.ref}
+            style={hero.style}
+            className="grid items-center gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16"
+          >
+            <div>
+              <span className={EYEBROW}>{t('about.missionBadge')}</span>
+              <h1 className={`${H1} mt-5`}>{t('about.missionTitle')}</h1>
+              <p className={`${LEAD} mt-6 max-w-[560px]`}>{t('about.missionLead')}</p>
             </div>
-
-            {/* Right: warm care photo */}
-            <div
-              className="relative"
-            >
-              <div className="absolute -inset-6 rounded-[2.5rem] bg-[#98B690]/10 blur-3xl pointer-events-none hidden lg:block" />
-              <div className="relative h-full min-h-[220px] lg:h-[30rem] rounded-2xl sm:rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
-                <img
-                  src="/nurses/elder-03.jpeg"
-                  alt="Aînée souriante accompagnée par MobiSoins"
-                  className="absolute inset-0 w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#031226]/40 via-transparent to-transparent pointer-events-none" />
-              </div>
-            </div>
+            <Photo
+              src="/nurses/elder-03.jpeg"
+              alt="Aînée souriante accompagnée par MobiSoins"
+              className="aspect-[4/3] lg:aspect-auto lg:h-[30rem]"
+            />
           </div>
         </div>
       </section>
 
       {/* ========== Mission statement ========== */}
-      <section className="relative py-8 sm:py-12 lg:py-16">
+      <section className="pb-16 lg:pb-24">
         <div className="container-custom">
-          <div className="grid grid-cols-[1fr_0.72fr] lg:grid-cols-[1.15fr_0.85fr] gap-4 lg:gap-12 items-stretch">
-            <div
-              className="rounded-2xl sm:rounded-3xl p-4 sm:p-8 lg:p-10 border-l-2 flex flex-col justify-center"
-              style={{
-                borderColor: '#98B690',
-                background: 'linear-gradient(120deg, rgba(78,102,69,0.12), rgba(78,102,69,0.02))',
-              }}
-            >
-              <p className="text-[10px] sm:text-sm font-semibold uppercase tracking-[0.2em] mb-2 sm:mb-5 text-[#98B690]">
+          <div
+            ref={statement.ref}
+            style={statement.style}
+            className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr] lg:gap-8"
+          >
+            <div className="flex flex-col justify-center rounded-[22px] bg-[#0a1f38] p-7 text-white sm:p-10 lg:p-12">
+              <span className="text-[12px] font-medium uppercase tracking-[0.14em] text-[#98B690]">
                 {t('about.statementBadge')}
-              </p>
-              <p className="text-sm sm:text-xl lg:text-2xl font-light leading-relaxed text-white lg:mb-6" style={{ letterSpacing: '-0.01em' }}>
+              </span>
+              <p className="mt-5 text-[20px] font-normal leading-[1.35] tracking-[-0.02em] sm:text-[24px] lg:text-[28px]">
                 {t('about.statement1')}
               </p>
-              <p className="hidden lg:block text-base font-light leading-relaxed text-white/60 mb-4">
+              <p className="mt-6 text-[15px] font-light leading-relaxed text-[#a8bacd]">
                 {t('about.statement2')}
               </p>
-              <p className="hidden lg:block text-base font-light leading-relaxed text-white/60">
+              <p className="mt-3 text-[15px] font-light leading-relaxed text-[#a8bacd]">
                 {t('about.statement3')}
               </p>
             </div>
-
-            {/* Care for all ages photo */}
-            <div
-              className="relative min-h-[200px] lg:min-h-[280px]"
-            >
-              <div className="absolute -inset-5 rounded-[2.5rem] bg-[#98B690]/10 blur-3xl pointer-events-none hidden lg:block" />
-              <div className="relative h-full rounded-2xl sm:rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
-                <img
-                  src="/nurses/commitment.png"
-                  alt="Des patients de tous âges accompagnés par MobiSoins"
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#031226]/40 via-transparent to-transparent pointer-events-none" />
-              </div>
-            </div>
-          </div>
-
-          {/* Supporting paragraphs — below the grid on mobile (concise layout) */}
-          <div className="lg:hidden mt-4 space-y-3">
-            <p className="text-xs font-light leading-relaxed text-white/60">{t('about.statement2')}</p>
-            <p className="text-xs font-light leading-relaxed text-white/60">{t('about.statement3')}</p>
+            <Photo
+              src="/nurses/commitment.png"
+              alt="Des patients de tous âges accompagnés par MobiSoins"
+              className="aspect-[4/3] min-h-[240px] lg:aspect-auto lg:min-h-full"
+            />
           </div>
         </div>
       </section>
 
       {/* ========== The problem ========== */}
-      <section className="relative py-10 sm:py-16 lg:py-20">
+      <section className="border-y border-slate-200/70 bg-[#f7f9fa] py-16 lg:py-24">
         <div className="container-custom">
-          <div className="grid lg:grid-cols-[0.9fr_1.1fr] gap-4 sm:gap-10 lg:gap-16 items-start">
-            <div
-            >
-              <p className="text-[10px] sm:text-sm font-semibold uppercase tracking-[0.2em] mb-2 sm:mb-3 text-[#98B690]">
-                {t('about.problemBadge')}
-              </p>
-              <h2 className="text-2xl sm:text-2xl sm:text-3xl lg:text-4xl font-semibold tracking-tight text-white" style={{ letterSpacing: '-0.03em' }}>
-                {t('about.problemTitle')}
-              </h2>
+          <div
+            ref={problem.ref}
+            style={problem.style}
+            className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16"
+          >
+            <div>
+              <span className={EYEBROW}>{t('about.problemBadge')}</span>
+              <h2 className={`${H2} mt-4`}>{t('about.problemTitle')}</h2>
             </div>
-            <div
-              className="space-y-3 sm:space-y-5 lg:pt-2"
-            >
-              <p className="text-sm sm:text-lg font-light leading-relaxed text-white/70">{t('about.problemText1')}</p>
-              <p className="text-sm sm:text-lg font-light leading-relaxed text-white/70">{t('about.problemText2')}</p>
-              <p className="text-sm sm:text-lg font-light leading-relaxed text-white/70">{t('about.problemText3')}</p>
+            <div className="flex flex-col gap-5 lg:pt-2">
+              <p className={`${BODY} text-[#0a1f38]`}>{t('about.problemText1')}</p>
+              <p className={BODY}>{t('about.problemText2')}</p>
+              <p className={BODY}>{t('about.problemText3')}</p>
             </div>
           </div>
-
         </div>
       </section>
 
       {/* ========== Story: the founding ========== */}
-      <section className="relative py-12 sm:py-16 lg:py-24">
+      <section className="py-16 lg:py-24">
         <div className="container-custom">
-          {/* Heading — photo sits beside it on mobile, narrative flows below */}
-          <div className="grid grid-cols-[1fr_0.72fr] lg:block gap-4 items-stretch mb-8 sm:mb-12 lg:mb-14">
-            <div
-              className="max-w-3xl flex flex-col justify-center"
-            >
-              <p className="text-[10px] sm:text-sm font-semibold uppercase tracking-[0.2em] mb-2 sm:mb-3 text-[#98B690]">
-                {t('about.storyBadge')}
-              </p>
-              <h2 className="text-xl sm:text-3xl lg:text-[clamp(2rem,3.6vw,3.25rem)] font-semibold leading-[1.1] lg:leading-[1.08] tracking-[-0.03em] text-white" style={{ letterSpacing: '-0.03em' }}>
-                {t('about.storyTitle')}
-              </h2>
+          <div ref={story.ref} style={story.style}>
+            <div className="max-w-[720px]">
+              <span className={EYEBROW}>{t('about.storyBadge')}</span>
+              <h2 className={`${H2} mt-4`}>{t('about.storyTitle')}</h2>
             </div>
 
-            {/* Mobile-only photo beside the heading */}
-            <div
-              className="lg:hidden relative min-h-[200px] rounded-2xl overflow-hidden border border-white/10 shadow-2xl"
-            >
-              <img src="/nurses/nurse-09.jpeg" alt="Infirmière MobiSoins auprès d'une patiente" className="absolute inset-0 w-full h-full object-cover object-center" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#031226]/50 via-transparent to-transparent pointer-events-none" />
-            </div>
-          </div>
-
-          {/* Narrative + desktop photo */}
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-20 items-start">
-            <div
-              className="space-y-4 sm:space-y-6"
-            >
-              <p className="text-xs sm:text-base font-light leading-relaxed text-white/70">{t('about.storyText1')}</p>
-
-              {/* Pull quote */}
-              <blockquote
-                className="my-5 sm:my-8 pl-4 sm:pl-5 border-l-2 text-base sm:text-xl lg:text-2xl font-medium leading-snug text-white"
-                style={{ borderColor: '#98B690', letterSpacing: '-0.01em' }}
-              >
-                {t('about.storyQuote')}
-              </blockquote>
-
-              <p className="text-xs sm:text-base font-light leading-relaxed text-white/60">{t('about.storyText2')}</p>
-              <p className="text-xs sm:text-base font-light leading-relaxed text-white/60">{t('about.storyText3')}</p>
-              <p className="text-xs sm:text-base font-light leading-relaxed text-white/60">{t('about.storyText4')}</p>
-            </div>
-
-            {/* Desktop-only photo (sticky beside the narrative) */}
-            <div
-              className="hidden lg:block relative lg:sticky lg:top-28"
-            >
-              <div className="absolute -inset-6 rounded-[2.5rem] bg-[#98B690]/10 blur-3xl pointer-events-none" />
-              <div className="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
-                <img
-                  src="/nurses/care-3.png"
-                  alt="L'équipe MobiSoins"
-                  className="w-full h-[30rem] object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#031226]/50 via-transparent to-transparent pointer-events-none" />
+            <div className="mt-10 grid gap-10 lg:grid-cols-2 lg:gap-20">
+              <div className="flex flex-col gap-5">
+                <p className={`${BODY} text-[#0a1f38]`}>{t('about.storyText1')}</p>
+                <blockquote className="my-3 border-l-2 border-[#98B690] pl-5 text-[19px] font-medium leading-snug tracking-[-0.02em] text-[#0a1f38] sm:text-[22px]">
+                  {t('about.storyQuote')}
+                </blockquote>
+                <p className={BODY}>{t('about.storyText2')}</p>
+                <p className={BODY}>{t('about.storyText3')}</p>
+                <p className={BODY}>{t('about.storyText4')}</p>
               </div>
+              <Photo
+                src="/nurses/care-3.png"
+                alt="L'équipe MobiSoins"
+                className="aspect-[4/3] lg:sticky lg:top-32 lg:aspect-auto lg:h-[30rem]"
+              />
             </div>
           </div>
 
           {/* Founders */}
-          <div className="mt-8 sm:mt-16">
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] mb-6 text-[#98B690]">
-              {t('about.foundersLabel')}
-            </p>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              {['Josue Kenge', 'Gercia Pierre', 'Astrid Kenge', 'Moise Kenge'].map((name, i) => {
-                const initials = name.split(' ').map((n) => n[0]).join('');
+          <div ref={founders.ref} style={founders.style} className="mt-16">
+            <span className={EYEBROW}>{t('about.foundersLabel')}</span>
+            <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4 sm:gap-[30px]">
+              {foundersList.map((name) => {
+                const initials = name
+                  .split(' ')
+                  .map((n) => n[0])
+                  .join('');
                 return (
-                  <div
-                    key={name}
-                    className="glass-dark !rounded-2xl p-5 flex flex-col items-center text-center sm:items-start sm:text-left"
-                  >
-                    <div
-                      className="w-12 h-12 rounded-full flex items-center justify-center mb-3 text-sm font-semibold"
-                      style={{ background: 'linear-gradient(135deg, #003366, #486581)', color: '#fff' }}
-                    >
+                  <div key={name} className="border-t border-[#0a1f38] pt-5">
+                    <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#0a1f38] text-[13px] font-semibold text-white">
                       {initials}
                     </div>
-                    <p className="text-[15px] font-semibold text-white leading-snug">{name}</p>
-                    <p className="text-xs font-medium text-[#98B690] mt-0.5">{t('about.founderRole')}</p>
+                    <p className="mt-4 text-[15px] font-medium tracking-[-0.01em] text-[#0a1f38]">{name}</p>
+                    <p className="mt-0.5 text-[13px] text-[#4e6645]">{t('about.founderRole')}</p>
                   </div>
                 );
               })}
@@ -245,70 +196,53 @@ export const About = () => {
       </section>
 
       {/* ========== Team: nurses + engineers ========== */}
-      <section className="relative py-10 sm:py-16 lg:py-24">
+      <section className="pb-16 lg:pb-24">
         <div className="container-custom">
-          <div
-            className="max-w-2xl mb-8 sm:mb-14"
-          >
-            <p className="text-[10px] sm:text-sm font-semibold uppercase tracking-[0.2em] mb-2 sm:mb-3 text-[#98B690]">
-              {t('about.teamBadge')}
-            </p>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold tracking-tight text-white mb-5" style={{ letterSpacing: '-0.03em' }}>
-              {t('about.teamTitle')}
-            </h2>
-            <p className="text-sm sm:text-lg font-light leading-relaxed text-white/60">
-              {t('about.teamLead')}
-            </p>
-          </div>
+          <div ref={team.ref} style={team.style}>
+            <div className="max-w-[640px]">
+              <span className={EYEBROW}>{t('about.teamBadge')}</span>
+              <h2 className={`${H2} mt-4`}>{t('about.teamTitle')}</h2>
+              <p className={`${LEAD} mt-5`}>{t('about.teamLead')}</p>
+            </div>
 
-          <div className="grid grid-cols-3 gap-2.5 sm:gap-5">
-            {team.map(({ icon: Icon, titleKey, descKey }, i) => (
-              <div
-                key={titleKey}
-                className="glass-dark !rounded-2xl p-3 sm:p-7 flex flex-col items-center text-center sm:items-start sm:text-left"
-              >
-                <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full sm:rounded-xl flex items-center justify-center mb-2 sm:mb-4 [&_svg]:w-[18px] [&_svg]:h-[18px] sm:[&_svg]:w-5 sm:[&_svg]:h-5" style={iconTile}>
-                  <Icon style={{ color: '#98B690' }} />
+            <div className="mt-10 grid gap-4 sm:grid-cols-3 sm:gap-[30px]">
+              {teamItems.map(({ icon, titleKey, descKey }) => (
+                <div key={titleKey} className={`${CARD} p-6 sm:p-7`}>
+                  <IconTile Icon={icon} />
+                  <h3 className="mt-5 text-[18px] font-medium tracking-[-0.02em] text-[#0a1f38]">{t(titleKey)}</h3>
+                  <p className="mt-2 text-[14.5px] font-light leading-relaxed text-[#5a5a6a]">{t(descKey)}</p>
                 </div>
-                <h3 className="text-xs sm:text-lg font-semibold text-white mb-0 sm:mb-2 leading-tight">{t(titleKey)}</h3>
-                <p className="hidden sm:block text-sm font-light text-white/55 leading-relaxed">{t(descKey)}</p>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       {/* ========== Values ========== */}
-      <section className="relative py-10 sm:py-16 lg:py-24">
+      <section className="border-t border-slate-200/70 py-16 lg:py-24">
         <div className="container-custom">
-          <div
-            className="max-w-2xl mb-8 sm:mb-14"
-          >
-            <p className="text-[10px] sm:text-sm font-semibold uppercase tracking-[0.2em] mb-2 sm:mb-3 text-[#98B690]">
-              {t('about.valuesBadge')}
-            </p>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold tracking-tight text-white" style={{ letterSpacing: '-0.03em' }}>
-              {t('about.valuesTitle')}
-            </h2>
-          </div>
+          <div ref={values.ref} style={values.style}>
+            <div className="max-w-[640px]">
+              <span className={EYEBROW}>{t('about.valuesBadge')}</span>
+              <h2 className={`${H2} mt-4`}>{t('about.valuesTitle')}</h2>
+            </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
-            {values.map(({ icon: Icon, titleKey, descKey }, i) => (
-              <div
-                key={titleKey}
-                className="glass-dark !rounded-xl sm:!rounded-2xl p-4 sm:p-6"
-              >
-                <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl flex items-center justify-center mb-3 sm:mb-4 [&_svg]:w-4 [&_svg]:h-4 sm:[&_svg]:w-5 sm:[&_svg]:h-5" style={iconTile}>
-                  <Icon style={{ color: '#98B690' }} />
+            <div className="mt-10 grid grid-cols-2 gap-x-6 gap-y-8 lg:grid-cols-4 lg:gap-x-[30px]">
+              {valueItems.map(({ icon: Icon, titleKey, descKey }) => (
+                <div key={titleKey} className="border-t border-[#0a1f38] pt-5">
+                  <Icon className="h-5 w-5 text-[#4e6645]" />
+                  <h3 className="mt-4 text-[16px] font-medium tracking-[-0.02em] text-[#0a1f38] sm:text-[18px]">
+                    {t(titleKey)}
+                  </h3>
+                  <p className="mt-2 text-[13.5px] font-light leading-relaxed text-[#5a5a6a] sm:text-[14.5px]">
+                    {t(descKey)}
+                  </p>
                 </div>
-                <h3 className="text-sm sm:text-lg font-semibold text-white mb-1 sm:mb-2 leading-snug">{t(titleKey)}</h3>
-                <p className="text-[11px] sm:text-sm font-light text-white/55 leading-relaxed">{t(descKey)}</p>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </section>
-
     </div>
   );
 };

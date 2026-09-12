@@ -2,21 +2,20 @@
 
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { motion } from 'framer-motion';
 import {
   Stethoscope, Syringe, HeartPulse, ClipboardCheck, ShieldCheck, Baby,
   HeartHandshake, FlaskConical, Building2, Check, ArrowRight, ArrowLeft,
-  ShieldCheck as ShieldIcon, Home, Clock,
+  Home, Clock,
 } from 'lucide-react';
-import { Header } from '../../../components/layout/Header';
-import { Footer } from '../../../components/layout/Footer';
+import { PageShell, EYEBROW, H1, LEAD, BODY, CARD } from '../../../components/layout/PageShell';
 import { getServiceBySlug, type ServiceCategory } from '../../../data/services';
 import { useLanguage } from '../../../contexts/LanguageContext';
+import { useReveal } from '../../../hooks/useReveal';
 
 const WAITLIST_URL =
   'https://docs.google.com/forms/d/1TaBNJ9M7Ks6LW5_Vfyqx5DodEPQZbo06bxX8PvJFLiw/viewform';
 
-const ICONS: Record<ServiceCategory['icon'], React.ComponentType<{ className?: string; style?: React.CSSProperties }>> = {
+const ICONS: Record<ServiceCategory['icon'], React.ComponentType<{ className?: string }>> = {
   nursing: Stethoscope, vaccination: Syringe, chronic: HeartPulse, checkup: ClipboardCheck,
   sexual: ShieldCheck, pediatrics: Baby, seniors: HeartHandshake, analysis: FlaskConical, enterprises: Building2,
 };
@@ -70,22 +69,21 @@ export default function ServiceDetailPage() {
   const found = slug ? getServiceBySlug(slug) : undefined;
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: '#0a1f38' }}>
-      <Header />
-      <main className="flex-grow pt-28 pb-8">
-        {!found ? (
-          <div className="container-custom text-center py-24">
-            <p className="text-white/70 mb-6">{c.notFound}</p>
-            <Link href="/services" className="text-[#98B690] font-semibold underline underline-offset-4">
-              {c.notFoundCta}
-            </Link>
-          </div>
-        ) : (
-          <ServiceBody found={found} c={c} lang={lang} />
-        )}
-      </main>
-      <Footer />
-    </div>
+    <PageShell>
+      {!found ? (
+        <div className="container-custom py-24 text-center">
+          <p className={BODY}>{c.notFound}</p>
+          <Link
+            href="/services"
+            className="mt-6 inline-block text-[15px] font-medium text-[#0a1f38] underline underline-offset-4"
+          >
+            {c.notFoundCta}
+          </Link>
+        </div>
+      ) : (
+        <ServiceBody found={found} c={c} lang={lang} />
+      )}
+    </PageShell>
   );
 }
 
@@ -103,123 +101,115 @@ function ServiceBody({
   const long = lang === 'fr' ? service.longFr : service.longEn;
   const points = lang === 'fr' ? service.pointsFr : service.pointsEn;
   const catName = lang === 'fr' ? category.nameFr : category.nameEn;
-  const reassureIcons = [ShieldIcon, Home, Clock];
+  const reassureIcons = [ShieldCheck, Home, Clock];
   const siblings = category.services.filter((s) => s.slug !== service.slug);
+  const { ref, style } = useReveal();
 
   return (
-    <div className="container-custom relative overflow-hidden">
-      {/* Back link */}
-      <Link href="/services" className="relative inline-flex items-center gap-2 text-sm font-medium text-white/60 hover:text-white transition-colors mb-8">
-        <ArrowLeft className="w-4 h-4" />
-        {c.back}
-      </Link>
+    <div className="bg-white pt-10 pb-20 sm:pt-12 lg:pt-16 lg:pb-28">
+      <div ref={ref} style={style} className="container-custom">
+        <Link
+          href="/services"
+          className="inline-flex items-center gap-2 text-[13.5px] font-medium text-slate-500 transition-colors hover:text-[#0a1f38]"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          {c.back}
+        </Link>
 
-      {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        className="relative max-w-3xl mb-12"
-      >
-        <div className="flex items-center gap-3 mb-5">
-          <span className="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0"
-            style={{ background: 'rgba(78,102,69,0.2)', border: '1px solid rgba(152,182,144,0.35)' }}>
-            <Icon className="w-6 h-6" style={{ color: '#98B690' }} />
-          </span>
-          <span className="text-sm font-semibold uppercase tracking-wider text-[#98B690]">{catName}</span>
+        {/* Header */}
+        <div className="mt-8 max-w-[760px]">
+          <div className="flex items-center gap-3">
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-[#cddcc9] bg-[#f4f7f2] text-[#4e6645]">
+              <Icon className="h-5 w-5" />
+            </span>
+            <span className={EYEBROW}>{catName}</span>
+          </div>
+          <h1 className={`${H1} mt-5`}>{name}</h1>
+          <p className={`${LEAD} mt-5`}>{short}</p>
         </div>
-        <h1 className="text-4xl lg:text-6xl font-semibold tracking-tight mb-5 text-white" style={{ letterSpacing: '-0.035em' }}>
-          {name}
-        </h1>
-        <p className="text-xl font-light leading-relaxed text-white/70">{short}</p>
-      </motion.div>
 
-      <div className="relative grid lg:grid-cols-[1.4fr_1fr] gap-8 lg:gap-12 items-start">
-        {/* Left: what it is + how it works */}
-        <div className="flex flex-col gap-10">
-          <section>
-            <h2 className="text-lg font-semibold text-white mb-3">{c.whatTitle}</h2>
-            <p className="text-base font-light leading-relaxed text-white/65">{long}</p>
-          </section>
+        <div className="mt-12 grid items-start gap-10 lg:grid-cols-[1.4fr_1fr] lg:gap-16">
+          {/* Left: what it is + how it works */}
+          <div className="flex flex-col gap-12">
+            <section>
+              <h2 className="text-[20px] font-medium tracking-[-0.02em] text-[#0a1f38]">{c.whatTitle}</h2>
+              <p className={`${BODY} mt-3`}>{long}</p>
+            </section>
 
-          <section>
-            <h2 className="text-lg font-semibold text-white mb-5">{c.howTitle}</h2>
-            <div className="flex flex-col gap-6">
-              {c.steps.map((s, i) => (
-                <div key={i} className="flex items-start gap-4">
-                  <span className="w-9 h-9 rounded-full flex items-center justify-center shrink-0 text-sm font-semibold"
-                    style={{ background: 'rgba(78,102,69,0.2)', border: '1px solid rgba(152,182,144,0.35)', color: '#98B690' }}>
-                    {i + 1}
-                  </span>
-                  <div className="pt-0.5">
-                    <p className="text-[15px] font-semibold text-white leading-snug">{s.t}</p>
-                    <p className="text-sm font-light text-white/55 leading-relaxed mt-0.5">{s.d}</p>
+            <section>
+              <h2 className="text-[20px] font-medium tracking-[-0.02em] text-[#0a1f38]">{c.howTitle}</h2>
+              <ol className="mt-5 grid gap-x-[30px] sm:grid-cols-2">
+                {c.steps.map((s, i) => (
+                  <li key={s.t} className="border-t border-slate-200/70 py-5">
+                    <span className="text-[13px] font-semibold text-[#0a1f38]">0{i + 1}</span>
+                    <p className="mt-2 text-[16px] font-medium leading-snug tracking-[-0.01em] text-[#0a1f38]">{s.t}</p>
+                    <p className="mt-1 text-[14px] font-light leading-relaxed text-[#5a5a6a]">{s.d}</p>
+                  </li>
+                ))}
+              </ol>
+            </section>
+          </div>
+
+          {/* Right: included + reassurance + CTA */}
+          <aside className={`${CARD} p-6 sm:p-7 lg:sticky lg:top-32`}>
+            <h2 className={EYEBROW}>{c.goodTitle}</h2>
+            <ul className="mt-4 flex flex-col gap-3">
+              {points.map((p) => (
+                <li key={p} className="flex items-start gap-2.5 text-[14.5px] leading-snug text-[#0a1f38]">
+                  <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#4e6645]" strokeWidth={2.5} />
+                  <span>{p}</span>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-6 flex flex-col gap-2.5 border-t border-slate-100 pt-5">
+              {c.reassure.map((r, i) => {
+                const RI = reassureIcons[i];
+                return (
+                  <div key={r} className="flex items-center gap-2.5 text-[13.5px] text-[#5a5a6a]">
+                    <RI className="h-4 w-4 shrink-0 text-[#4e6645]" />
+                    {r}
                   </div>
-                </div>
+                );
+              })}
+            </div>
+            <a
+              href={WAITLIST_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="cta-navy group mt-6 inline-flex w-full items-center justify-center gap-2 rounded-[10px] px-6 py-3.5 text-[15px] font-medium"
+            >
+              {c.ctaButton}
+              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+            </a>
+          </aside>
+        </div>
+
+        {/* Related services */}
+        {siblings.length > 0 && (
+          <section className="mt-16 border-t border-[#0a1f38] pt-8">
+            <h2 className={EYEBROW}>{c.related}</h2>
+            <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-[30px]">
+              {siblings.map((s) => (
+                <Link
+                  key={s.slug}
+                  href={`/services/${s.slug}`}
+                  className="group flex items-center justify-between gap-3 rounded-2xl border border-slate-200/70 p-5 transition-colors hover:bg-slate-50"
+                >
+                  <div>
+                    <p className="text-[15.5px] font-medium leading-snug tracking-[-0.01em] text-[#0a1f38]">
+                      {lang === 'fr' ? s.nameFr : s.nameEn}
+                    </p>
+                    <p className="mt-1 line-clamp-2 text-[13px] font-light leading-relaxed text-[#5a5a6a]">
+                      {lang === 'fr' ? s.shortFr : s.shortEn}
+                    </p>
+                  </div>
+                  <ArrowRight className="h-4 w-4 shrink-0 text-slate-300 transition-all group-hover:translate-x-0.5 group-hover:text-[#4e6645]" />
+                </Link>
               ))}
             </div>
           </section>
-        </div>
-
-        {/* Right: included + reassurance */}
-        <aside className="glass-dark !rounded-2xl p-6 lg:sticky lg:top-28">
-          <h2 className="text-sm font-semibold uppercase tracking-widest text-white/60 mb-4">{c.goodTitle}</h2>
-          <ul className="flex flex-col gap-3 mb-6">
-            {points.map((p) => (
-              <li key={p} className="flex items-start gap-2.5">
-                <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full"
-                  style={{ background: 'rgba(152,182,144,0.15)' }}>
-                  <Check className="w-3 h-3" style={{ color: '#98B690' }} strokeWidth={2.5} />
-                </span>
-                <span className="text-sm font-light leading-snug text-white/75">{p}</span>
-              </li>
-            ))}
-          </ul>
-          <div className="flex flex-col gap-2.5 pt-5 border-t border-white/10">
-            {c.reassure.map((r, i) => {
-              const RI = reassureIcons[i];
-              return (
-                <div key={r} className="flex items-center gap-2.5 text-sm text-white/60">
-                  <RI className="w-4 h-4 shrink-0" style={{ color: '#98B690' }} />
-                  {r}
-                </div>
-              );
-            })}
-          </div>
-          <a
-            href={WAITLIST_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group mt-6 w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full font-semibold text-white transition-all duration-300 hover:-translate-y-0.5"
-            style={{ background: 'linear-gradient(180deg, #0a4a85 0%, #003366 55%, #00264d 100%)', boxShadow: '0 10px 30px rgba(0,51,102,0.4), inset 0 1px 0 rgba(255,255,255,0.18)' }}
-          >
-            {c.ctaButton}
-            <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5" />
-          </a>
-        </aside>
+        )}
       </div>
-
-      {/* Related services — hidden on mobile to keep the page focused */}
-      {siblings.length > 0 && (
-        <section className="relative mt-16 pt-10 border-t border-white/10 hidden sm:block">
-          <h2 className="text-sm font-semibold uppercase tracking-widest text-white/60 mb-5">{c.related}</h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {siblings.map((s) => (
-              <Link
-                key={s.slug}
-                href={`/services/${s.slug}`}
-                className="glass-dark !rounded-2xl p-5 flex items-center justify-between gap-3 group transition-all duration-300 hover:-translate-y-0.5"
-              >
-                <div>
-                  <p className="text-[15px] font-semibold text-white leading-snug">{lang === 'fr' ? s.nameFr : s.nameEn}</p>
-                  <p className="text-xs font-light text-white/50 mt-1 line-clamp-2">{lang === 'fr' ? s.shortFr : s.shortEn}</p>
-                </div>
-                <ArrowRight className="w-4 h-4 shrink-0 text-white/40 transition-all group-hover:text-[#98B690] group-hover:translate-x-0.5" />
-              </Link>
-            ))}
-          </div>
-        </section>
-      )}
     </div>
   );
 }

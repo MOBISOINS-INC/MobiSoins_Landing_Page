@@ -30,12 +30,7 @@ export const Newsletter = () => {
             href={WAITLIST_FORM}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-2 rounded-[10px] px-7 py-4 text-[15px] font-medium text-white transition-all duration-300 hover:-translate-y-0.5"
-            style={{
-              background: 'linear-gradient(180deg, #0a4a85 0%, #003366 55%, #00264d 100%)',
-              boxShadow:
-                '0 10px 30px rgba(0,51,102,0.45), inset 0 1px 0 rgba(255,255,255,0.18)',
-            }}
+            className="cta-navy mt-2 rounded-[10px] px-7 py-4 text-[15px] font-medium"
           >
             {t('v2.ctaButton')}
           </a>
