@@ -19,7 +19,7 @@ type BrandLogoProps = {
 export function BrandLogo({ className = '', glow = false, tone = 'white' }: BrandLogoProps) {
   return (
     <img
-      src={tone === 'navy' ? '/mobisoins-logo-trim.png' : '/mobisoins-logo-clean.png'}
+      src={tone === 'navy' ? '/mobisoins-logo-navy.png' : '/mobisoins-logo-clean.png'}
       alt="MobiSoins"
       className={`w-auto object-contain select-none ${className}`}
       draggable={false}

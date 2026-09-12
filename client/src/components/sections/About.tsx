@@ -1,39 +1,21 @@
 'use client';
 
-import {
-  ShieldCheck,
-  Users,
-  MapPin,
-  HeartHandshake,
-  Sparkles,
-  Stethoscope,
-  Cpu,
-} from 'lucide-react';
+import { ShieldCheck, Users, MapPin, HeartHandshake, Sparkles, Stethoscope, Cpu, ArrowRight } from 'lucide-react';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useReveal } from '../../hooks/useReveal';
-import { EYEBROW, H1, H2, LEAD, BODY, CARD, FRAME } from '../layout/PageShell';
+import { FOUNDERS } from '../../data/founders';
+import { EYEBROW, H2, LEAD, BODY, CARD, FRAME } from '../layout/PageShell';
 
-// White-theme rebuild of the About page, matching the home page: navy type on
-// a white ground, hairline slate borders, sage accents, one inset navy card.
+const WAITLIST_URL =
+  'https://docs.google.com/forms/d/1TaBNJ9M7Ks6LW5_Vfyqx5DodEPQZbo06bxX8PvJFLiw/viewform';
 
-const Photo = ({
-  src,
-  alt,
-  className = '',
-  position,
-}: {
-  src: string;
-  alt: string;
-  className?: string;
-  position?: string;
-}) => (
+// Editorial About page on the home page's white system: one oversized
+// statement, a facts strip, an inset navy card, the founding story, and a
+// founders section with room for a portrait, origin, background and bio each.
+
+const Photo = ({ src, alt, className = '' }: { src: string; alt: string; className?: string }) => (
   <div className={`${FRAME} ${className}`}>
-    <img
-      src={src}
-      alt={alt}
-      className="absolute inset-0 h-full w-full object-cover"
-      style={position ? { objectPosition: position } : undefined}
-    />
+    <img src={src} alt={alt} className="absolute inset-0 h-full w-full object-cover" />
   </div>
 );
 
@@ -44,14 +26,17 @@ const IconTile = ({ Icon }: { Icon: React.ComponentType<{ className?: string }> 
 );
 
 export const About = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const lang = language === 'FR' ? 'fr' : 'en';
   const hero = useReveal();
+  const facts = useReveal();
   const statement = useReveal();
   const problem = useReveal();
   const story = useReveal();
   const founders = useReveal();
   const team = useReveal();
   const values = useReveal();
+  const cta = useReveal();
 
   const teamItems = [
     { icon: Stethoscope, titleKey: 'about.team1Title', descKey: 'about.team1Desc' },
@@ -66,71 +51,66 @@ export const About = () => {
     { icon: Sparkles, titleKey: 'about.value4Title', descKey: 'about.value4Desc' },
   ];
 
-  const foundersList = ['Josue Kenge', 'Gercia Pierre', 'Astrid Kenge', 'Moise Kenge'];
-
   return (
     <div className="bg-white">
-      {/* ========== Mission hero ========== */}
-      <section className="pt-12 pb-16 sm:pt-16 lg:pt-24 lg:pb-24">
+      {/* ========== Statement hero ========== */}
+      <section className="pt-14 sm:pt-20 lg:pt-28">
         <div className="container-custom">
-          <div
-            ref={hero.ref}
-            style={hero.style}
-            className="grid items-center gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16"
-          >
-            <div>
-              <span className={EYEBROW}>{t('about.missionBadge')}</span>
-              <h1 className={`${H1} mt-5`}>{t('about.missionTitle')}</h1>
-              <p className={`${LEAD} mt-6 max-w-[560px]`}>{t('about.missionLead')}</p>
-            </div>
+          <div ref={hero.ref} style={hero.style} className="max-w-[1040px]">
+            <span className={EYEBROW}>{t('about.missionBadge')}</span>
+            <h1 className="mt-6 text-[40px] font-semibold leading-[1.02] tracking-[-0.04em] text-[#0a1f38] sm:text-[56px] lg:text-[76px]">
+              {t('about.missionTitle')}
+            </h1>
+            <p className={`${LEAD} mt-8 max-w-[640px]`}>{t('about.missionLead')}</p>
+          </div>
+
+          <div ref={facts.ref} style={facts.style} className="mt-14 lg:mt-20">
             <Photo
               src="/nurses/elder-03.jpeg"
               alt="Aînée souriante accompagnée par MobiSoins"
-              className="aspect-[4/3] lg:aspect-auto lg:h-[30rem]"
+              className="aspect-[16/9] sm:aspect-[21/9]"
             />
+            <dl className="mt-10 grid grid-cols-1 gap-x-[30px] gap-y-6 sm:grid-cols-3 lg:mt-12">
+              {[1, 2, 3].map((n) => (
+                <div key={n} className="border-t border-[#0a1f38] pt-5">
+                  <dt className="text-[32px] font-semibold leading-none tracking-[-0.035em] text-[#0a1f38] lg:text-[40px]">
+                    {t(`about.fact${n}Value`)}
+                  </dt>
+                  <dd className="mt-3 text-[14px] leading-relaxed text-[#5a5a6a]">{t(`about.fact${n}Label`)}</dd>
+                </div>
+              ))}
+            </dl>
           </div>
         </div>
       </section>
 
-      {/* ========== Mission statement ========== */}
-      <section className="pb-16 lg:pb-24">
+      {/* ========== Commitment ========== */}
+      <section className="py-20 lg:py-28">
         <div className="container-custom">
-          <div
-            ref={statement.ref}
-            style={statement.style}
-            className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr] lg:gap-8"
-          >
-            <div className="flex flex-col justify-center rounded-[22px] bg-[#0a1f38] p-7 text-white sm:p-10 lg:p-12">
+          <div ref={statement.ref} style={statement.style} className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr] lg:gap-8">
+            <div className="flex flex-col justify-center rounded-[22px] bg-[#0a1f38] p-8 text-white sm:p-10 lg:p-14">
               <span className="text-[12px] font-medium uppercase tracking-[0.14em] text-[#98B690]">
                 {t('about.statementBadge')}
               </span>
-              <p className="mt-5 text-[20px] font-normal leading-[1.35] tracking-[-0.02em] sm:text-[24px] lg:text-[28px]">
+              <p className="mt-6 text-[22px] font-normal leading-[1.3] tracking-[-0.025em] sm:text-[26px] lg:text-[32px]">
                 {t('about.statement1')}
               </p>
-              <p className="mt-6 text-[15px] font-light leading-relaxed text-[#a8bacd]">
-                {t('about.statement2')}
-              </p>
-              <p className="mt-3 text-[15px] font-light leading-relaxed text-[#a8bacd]">
-                {t('about.statement3')}
-              </p>
+              <p className="mt-8 text-[15px] font-light leading-relaxed text-[#a8bacd]">{t('about.statement2')}</p>
+              <p className="mt-3 text-[15px] font-light leading-relaxed text-[#a8bacd]">{t('about.statement3')}</p>
             </div>
             <Photo
               src="/nurses/commitment.png"
               alt="Des patients de tous âges accompagnés par MobiSoins"
-              className="aspect-[4/3] min-h-[240px] lg:aspect-auto lg:min-h-full"
+              className="aspect-[4/3] min-h-[260px] lg:aspect-auto lg:min-h-full"
             />
           </div>
         </div>
       </section>
 
       {/* ========== The problem ========== */}
-      <section className="border-y border-slate-200/70 bg-[#f7f9fa] py-16 lg:py-24">
+      <section className="border-y border-slate-200/70 bg-[#f7f9fa] py-20 lg:py-28">
         <div className="container-custom">
-          <div
-            ref={problem.ref}
-            style={problem.style}
-            className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16"
-          >
+          <div ref={problem.ref} style={problem.style} className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
             <div>
               <span className={EYEBROW}>{t('about.problemBadge')}</span>
               <h2 className={`${H2} mt-4`}>{t('about.problemTitle')}</h2>
@@ -144,19 +124,18 @@ export const About = () => {
         </div>
       </section>
 
-      {/* ========== Story: the founding ========== */}
-      <section className="py-16 lg:py-24">
+      {/* ========== Story ========== */}
+      <section className="py-20 lg:py-28">
         <div className="container-custom">
           <div ref={story.ref} style={story.style}>
-            <div className="max-w-[720px]">
+            <div className="max-w-[760px]">
               <span className={EYEBROW}>{t('about.storyBadge')}</span>
               <h2 className={`${H2} mt-4`}>{t('about.storyTitle')}</h2>
             </div>
-
-            <div className="mt-10 grid gap-10 lg:grid-cols-2 lg:gap-20">
+            <div className="mt-12 grid gap-10 lg:grid-cols-2 lg:gap-20">
               <div className="flex flex-col gap-5">
                 <p className={`${BODY} text-[#0a1f38]`}>{t('about.storyText1')}</p>
-                <blockquote className="my-3 border-l-2 border-[#98B690] pl-5 text-[19px] font-medium leading-snug tracking-[-0.02em] text-[#0a1f38] sm:text-[22px]">
+                <blockquote className="my-4 border-l-2 border-[#98B690] pl-6 text-[22px] font-medium leading-snug tracking-[-0.025em] text-[#0a1f38] sm:text-[26px]">
                   {t('about.storyQuote')}
                 </blockquote>
                 <p className={BODY}>{t('about.storyText2')}</p>
@@ -166,28 +145,60 @@ export const About = () => {
               <Photo
                 src="/nurses/care-3.png"
                 alt="L'équipe MobiSoins"
-                className="aspect-[4/3] lg:sticky lg:top-32 lg:aspect-auto lg:h-[30rem]"
+                className="aspect-[4/3] lg:sticky lg:top-32 lg:aspect-auto lg:h-[32rem]"
               />
             </div>
           </div>
+        </div>
+      </section>
 
-          {/* Founders */}
-          <div ref={founders.ref} style={founders.style} className="mt-16">
-            <span className={EYEBROW}>{t('about.foundersLabel')}</span>
-            <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4 sm:gap-[30px]">
-              {foundersList.map((name) => {
-                const initials = name
-                  .split(' ')
-                  .map((n) => n[0])
-                  .join('');
+      {/* ========== Founders ========== */}
+      <section className="border-t border-slate-200/70 py-20 lg:py-28">
+        <div className="container-custom">
+          <div ref={founders.ref} style={founders.style}>
+            <div className="max-w-[720px]">
+              <span className={EYEBROW}>{t('about.foundersLabel')}</span>
+              <h2 className={`${H2} mt-4`}>{t('about.foundersTitle')}</h2>
+              <p className={`${LEAD} mt-5`}>{t('about.foundersLead')}</p>
+            </div>
+
+            <div className="mt-12 grid gap-10 sm:grid-cols-2 lg:mt-16 lg:gap-x-[30px] lg:gap-y-16">
+              {FOUNDERS.map((f) => {
+                const initials = f.name.split(' ').map((n) => n[0]).join('');
                 return (
-                  <div key={name} className="border-t border-[#0a1f38] pt-5">
-                    <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#0a1f38] text-[13px] font-semibold text-white">
-                      {initials}
+                  <article key={f.slug} className="grid gap-6 sm:grid-cols-[minmax(0,200px)_1fr] sm:gap-7 lg:grid-cols-[240px_1fr]">
+                    {/* Portrait — 4:5, initials tile until a photo is provided */}
+                    <div className={`${FRAME} aspect-[4/5] w-full max-w-[280px] sm:max-w-none`}>
+                      {f.photo ? (
+                        <img src={f.photo} alt={f.name} className="absolute inset-0 h-full w-full object-cover" />
+                      ) : (
+                        <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-[#f1f5f9]">
+                          <span className="flex h-16 w-16 items-center justify-center rounded-full bg-[#0a1f38] text-[18px] font-semibold text-white">
+                            {initials}
+                          </span>
+                          <span className="text-[11px] font-medium uppercase tracking-[0.14em] text-slate-400">
+                            {t('about.founderPhotoPending')}
+                          </span>
+                        </div>
+                      )}
                     </div>
-                    <p className="mt-4 text-[15px] font-medium tracking-[-0.01em] text-[#0a1f38]">{name}</p>
-                    <p className="mt-0.5 text-[13px] text-[#4e6645]">{t('about.founderRole')}</p>
-                  </div>
+
+                    <div className="flex flex-col">
+                      <h3 className="text-[22px] font-semibold leading-tight tracking-[-0.025em] text-[#0a1f38] sm:text-[24px]">
+                        {f.name}
+                      </h3>
+                      <p className="mt-1 text-[14px] font-medium text-[#4e6645]">{f.role[lang]}</p>
+
+                      <dl className="mt-5 grid grid-cols-[auto_1fr] gap-x-5 gap-y-2 border-t border-slate-200/70 pt-5 text-[14px]">
+                        <dt className="text-[12px] font-medium uppercase tracking-[0.14em] text-slate-500 leading-[1.7]">{t('about.founderFrom')}</dt>
+                        <dd className="text-[#0a1f38]">{f.origin[lang]}</dd>
+                        <dt className="text-[12px] font-medium uppercase tracking-[0.14em] text-slate-500 leading-[1.7]">{t('about.founderPrev')}</dt>
+                        <dd className="text-[#0a1f38]">{f.previously[lang]}</dd>
+                      </dl>
+
+                      <p className="mt-5 text-[15px] font-light leading-relaxed text-[#5a5a6a]">{f.bio[lang]}</p>
+                    </div>
+                  </article>
                 );
               })}
             </div>
@@ -195,8 +206,8 @@ export const About = () => {
         </div>
       </section>
 
-      {/* ========== Team: nurses + engineers ========== */}
-      <section className="pb-16 lg:pb-24">
+      {/* ========== Team ========== */}
+      <section className="border-t border-slate-200/70 bg-[#f7f9fa] py-20 lg:py-28">
         <div className="container-custom">
           <div ref={team.ref} style={team.style}>
             <div className="max-w-[640px]">
@@ -204,8 +215,7 @@ export const About = () => {
               <h2 className={`${H2} mt-4`}>{t('about.teamTitle')}</h2>
               <p className={`${LEAD} mt-5`}>{t('about.teamLead')}</p>
             </div>
-
-            <div className="mt-10 grid gap-4 sm:grid-cols-3 sm:gap-[30px]">
+            <div className="mt-12 grid gap-4 sm:grid-cols-3 sm:gap-[30px]">
               {teamItems.map(({ icon, titleKey, descKey }) => (
                 <div key={titleKey} className={`${CARD} p-6 sm:p-7`}>
                   <IconTile Icon={icon} />
@@ -219,27 +229,45 @@ export const About = () => {
       </section>
 
       {/* ========== Values ========== */}
-      <section className="border-t border-slate-200/70 py-16 lg:py-24">
+      <section className="border-t border-slate-200/70 py-20 lg:py-28">
         <div className="container-custom">
           <div ref={values.ref} style={values.style}>
             <div className="max-w-[640px]">
               <span className={EYEBROW}>{t('about.valuesBadge')}</span>
               <h2 className={`${H2} mt-4`}>{t('about.valuesTitle')}</h2>
             </div>
-
-            <div className="mt-10 grid grid-cols-2 gap-x-6 gap-y-8 lg:grid-cols-4 lg:gap-x-[30px]">
+            <div className="mt-12 grid grid-cols-2 gap-x-6 gap-y-8 lg:grid-cols-4 lg:gap-x-[30px]">
               {valueItems.map(({ icon: Icon, titleKey, descKey }) => (
                 <div key={titleKey} className="border-t border-[#0a1f38] pt-5">
                   <Icon className="h-5 w-5 text-[#4e6645]" />
-                  <h3 className="mt-4 text-[16px] font-medium tracking-[-0.02em] text-[#0a1f38] sm:text-[18px]">
-                    {t(titleKey)}
-                  </h3>
-                  <p className="mt-2 text-[13.5px] font-light leading-relaxed text-[#5a5a6a] sm:text-[14.5px]">
-                    {t(descKey)}
-                  </p>
+                  <h3 className="mt-4 text-[16px] font-medium tracking-[-0.02em] text-[#0a1f38] sm:text-[18px]">{t(titleKey)}</h3>
+                  <p className="mt-2 text-[13.5px] font-light leading-relaxed text-[#5a5a6a] sm:text-[14.5px]">{t(descKey)}</p>
                 </div>
               ))}
             </div>
+          </div>
+
+          {/* Closing CTA */}
+          <div
+            ref={cta.ref}
+            style={cta.style}
+            className="mt-20 flex flex-col items-start justify-between gap-6 rounded-[22px] bg-[#0a1f38] p-8 sm:flex-row sm:items-center lg:mt-28 lg:p-12"
+          >
+            <div>
+              <p className="max-w-[560px] text-[24px] font-normal leading-[1.3] tracking-[-0.03em] text-white lg:text-[30px]">
+                {t('about.ctaTitle')}
+              </p>
+              <p className="mt-3 text-[15px] font-light text-[#a8bacd]">{t('about.ctaBody')}</p>
+            </div>
+            <a
+              href={WAITLIST_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex shrink-0 items-center gap-2 rounded-[9px] bg-white px-6 py-3 text-[14px] font-medium text-[#0a1f38] transition-colors hover:bg-slate-100"
+            >
+              {t('about.ctaButton')}
+              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+            </a>
           </div>
         </div>
       </section>
