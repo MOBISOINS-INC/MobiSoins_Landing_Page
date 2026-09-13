@@ -7,6 +7,7 @@ import { MICRO } from '../../sections/v3/Chapter';
 import { BrandLogo } from '../../ui/BrandLogo';
 import { BackToTop } from './FloatingBar';
 import { FOOTER_SECTIONS } from './navData';
+import { openConsentPreferences } from '../../../lib/consent';
 
 /* --- Inline SVG social icons (verbatim from Footer.tsx; lucide has no brand icons) --- */
 
@@ -76,6 +77,14 @@ export function Colophon() {
                   </li>
                 );
               })}
+              {section.labelKey === 'footer.legal' && (
+                <li>
+                  {/* Law 25: consent must be as easy to withdraw as to give */}
+                  <button type="button" onClick={openConsentPreferences} className={LINK_CLASS}>
+                    {t('consent.manage')}
+                  </button>
+                </li>
+              )}
             </ul>
           </div>
         ))}

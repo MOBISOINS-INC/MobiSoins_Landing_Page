@@ -7,7 +7,7 @@ import { useLanguage } from '../../contexts/LanguageContext';
 const CONTENT: { FR: LegalContent; EN: LegalContent } = {
   FR: {
     title: 'Politique de confidentialité',
-    lastUpdated: '8 avril 2026',
+    lastUpdated: '13 septembre 2026',
     sections: [
       {
         heading: '1. Introduction',
@@ -47,11 +47,29 @@ const CONTENT: { FR: LegalContent; EN: LegalContent } = {
           'Vous avez le droit d’accéder à vos renseignements personnels, de les corriger ou d’en demander la suppression. Pour exercer ces droits, communiquez avec notre service à la clientèle.',
         ],
       },
+      {
+        heading: '6. Témoins et technologies de suivi',
+        paragraphs: [
+          'Seuls les témoins essentiels sont actifs par défaut. Toute technologie permettant de vous identifier, de vous localiser ou d’établir votre profil n’est activée qu’avec votre consentement explicite, que vous pouvez retirer en tout temps via « Gérer les témoins » au bas de chaque page. Voir notre politique relative aux témoins.',
+        ],
+      },
+      {
+        heading: '7. Conservation',
+        paragraphs: [
+          'Nous conservons vos renseignements uniquement le temps nécessaire aux fins décrites ci-dessus ou exigé par la loi, puis nous les détruisons ou les anonymisons de façon sécuritaire.',
+        ],
+      },
+      {
+        heading: '8. Responsable de la protection des renseignements personnels',
+        paragraphs: [
+          'MobiSoins a désigné une personne responsable de la protection des renseignements personnels. Pour exercer vos droits, poser une question ou signaler un incident : info@mobisoins.com. Si vous n’êtes pas satisfait de notre réponse, vous pouvez déposer une plainte auprès de la Commission d’accès à l’information du Québec.',
+        ],
+      },
     ],
   },
   EN: {
     title: 'Privacy Policy',
-    lastUpdated: 'April 8, 2026',
+    lastUpdated: 'September 13, 2026',
     sections: [
       {
         heading: '1. Introduction',
@@ -89,6 +107,24 @@ const CONTENT: { FR: LegalContent; EN: LegalContent } = {
         heading: '5. Your rights',
         paragraphs: [
           'You have the right to access your personal information, to correct it, or to request its deletion. To exercise these rights, contact our customer service team.',
+        ],
+      },
+      {
+        heading: '6. Cookies and tracking technologies',
+        paragraphs: [
+          'Only essential cookies are active by default. Any technology that can identify you, locate you or build a profile is enabled only with your explicit consent, which you can withdraw at any time via “Manage cookies” at the bottom of every page. See our cookie policy.',
+        ],
+      },
+      {
+        heading: '7. Retention',
+        paragraphs: [
+          'We keep your information only as long as needed for the purposes described above or as required by law, then securely destroy or anonymize it.',
+        ],
+      },
+      {
+        heading: '8. Privacy officer',
+        paragraphs: [
+          'MobiSoins has designated a person in charge of the protection of personal information. To exercise your rights, ask a question or report an incident: info@mobisoins.com. If you are not satisfied with our response, you may file a complaint with the Commission d’accès à l’information du Québec.',
         ],
       },
     ],
