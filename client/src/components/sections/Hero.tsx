@@ -106,7 +106,9 @@ export const Hero = () => {
       <style>{'.hero-video{object-position:50% 50%;}@media (max-width:640px){.hero-video{object-position:50% 42%;}}'}</style>
 
       {/* Global cool-down: a light overall tint keeps the footage from washing out
-          the white type without dulling the whole frame. */}
+          the white type without dulling the whole frame. Every other scrim below
+          only serves the hero copy, so VideoGround fades them out (--hero-scrims)
+          once the hero is buried — the ground stays a visible, moving video. */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{ background: 'rgba(3,10,22,0.14)' }}
@@ -116,6 +118,7 @@ export const Hero = () => {
       <div
         className="absolute inset-0 pointer-events-none sm:hidden"
         style={{
+          opacity: 'var(--hero-scrims, 1)',
           background:
             'radial-gradient(120% 95% at 0% 100%, rgba(2,9,20,0.92) 0%, rgba(2,9,20,0.78) 26%, rgba(2,9,20,0.48) 48%, rgba(2,9,20,0.18) 66%, rgba(2,9,20,0) 82%)',
         }}
@@ -124,6 +127,7 @@ export const Hero = () => {
       <div
         className="absolute inset-0 pointer-events-none hidden sm:block"
         style={{
+          opacity: 'var(--hero-scrims, 1)',
           background:
             'radial-gradient(105% 85% at 0% 55%, rgba(2,9,20,0.7) 0%, rgba(2,9,20,0.45) 30%, rgba(2,9,20,0.16) 56%, rgba(2,9,20,0) 78%)',
         }}
@@ -132,6 +136,7 @@ export const Hero = () => {
       <div
         className="absolute inset-x-0 bottom-0 h-[45%] pointer-events-none sm:hidden"
         style={{
+          opacity: 'var(--hero-scrims, 1)',
           background:
             'linear-gradient(180deg, rgba(3,18,38,0) 0%, rgba(3,18,38,0.35) 40%, rgba(3,18,38,0.8) 70%, #031226 92%, #031226 100%)',
         }}
@@ -141,6 +146,7 @@ export const Hero = () => {
       <div
         className="absolute inset-0 pointer-events-none hidden sm:block"
         style={{
+          opacity: 'var(--hero-scrims, 1)',
           background:
             'linear-gradient(180deg, rgba(4,20,42,0) 84%, rgba(4,20,42,0.08) 90%, rgba(4,20,42,0.30) 95%, rgba(4,20,42,0.55) 100%)',
         }}
@@ -150,6 +156,7 @@ export const Hero = () => {
       <div
         className="absolute inset-x-0 bottom-0 h-[62%] pointer-events-none sm:hidden"
         style={{
+          opacity: 'var(--hero-scrims, 1)',
           background:
             'linear-gradient(180deg, rgba(3,18,38,0) 0%, rgba(3,18,38,0.25) 45%, rgba(3,18,38,0.6) 78%, rgba(3,18,38,0.85) 100%)',
         }}
@@ -157,7 +164,8 @@ export const Hero = () => {
       {/* Mobile only: small top scrim so the logo/menu seat cleanly on a bright sky */}
       <div
         className="absolute inset-x-0 top-0 h-24 pointer-events-none sm:hidden"
-        style={{ background: 'linear-gradient(180deg, rgba(3,18,38,0.5) 0%, rgba(3,18,38,0) 100%)' }}
+        style={{
+          opacity: 'var(--hero-scrims, 1)', background: 'linear-gradient(180deg, rgba(3,18,38,0.5) 0%, rgba(3,18,38,0) 100%)' }}
       />
 
       <div

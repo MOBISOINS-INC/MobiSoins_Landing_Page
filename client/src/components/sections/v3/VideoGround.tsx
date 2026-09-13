@@ -15,7 +15,7 @@ const DEFAULT_VH = 900;
 
 // `MotionStyle` has no index signature for custom properties; framer does render
 // them (setProperty), the type just needs to be told.
-type GroundStyle = MotionStyle & { '--hero-copy': MotionValue<number> };
+type GroundStyle = MotionStyle & { '--hero-copy': MotionValue<number>; '--hero-scrims': MotionValue<number> };
 
 /**
  * The hero, made sticky for the full page height and dimmed by a scrubbed scrim
@@ -36,6 +36,9 @@ export function VideoGround() {
   // Piecewise ≈ easeOut: most of the dim lands in the first third of a viewport.
   const dim = useTransform(scrollY, [0, 0.35 * vh, vh], [0, 0.55, 0.86]);
   const heroCopy = useTransform(scrollY, [0, 0.5 * vh], [1, 0]);
+  // The hero's own legibility scrims go once the copy is gone, so the ground
+  // under the chapters is the same 14%-visible video on every device.
+  const heroScrims = useTransform(scrollY, [0.55 * vh, 1.05 * vh], [1, 0]);
 
   useEffect(() => {
     const measure = () => setVh(window.innerHeight);
@@ -65,7 +68,48 @@ export function VideoGround() {
     else video.play().catch(() => {});
   });
 
-  const groundStyle: GroundStyle = { '--hero-copy': heroCopy };
+  const groundStyle: GroundStyle = { '--hero-copy': heroCopy, '--hero-scrims': heroScrims };
+
+  // Playback watchdog. Mobile browsers pause autoplay video they judge
+  // off-screen or occluded (the sticky ground sits under 86% of ink), and
+  // nothing else would restart it. Re-play on every signal we get, unless the
+  // pause is ours (reduced motion, or the buried freeze above).
+  useEffect(() => {
+    const video = wrap.current?.querySelector('video');
+    if (!video) return;
+    const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) return;
+    let raf = 0;
+    const nudge = () => {
+      if (document.hidden || frozen.current || !video.paused) return;
+      video.play().catch(() => {});
+    };
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        nudge();
+      });
+    };
+    const onPause = () => {
+      // A browser-initiated pause fires this too; retry on the next frame.
+      if (!frozen.current) requestAnimationFrame(nudge);
+    };
+    const io = typeof IntersectionObserver !== 'undefined' ? new IntersectionObserver(nudge) : null;
+    io?.observe(video);
+    video.addEventListener('pause', onPause);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    document.addEventListener('visibilitychange', nudge);
+    const tick = window.setInterval(nudge, 2500);
+    return () => {
+      io?.disconnect();
+      video.removeEventListener('pause', onPause);
+      window.removeEventListener('scroll', onScroll);
+      document.removeEventListener('visibilitychange', nudge);
+      window.clearInterval(tick);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
 
   return (
     // `[&>section]:min-h-full`: Hero keeps `min-h-screen` (100vh = the LARGE
