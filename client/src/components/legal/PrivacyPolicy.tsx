@@ -1,58 +1,101 @@
+'use client';
+
 import { LegalLayout } from './LegalLayout';
+import type { LegalContent } from './LegalLayout';
+import { useLanguage } from '../../contexts/LanguageContext';
 
-export const PrivacyPolicy = () => {
-  return (
-    <LegalLayout title="Politique de Confidentialité" lastUpdated="8 Avril 2026">
-      <section className="mb-8">
-        <h2>1. Introduction</h2>
-        <p className="mb-4">
-          Chez MobiSoins, nous accordons une importance primordiale à la protection de vos données personnelles. 
-          Cette politique détaille comment nous collectons, utilisons et protégeons vos informations lorsque vous utilisez nos services.
-        </p>
-      </section>
-
-      <section className="mb-8">
-        <h2>2. Collecte des Données</h2>
-        <p className="mb-4">
-          Nous collectons les informations nécessaires pour fournir nos services de soins à domicile, notamment :
-        </p>
-        <ul className="list-disc pl-6 mb-4 space-y-2">
-          <li>Informations d'identification (nom, adresse, contact)</li>
-          <li>Données de santé pertinentes pour les soins</li>
-          <li>Informations de paiement (traitées de manière sécurisée)</li>
-          <li>Données de navigation et d'utilisation de l'application</li>
-        </ul>
-      </section>
-
-      <section className="mb-8">
-        <h2>3. Utilisation des Données</h2>
-        <p className="mb-4">
-          Vos données sont utilisées exclusivement pour :
-        </p>
-        <ul className="list-disc pl-6 mb-4 space-y-2">
-          <li>Coordonner et fournir les soins infirmiers</li>
-          <li>Communiquer avec vous concernant vos rendez-vous</li>
-          <li>Améliorer nos services et votre expérience</li>
-          <li>Respecter nos obligations légales et réglementaires</li>
-        </ul>
-      </section>
-
-      <section className="mb-8">
-        <h2>4. Protection des Données</h2>
-        <p className="mb-4">
-          Nous utilisons des mesures de sécurité avancées pour protéger vos informations, incluant le chiffrement des données, 
-          des contrôles d'accès stricts et des audits de sécurité réguliers. Vos données de santé sont traitées avec la plus stricte confidentialité.
-        </p>
-      </section>
-
-      <section>
-        <h2>5. Vos Droits</h2>
-        <p className="mb-4">
-          Vous avez le droit d'accéder à vos données personnelles, de les corriger ou de demander leur suppression. 
-          Pour exercer ces droits, veuillez nous contacter à travers notre support client.
-        </p>
-      </section>
-    </LegalLayout>
-  );
+const CONTENT: { FR: LegalContent; EN: LegalContent } = {
+  FR: {
+    title: 'Politique de confidentialité',
+    lastUpdated: '8 avril 2026',
+    sections: [
+      {
+        heading: '1. Introduction',
+        paragraphs: [
+          'Chez MobiSoins, la protection de vos renseignements personnels est une priorité. La présente politique décrit comment nous recueillons, utilisons et protégeons vos informations lorsque vous utilisez nos services.',
+        ],
+      },
+      {
+        heading: '2. Collecte des données',
+        paragraphs: ['Nous recueillons les renseignements nécessaires à la prestation de nos services de soins à domicile, notamment :'],
+        list: [
+          'Renseignements d’identification (nom, adresse, coordonnées)',
+          'Données de santé pertinentes aux soins',
+          'Renseignements de paiement (traités de manière sécurisée)',
+          'Données de navigation et d’utilisation de l’application',
+        ],
+      },
+      {
+        heading: '3. Utilisation des données',
+        paragraphs: ['Vos données sont utilisées exclusivement pour :'],
+        list: [
+          'Coordonner et fournir les soins infirmiers',
+          'Communiquer avec vous au sujet de vos rendez-vous',
+          'Améliorer nos services et votre expérience',
+          'Respecter nos obligations légales et réglementaires',
+        ],
+      },
+      {
+        heading: '4. Protection des données',
+        paragraphs: [
+          'Nous appliquons des mesures de sécurité avancées pour protéger vos renseignements, dont le chiffrement des données, des contrôles d’accès stricts et des audits de sécurité réguliers. Vos données de santé sont traitées dans la plus stricte confidentialité.',
+        ],
+      },
+      {
+        heading: '5. Vos droits',
+        paragraphs: [
+          'Vous avez le droit d’accéder à vos renseignements personnels, de les corriger ou d’en demander la suppression. Pour exercer ces droits, communiquez avec notre service à la clientèle.',
+        ],
+      },
+    ],
+  },
+  EN: {
+    title: 'Privacy Policy',
+    lastUpdated: 'April 8, 2026',
+    sections: [
+      {
+        heading: '1. Introduction',
+        paragraphs: [
+          'At MobiSoins, protecting your personal information is a priority. This policy describes how we collect, use and protect your information when you use our services.',
+        ],
+      },
+      {
+        heading: '2. Data collection',
+        paragraphs: ['We collect the information needed to deliver our home-care services, including:'],
+        list: [
+          'Identification details (name, address, contact information)',
+          'Health information relevant to your care',
+          'Payment information (processed securely)',
+          'Browsing and app-usage data',
+        ],
+      },
+      {
+        heading: '3. Use of data',
+        paragraphs: ['Your data is used exclusively to:'],
+        list: [
+          'Coordinate and deliver nursing care',
+          'Communicate with you about your appointments',
+          'Improve our services and your experience',
+          'Meet our legal and regulatory obligations',
+        ],
+      },
+      {
+        heading: '4. Data protection',
+        paragraphs: [
+          'We apply advanced security measures to protect your information, including data encryption, strict access controls and regular security audits. Your health data is handled with the strictest confidentiality.',
+        ],
+      },
+      {
+        heading: '5. Your rights',
+        paragraphs: [
+          'You have the right to access your personal information, to correct it, or to request its deletion. To exercise these rights, contact our customer service team.',
+        ],
+      },
+    ],
+  },
 };
 
+export const PrivacyPolicy = () => {
+  const { language } = useLanguage();
+  return <LegalLayout content={CONTENT[language]} />;
+};
