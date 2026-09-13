@@ -66,6 +66,31 @@ const translations = {
   FR: {
     // Copy for the product-led landing redesign (desktop first). Kept in its own
     // `v2` block so the legacy section keys other pages still use stay untouched.
+    // v3 landing (fiftyseven language) — FR
+    v3: {
+      scrollHint: 'Défiler',
+      approachTitle1: 'Le soin',
+      approachTitle2: 'vient à vous.',
+      approachLabel: 'Notre approche',
+      approachP2: 'Nous commençons dans le Grand Montréal, avec des infirmières membres de l\'OIIQ.',
+      approachP3: 'Derrière chaque visite, une infirmière autorisée et un rapport clinique partagé après le soin.',
+      visitCore: 'La visite',
+      visitPara: 'Vous *décrivez le soin*. En *moins de 60 secondes*, une infirmière *autorisée OIIQ* est en route. *Trois textos*, zéro appel. Le soin chez vous, puis le *rapport* et le *reçu*.',
+      careTitle1: 'Des soins',
+      careTitle2: 'chez vous.',
+      card1Tag: '#PLAIES #POST-OP',
+      card2Tag: '#DIABÈTE #HTA',
+      card3Tag: '#SIGNES VITAUX',
+      card4Tag: '#DÉPISTAGE',
+      card5Tag: '#AÎNÉS',
+      card6Tag: '#ORDONNANCE',
+      dragBadge: 'Glisser',
+      servicesAll: 'Voir tous les soins',
+      backToTop: 'Haut',
+      menu: 'Menu',
+      close: 'Fermer',
+      navigation: 'Navigation',
+    },
     v2: {
       heroBadge: 'Infirmières autorisées OIIQ · Québec',
       heroCtaPrimary: 'Rejoindre la liste d\'attente',
@@ -526,6 +551,31 @@ const translations = {
     },
   },
   EN: {
+    // v3 landing (fiftyseven language) — EN
+    v3: {
+      scrollHint: 'Scroll',
+      approachTitle1: 'Care',
+      approachTitle2: 'comes to you.',
+      approachLabel: 'Our approach',
+      approachP2: 'We start in Greater Montreal, with OIIQ-licensed nurses.',
+      approachP3: 'Behind every visit, a licensed nurse and a clinical report shared after the care.',
+      visitCore: 'The visit',
+      visitPara: 'You *describe the care*. In *under 60 seconds*, an *OIIQ-licensed* nurse is on her way. *Three texts*, zero phone calls. Care at home, then the *report* and the *receipt*.',
+      careTitle1: 'Care,',
+      careTitle2: 'at home.',
+      card1Tag: '#WOUNDS #POST-OP',
+      card2Tag: '#DIABETES #BP',
+      card3Tag: '#VITALS',
+      card4Tag: '#SCREENING',
+      card5Tag: '#SENIORS',
+      card6Tag: '#PRESCRIPTION',
+      dragBadge: 'Drag',
+      servicesAll: 'See all care',
+      backToTop: 'Top',
+      menu: 'Menu',
+      close: 'Close',
+      navigation: 'Navigate',
+    },
     v2: {
       heroBadge: 'Licensed OIIQ nurses · Quebec',
       heroCtaPrimary: 'Join the waitlist',

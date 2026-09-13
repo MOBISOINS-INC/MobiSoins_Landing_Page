@@ -136,13 +136,13 @@ export const Hero = () => {
             'linear-gradient(180deg, rgba(3,18,38,0) 0%, rgba(3,18,38,0.35) 40%, rgba(3,18,38,0.8) 70%, #031226 92%, #031226 100%)',
         }}
       />
-      {/* Desktop: the video dissolves into the white page below — no seam to look at.
+      {/* Desktop: the video dissolves into the navy ground below — no seam to look at.
           Mobile keeps the navy fade above, so this is sm+ only. */}
       <div
         className="absolute inset-0 pointer-events-none hidden sm:block"
         style={{
           background:
-            'linear-gradient(180deg, rgba(255,255,255,0) 84%, rgba(255,255,255,0.08) 90%, rgba(255,255,255,0.30) 95%, rgba(255,255,255,0.72) 98.5%, #ffffff 100%)',
+            'linear-gradient(180deg, rgba(4,20,42,0) 84%, rgba(4,20,42,0.08) 90%, rgba(4,20,42,0.30) 95%, rgba(4,20,42,0.55) 100%)',
         }}
       />
       {/* Mobile only: gentle bottom-up gradient so the bottom-anchored text sits on a
@@ -160,7 +160,10 @@ export const Hero = () => {
         style={{ background: 'linear-gradient(180deg, rgba(3,18,38,0.5) 0%, rgba(3,18,38,0) 100%)' }}
       />
 
-      <div className="container-custom w-full relative z-10 pt-28 pb-16 sm:pb-20 lg:pb-24">
+      <div
+        className="container-custom w-full relative z-10 pt-28 pb-16 sm:pb-20 lg:pb-24"
+        style={{ opacity: 'var(--hero-copy, 1)' }}
+      >
         <div className="max-w-[40rem]">
           <h1
             className="text-[2.15rem] sm:text-[clamp(2.4rem,3.6vw,3.5rem)] font-light leading-[1.05] tracking-[-0.035em] mb-7 md:mb-9"
