@@ -24,7 +24,7 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
     if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
     const l = new Lenis({
       autoRaf: true,
-      lerp: 0.1,
+      lerp: 0.16,
       smoothWheel: true,
       syncTouch: false,
       wheelMultiplier: 1,

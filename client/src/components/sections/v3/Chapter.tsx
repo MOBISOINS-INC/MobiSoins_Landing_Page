@@ -83,7 +83,7 @@ export function Chapter({ id, titleKeys, captionKey, hint = false, className = '
 
   return (
     <section id={id} data-chapter={id} className={`relative ${className}`}>
-      <div aria-hidden="true" className="fs-vignette pointer-events-none absolute inset-x-0 -inset-y-8 -z-10" />
+      <div aria-hidden="true" className="fs-vignette pointer-events-none absolute inset-x-0 -inset-y-8 -z-10 transform-gpu" />
       <div className="container-custom text-center">
         {hint && (
           <div ref={hintReveal.ref} style={hintReveal.style} className="mb-[3vh] flex flex-col items-center">

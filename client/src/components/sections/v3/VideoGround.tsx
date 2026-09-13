@@ -6,10 +6,10 @@ import type { MotionStyle, MotionValue } from 'framer-motion';
 import { Hero } from '../Hero';
 import { useMounted } from '../../../hooks/useMounted';
 
-// Phones: pause the hero clip once it is buried under the chapters — the ground
-// is sticky for the whole page, so the video would otherwise keep decoding
-// off-screen. Desktop keeps it running (it is dimmed, not hidden).
-const FREEZE_VIDEO_ON_TOUCH = true;
+// Pause the hero clip once it is buried under the chapters — the ground is
+// sticky for the whole page, so the video would otherwise keep decoding under
+// an .86 scrim for the rest of the scroll. Resumes on the way back up.
+const FREEZE_VIDEO_WHEN_BURIED = true;
 // Desktop spec height; replaced by window.innerHeight after mount.
 const DEFAULT_VH = 900;
 
@@ -44,19 +44,18 @@ export function VideoGround() {
     return () => window.removeEventListener('resize', measure);
   }, []);
 
-  // Freeze eligibility (coarse pointer, motion allowed) and a latch so play/pause
-  // fires once per crossing rather than on every scroll event.
+  // Freeze eligibility (motion allowed) and a latch so play/pause fires once
+  // per crossing rather than on every scroll event.
   const canFreeze = useRef(false);
   const frozen = useRef(false);
   useEffect(() => {
-    if (!FREEZE_VIDEO_ON_TOUCH) return;
-    const coarse = window.matchMedia?.('(pointer: coarse)').matches;
+    if (!FREEZE_VIDEO_WHEN_BURIED) return;
     const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-    canFreeze.current = !!coarse && !reduce;
+    canFreeze.current = !reduce;
   }, []);
   useMotionValueEvent(scrollY, 'change', (y) => {
     if (!canFreeze.current) return;
-    const buried = y > 1.5 * vh;
+    const buried = y > 1.2 * vh;
     if (buried === frozen.current) return;
     frozen.current = buried;
     const video = wrap.current?.querySelector('video');
