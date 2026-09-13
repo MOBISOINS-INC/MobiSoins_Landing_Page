@@ -150,22 +150,22 @@ export function VisitPinned() {
         <div
           ref={caption.ref}
           style={caption.style}
-          className="text-center md:absolute md:inset-x-0 md:top-[10vh]"
+          className="text-center md:absolute md:inset-x-0 md:top-[7vh]"
         >
           <Caption>{t('v2.stepsEyebrow')}</Caption>
         </div>
 
         {/* Stage: the ring and the core share one grid cell so they stay centred.
             Planets overflow the box by design (transforms take no layout space);
-            the mobile height reserves room for them. `md:mb-[14vh]` lifts the
+            the mobile height reserves room for them. `md:mb-[10vh]` lifts the
             centre so the ring, the paragraph and the pill never meet at 900px. */}
         <div
           ref={stage.ref}
           style={stage.style}
-          className="relative grid place-items-center w-full h-[22rem] md:w-[13rem] md:h-[13rem] md:mb-[14vh]"
+          className="relative grid place-items-center w-full h-[22rem] md:w-[13rem] md:h-[13rem] md:mb-[10vh]"
         >
           <motion.div
-            className="col-start-1 row-start-1 grid place-items-center [--r:7.25rem] md:[--r:clamp(8rem,14vw,12rem)]"
+            className="col-start-1 row-start-1 grid place-items-center [--r:7.25rem] md:[--r:clamp(8rem,14vw,11.5rem)]"
             style={active ? { rotate, scale, opacity: ringOpacity } : undefined}
           >
             {PLANETS.map((planet) => (
