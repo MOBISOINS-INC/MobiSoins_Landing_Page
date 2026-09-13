@@ -231,6 +231,9 @@
     /* Blur is expensive on phone GPUs; a denser fill reads the same. */
     .fs-panel { background: color-mix(in srgb, var(--color-ink) 94%, transparent); backdrop-filter: none; -webkit-backdrop-filter: none; }
   }
+  /* Scrim over the video ground: deep navy with a little more blue up top so
+     white type clears contrast everywhere (navy-800 -> ink, both palette values). */
+  .fs-scrim { background: linear-gradient(180deg, #0B2247 0%, #04142a 100%); }
   .fs-noscrollbar { scrollbar-width: none; -ms-overflow-style: none; }
   .fs-noscrollbar::-webkit-scrollbar { display: none; }
   /* Planet on the visit ring: orbit by --a (deg) at radius --r, label kept upright */

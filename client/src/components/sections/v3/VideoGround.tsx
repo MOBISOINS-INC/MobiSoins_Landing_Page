@@ -34,7 +34,7 @@ export function VideoGround() {
   // `layoutEffect: false` is gone in framer 12 (the hook is isomorphic now).
   const { scrollY } = useScroll();
   // Piecewise ≈ easeOut: most of the dim lands in the first third of a viewport.
-  const dim = useTransform(scrollY, [0, 0.35 * vh, vh], [0, 0.42, 0.72]);
+  const dim = useTransform(scrollY, [0, 0.35 * vh, vh], [0, 0.55, 0.86]);
   const heroCopy = useTransform(scrollY, [0, 0.5 * vh], [1, 0]);
 
   useEffect(() => {
@@ -83,7 +83,7 @@ export function VideoGround() {
       {/* Scrim — the only element with will-change; opacity 0 at rest. */}
       <motion.div
         aria-hidden="true"
-        className="absolute inset-0 z-[5] pointer-events-none bg-ink will-change-[opacity]"
+        className="absolute inset-0 z-[5] pointer-events-none fs-scrim will-change-[opacity]"
         style={{ opacity: mounted ? dim : 0 }}
       />
     </motion.div>

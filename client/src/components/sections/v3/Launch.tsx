@@ -17,8 +17,8 @@ function Credential({ n, index }: { n: number; index: number }) {
     <li ref={reveal.ref} style={reveal.style} className="flex gap-3">
       <span aria-hidden="true" className="mt-2 w-1.5 h-1.5 rounded-full bg-sage shrink-0" />
       <div>
-        <p className="text-[14px] font-medium text-white/90">{t(`v2.cred${n}Title`)}</p>
-        <p className="text-[13px] font-light leading-[1.5] text-white/60 mt-1">{t(`v2.cred${n}Body`)}</p>
+        <p className="text-[14px] font-medium text-white">{t(`v2.cred${n}Title`)}</p>
+        <p className="text-[13px] font-normal leading-[1.5] text-white/78 mt-1">{t(`v2.cred${n}Body`)}</p>
       </div>
     </li>
   );
@@ -39,13 +39,13 @@ export function Launch() {
       id="launch"
       titleKeys={['v2.ctaTitle1', 'v2.ctaTitle2']}
       captionKey="hero.waitlistTitle"
-      className="py-[7vh] md:py-[4vh] text-center"
+      className="py-[6vh] md:py-[3vh] text-center"
     >
-      <p ref={body.ref} style={body.style} className={`${BODY} max-w-[30rem] mx-auto mt-5`}>
+      <p ref={body.ref} style={body.style} className={`${BODY} max-w-[30rem] mx-auto mt-4`}>
         {t('v2.ctaBody')}
       </p>
 
-      <div ref={cta.ref} style={cta.style} className="mt-7">
+      <div ref={cta.ref} style={cta.style} className="mt-6">
         <a href={WAITLIST_URL} target="_blank" rel="noopener noreferrer" className={PILL_WHITE}>
           {t('v2.ctaButton')}
           {/* Same arrow as the hero CTA, one step smaller. */}
@@ -63,19 +63,19 @@ export function Launch() {
           explicitly: `normal-case` and a second `tracking-[…]` cannot override
           MICRO's `uppercase` / `tracking-[0.22em]` — Tailwind emits those earlier
           in the sheet, so the MICRO values would win. */}
-      <p ref={fine.ref} style={fine.style} className="font-mono text-[0.625rem] tracking-[0.12em] text-white/45 mt-3">
+      <p ref={fine.ref} style={fine.style} className="font-mono text-[0.625rem] tracking-[0.12em] text-white/60 mt-3">
         {t('v2.ctaFinePrint')}
       </p>
 
-      <ul className="mt-[5vh] mx-auto max-w-[44rem] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-5 text-left">
+      <ul className="mt-[3vh] mx-auto max-w-[44rem] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-4 text-left">
         {CREDENTIALS.map((n, i) => (
           <Credential key={n} n={n} index={i} />
         ))}
       </ul>
 
-      <div ref={nurses.ref} style={nurses.style} className="mt-[4vh] flex flex-col items-center gap-3">
+      <div ref={nurses.ref} style={nurses.style} className="mt-[3vh] flex flex-col items-center gap-3 md:flex-row md:justify-center md:gap-5">
         <Caption>{t('v2.nursesEyebrow')}</Caption>
-        <p className={BODY}>{t('v2.nursesPitch')}</p>
+        <p className={`${BODY} md:text-[0.875rem]`}>{t('v2.nursesPitch')}</p>
         <a href={RECRUIT_URL} target="_blank" rel="noopener noreferrer" className={PILL_OUTLINE}>
           {t('v2.nursesCta')}
           <span aria-hidden="true">↗</span>

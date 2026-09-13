@@ -39,6 +39,12 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
     }
   }, []);
 
+  // Mirror the active language on <html lang> so search engines and screen
+  // readers get the right one (it was hardcoded to "fr" before).
+  useEffect(() => {
+    document.documentElement.lang = language === 'FR' ? 'fr' : 'en';
+  }, [language]);
+
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
     localStorage.setItem('language', lang);
@@ -90,6 +96,7 @@ const translations = {
       menu: 'Menu',
       close: 'Fermer',
       navigation: 'Navigation',
+      skipToContent: 'Aller au contenu',
     },
     v2: {
       heroBadge: 'Infirmières autorisées OIIQ · Québec',
@@ -575,6 +582,7 @@ const translations = {
       menu: 'Menu',
       close: 'Close',
       navigation: 'Navigate',
+      skipToContent: 'Skip to content',
     },
     v2: {
       heroBadge: 'Licensed OIIQ nurses · Quebec',

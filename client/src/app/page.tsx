@@ -1,6 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import { useLanguage } from '../contexts/LanguageContext';
 import { SmoothScroll } from '../components/providers/SmoothScroll';
 import { FloatingHeader } from '../components/layout/v3/FloatingHeader';
 import { FloatingBar } from '../components/layout/v3/FloatingBar';
@@ -33,10 +34,35 @@ const Launch = dynamic(
 // it stays sticky under every chapter, dimmed by a scroll-scrubbed scrim — and
 // the chapters scroll over it as transparent layers. Header/footer are the
 // floating pills; the classic Header/Footer stay on the inner pages.
+// Structured data for the front page: who we are, where we serve, our socials.
+const ORGANIZATION_JSON_LD = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'MobiSoins',
+  url: 'https://mobisoins.ca/',
+  logo: 'https://mobisoins.ca/mobisoins-logo.jpeg',
+  areaServed: { '@type': 'City', name: 'Montréal' },
+  sameAs: [
+    'https://www.instagram.com/mobisoins/',
+    'https://www.facebook.com/p/MobiSoins-Inc-61562813077289/',
+    'https://www.tiktok.com/@mobisoins',
+  ],
+});
+
 export default function Home() {
+  const { t } = useLanguage();
+
   return (
     <SmoothScroll>
       <div className="min-h-screen bg-ink text-white">
+        {/* Keyboard users: jump past the video hero straight to the content. */}
+        <a
+          href="#approach"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-white focus:px-4 focus:py-2 focus:text-ink-panel"
+        >
+          {t('v3.skipToContent')}
+        </a>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: ORGANIZATION_JSON_LD }} />
         <FloatingHeader />
         <main className="relative">
           <VideoGround />
