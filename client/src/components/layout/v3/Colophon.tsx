@@ -42,9 +42,9 @@ export function Colophon() {
       style={reveal.style}
       className="relative z-10 mx-[clamp(1rem,4.17vw,3.75rem)] mt-[2vh] mb-6 rounded-3xl fs-panel p-6 md:mb-[calc(3rem_+_3vh_+_1.5rem)] md:p-10"
     >
-      <div className="grid grid-cols-2 gap-8 md:grid-cols-[1.4fr_repeat(4,1fr)]">
+      <div className="grid grid-cols-2 gap-8 sm:grid-cols-4 lg:grid-cols-[1.4fr_repeat(4,1fr)]">
         {/* Brand */}
-        <div className="col-span-2 md:col-span-1">
+        <div className="col-span-2 sm:col-span-4 lg:col-span-1">
           <Link href="/" className="inline-flex">
             <BrandLogo className="h-8" />
           </Link>

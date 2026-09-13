@@ -127,7 +127,7 @@ export function CookieConsent() {
       aria-live="polite"
       // Bottom-right on desktop: the hero's copy and CTAs live bottom-left, and
       // the fixed bottom bar sits below (3vh + its 3rem height).
-      className="fs-panel fixed z-[55] inset-x-4 bottom-4 rounded-3xl p-5 md:inset-x-auto md:right-[clamp(1rem,4.17vw,3.75rem)] md:bottom-[calc(3vh+4rem)] md:w-[26rem]"
+      className="fs-panel fixed z-[55] inset-x-4 bottom-4 max-h-[calc(100svh-5.5rem)] overflow-y-auto rounded-3xl p-5 md:inset-x-auto md:right-[clamp(1rem,4.17vw,3.75rem)] md:bottom-[calc(3vh+4rem)] md:max-h-[calc(100svh-3vh-9rem)] md:w-[26rem]"
     >
       <p className={CAPTION}>( {t('consent.caption')} )</p>
       <h2 id={titleId} className="mt-2 font-sans text-[1.25rem] font-light leading-tight text-white">

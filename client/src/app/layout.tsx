@@ -60,7 +60,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="" />
         <link rel="dns-prefetch" href="https://placehold.co" />
       </head>
-      <body style={{ background: '#ffffff' }}>
+      <body style={{ background: '#04142a', color: '#ffffff' }}>
         <LanguageProvider>
           {children}
           {/* Consent panel: first visit until a choice is made; re-opened from the footer. */}

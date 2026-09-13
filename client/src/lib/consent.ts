@@ -5,6 +5,8 @@
  * withdrawn at any time. Global Privacy Control / Do Not Track are honoured as
  * "refuse non-essential" defaults.
  */
+import { readStorage, removeStorage, writeStorage } from './storage';
+
 export type ConsentCategory = 'analytics' | 'marketing';
 
 export interface Consent {
@@ -29,7 +31,7 @@ const isBrowser = () => typeof window !== 'undefined';
 export function readConsent(): Consent | null {
   if (!isBrowser()) return null;
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const raw = readStorage(STORAGE_KEY);
     if (!raw) return null;
     const c = JSON.parse(raw) as Partial<Consent>;
     if (c.v !== 1 || typeof c.ts !== 'number') return null;
@@ -42,11 +44,8 @@ export function readConsent(): Consent | null {
 
 export function writeConsent(choice: { analytics: boolean; marketing: boolean }): Consent {
   const c: Consent = { v: 1, ts: Date.now(), analytics: choice.analytics, marketing: choice.marketing };
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(c));
-  } catch {
-    /* private mode: the cookie below still carries the choice */
-  }
+  // Private mode / blocked storage: the cookie below still carries the choice.
+  writeStorage(STORAGE_KEY, JSON.stringify(c));
   const secure = isBrowser() && location.protocol === 'https:' ? '; Secure' : '';
   document.cookie = `${COOKIE_NAME}=${encodeURIComponent(`${c.analytics ? 1 : 0}${c.marketing ? 1 : 0}`)}; Max-Age=${MAX_AGE_DAYS * 86400}; Path=/; SameSite=Lax${secure}`;
   window.dispatchEvent(new CustomEvent(CONSENT_CHANGED, { detail: c }));
@@ -54,11 +53,7 @@ export function writeConsent(choice: { analytics: boolean; marketing: boolean })
 }
 
 export function clearConsent(): void {
-  try {
-    localStorage.removeItem(STORAGE_KEY);
-  } catch {
-    /* ignore */
-  }
+  removeStorage(STORAGE_KEY);
   document.cookie = `${COOKIE_NAME}=; Max-Age=0; Path=/; SameSite=Lax`;
   window.dispatchEvent(new CustomEvent(CONSENT_CHANGED, { detail: null }));
 }

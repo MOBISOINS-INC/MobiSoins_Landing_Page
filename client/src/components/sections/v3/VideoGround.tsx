@@ -95,6 +95,17 @@ export function VideoGround() {
       // A browser-initiated pause fires this too; retry on the next frame.
       if (!frozen.current) requestAnimationFrame(nudge);
     };
+    // Autoplay refused (data/power saving modes, Low Power Mode): the first
+    // touch or click anywhere counts as the user gesture browsers want.
+    const onGesture = () => {
+      nudge();
+      if (!video.paused) {
+        document.removeEventListener('touchstart', onGesture);
+        document.removeEventListener('pointerdown', onGesture);
+      }
+    };
+    document.addEventListener('touchstart', onGesture, { passive: true });
+    document.addEventListener('pointerdown', onGesture, { passive: true });
     const io = typeof IntersectionObserver !== 'undefined' ? new IntersectionObserver(nudge) : null;
     io?.observe(video);
     video.addEventListener('pause', onPause);
@@ -106,6 +117,8 @@ export function VideoGround() {
       video.removeEventListener('pause', onPause);
       window.removeEventListener('scroll', onScroll);
       document.removeEventListener('visibilitychange', nudge);
+      document.removeEventListener('touchstart', onGesture);
+      document.removeEventListener('pointerdown', onGesture);
       window.clearInterval(tick);
       if (raf) cancelAnimationFrame(raf);
     };

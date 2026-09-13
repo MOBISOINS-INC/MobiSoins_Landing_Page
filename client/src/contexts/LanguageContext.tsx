@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
+import { readStorage, writeStorage } from '../lib/storage';
 
 type Language = 'FR' | 'EN';
 
@@ -31,7 +32,9 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
   const [language, setLanguageState] = useState<Language>('FR');
 
   useEffect(() => {
-    const stored = localStorage.getItem('language');
+    // Guarded: Safari with cookies blocked throws on localStorage access, and a
+    // throw here would unmount the whole page.
+    const stored = readStorage('language');
     if (stored === 'FR' || stored === 'EN') {
       setLanguageState(stored);
     } else if (!navigator.language.startsWith('fr')) {
@@ -47,7 +50,7 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
-    localStorage.setItem('language', lang);
+    writeStorage('language', lang);
   };
 
   const t = (key: string): string => {
