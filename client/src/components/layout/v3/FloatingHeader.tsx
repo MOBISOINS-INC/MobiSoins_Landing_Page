@@ -54,7 +54,9 @@ const Arrow = () => (
    left, FR/EN + waitlist on the right) and a menu sheet that drops from the left
    pill. One look everywhere — the pill is its own ground — so nothing hides on
    scroll; only the right-pill CTA fades in once the hero's own CTA is gone. --- */
-export function FloatingHeader() {
+/** `pageLabelKey`: inner pages pass their own word (no chapters to track) and
+ *  keep the waitlist CTA visible from the start (no hero of their own). */
+export function FloatingHeader({ pageLabelKey }: { pageLabelKey?: string } = {}) {
   const { t } = useLanguage();
   const lenis = useLenis();
   const pathname = usePathname();
@@ -112,7 +114,8 @@ export function FloatingHeader() {
   }, [menuOpen, lenis]);
 
   const close = () => setMenuOpen(false);
-  const routeKey = CHAPTERS.find((c) => c.id === active)?.labelKey ?? 'header.home';
+  const routeKey = pageLabelKey ?? CHAPTERS.find((c) => c.id === active)?.labelKey ?? 'header.home';
+  const ctaOn = !!pageLabelKey || ctaInLayout;
 
   return (
     <>
@@ -124,7 +127,7 @@ export function FloatingHeader() {
           </Link>
 
           {/* Keyed remount replays the fade when the chapter under the reader changes. */}
-          <span key={active} className={`${ROUTE_WORD} hidden sm:block animate-fade-in`}>
+          <span key={pageLabelKey ?? active} className={`${ROUTE_WORD} hidden sm:block animate-fade-in`}>
             {t(routeKey).toLowerCase()}
           </span>
 
@@ -160,11 +163,13 @@ export function FloatingHeader() {
           href={WAITLIST_URL}
           target="_blank"
           rel="noopener noreferrer"
-          className={cn(PILL_WHITE, 'group px-5 py-2.5 text-[13px]', !ctaInLayout && 'hidden')}
+          className={cn(PILL_WHITE, 'group px-5 py-2.5 text-[13px]', !ctaOn && 'hidden')}
           style={
-            mounted
-              ? { opacity: ctaOpacity, pointerEvents: scrolled ? 'auto' : 'none' }
-              : { opacity: 0, pointerEvents: 'none' }
+            pageLabelKey
+              ? undefined
+              : mounted
+                ? { opacity: ctaOpacity, pointerEvents: scrolled ? 'auto' : 'none' }
+                : { opacity: 0, pointerEvents: 'none' }
           }
         >
           {t('header.joinWaitlist')}

@@ -20,7 +20,7 @@ const Photo = ({ src, alt, className = '' }: { src: string; alt: string; classNa
 );
 
 const IconTile = ({ Icon }: { Icon: React.ComponentType<{ className?: string }> }) => (
-  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-[#cddcc9] bg-[#f4f7f2] text-[#4e6645]">
+  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-sage/40 bg-sage/15 text-sage">
     <Icon className="h-5 w-5" />
   </span>
 );
@@ -52,13 +52,13 @@ export const About = () => {
   ];
 
   return (
-    <div className="bg-white">
+    <div className="bg-white/5">
       {/* ========== Statement hero ========== */}
       <section className="pt-14 sm:pt-20 lg:pt-28">
         <div className="container-custom">
           <div ref={hero.ref} style={hero.style} className="max-w-[1040px]">
             <span className={EYEBROW}>{t('about.missionBadge')}</span>
-            <h1 className="mt-6 text-[40px] font-semibold leading-[1.02] tracking-[-0.04em] text-[#0a1f38] sm:text-[56px] lg:text-[76px]">
+            <h1 className="mt-6 font-sans font-extralight text-[clamp(2.5rem,5vw,4.5rem)] leading-[1.02] tracking-[0.02em] text-white [text-wrap:balance]">
               {t('about.missionTitle')}
             </h1>
             <p className={`${LEAD} mt-8 max-w-[640px]`}>{t('about.missionLead')}</p>
@@ -72,11 +72,11 @@ export const About = () => {
             />
             <dl className="mt-10 grid grid-cols-1 gap-x-[30px] gap-y-6 sm:grid-cols-3 lg:mt-12">
               {[1, 2, 3].map((n) => (
-                <div key={n} className="border-t border-[#0a1f38] pt-5">
-                  <dt className="text-[32px] font-semibold leading-none tracking-[-0.035em] text-[#0a1f38] lg:text-[40px]">
+                <div key={n} className="border-t border-white/30 pt-5">
+                  <dt className="text-[32px] font-semibold leading-none tracking-[-0.035em] text-white lg:text-[40px]">
                     {t(`about.fact${n}Value`)}
                   </dt>
-                  <dd className="mt-3 text-[14px] leading-relaxed text-[#5a5a6a]">{t(`about.fact${n}Label`)}</dd>
+                  <dd className="mt-3 text-[14px] leading-relaxed text-white/78">{t(`about.fact${n}Label`)}</dd>
                 </div>
               ))}
             </dl>
@@ -88,15 +88,15 @@ export const About = () => {
       <section className="py-20 lg:py-28">
         <div className="container-custom">
           <div ref={statement.ref} style={statement.style} className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr] lg:gap-8">
-            <div className="flex flex-col justify-center rounded-[22px] bg-[#0a1f38] p-8 text-white sm:p-10 lg:p-14">
-              <span className="text-[12px] font-medium uppercase tracking-[0.14em] text-[#98B690]">
+            <div className="flex flex-col justify-center rounded-3xl bg-ink-panel/85 p-8 text-white sm:p-10 lg:p-14">
+              <span className="text-[12px] font-medium uppercase tracking-[0.14em] text-sage">
                 {t('about.statementBadge')}
               </span>
               <p className="mt-6 text-[22px] font-normal leading-[1.3] tracking-[-0.025em] sm:text-[26px] lg:text-[32px]">
                 {t('about.statement1')}
               </p>
-              <p className="mt-8 text-[15px] font-light leading-relaxed text-[#a8bacd]">{t('about.statement2')}</p>
-              <p className="mt-3 text-[15px] font-light leading-relaxed text-[#a8bacd]">{t('about.statement3')}</p>
+              <p className="mt-8 text-[15px] font-light leading-relaxed text-mist">{t('about.statement2')}</p>
+              <p className="mt-3 text-[15px] font-light leading-relaxed text-mist">{t('about.statement3')}</p>
             </div>
             <Photo
               src="/nurses/commitment.png"
@@ -108,7 +108,7 @@ export const About = () => {
       </section>
 
       {/* ========== The problem ========== */}
-      <section className="border-y border-slate-200/70 bg-[#f7f9fa] py-20 lg:py-28">
+      <section className="border-y border-white/12 bg-ink-panel/40 py-20 lg:py-28">
         <div className="container-custom">
           <div ref={problem.ref} style={problem.style} className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
             <div>
@@ -116,7 +116,7 @@ export const About = () => {
               <h2 className={`${H2} mt-4`}>{t('about.problemTitle')}</h2>
             </div>
             <div className="flex flex-col gap-5 lg:pt-2">
-              <p className={`${BODY} text-[#0a1f38]`}>{t('about.problemText1')}</p>
+              <p className={`${BODY} text-white`}>{t('about.problemText1')}</p>
               <p className={BODY}>{t('about.problemText2')}</p>
               <p className={BODY}>{t('about.problemText3')}</p>
             </div>
@@ -134,8 +134,8 @@ export const About = () => {
             </div>
             <div className="mt-12 grid gap-10 lg:grid-cols-2 lg:gap-20">
               <div className="flex flex-col gap-5">
-                <p className={`${BODY} text-[#0a1f38]`}>{t('about.storyText1')}</p>
-                <blockquote className="my-4 border-l-2 border-[#98B690] pl-6 text-[22px] font-medium leading-snug tracking-[-0.025em] text-[#0a1f38] sm:text-[26px]">
+                <p className={`${BODY} text-white`}>{t('about.storyText1')}</p>
+                <blockquote className="my-4 border-l-2 border-sage pl-6 text-[22px] font-medium leading-snug tracking-[-0.025em] text-white sm:text-[26px]">
                   {t('about.storyQuote')}
                 </blockquote>
                 <p className={BODY}>{t('about.storyText2')}</p>
@@ -153,7 +153,7 @@ export const About = () => {
       </section>
 
       {/* ========== Founders ========== */}
-      <section className="border-t border-slate-200/70 py-20 lg:py-28">
+      <section className="border-t border-white/12 py-20 lg:py-28">
         <div className="container-custom">
           <div ref={founders.ref} style={founders.style}>
             <div className="max-w-[720px]">
@@ -172,11 +172,11 @@ export const About = () => {
                       {f.photo ? (
                         <img src={f.photo} alt={f.name} className="absolute inset-0 h-full w-full object-cover" />
                       ) : (
-                        <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-[#f1f5f9]">
-                          <span className="flex h-16 w-16 items-center justify-center rounded-full bg-[#0a1f38] text-[18px] font-semibold text-white">
+                        <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-white/10">
+                          <span className="flex h-16 w-16 items-center justify-center rounded-full bg-ink-panel/85 text-[18px] font-semibold text-white">
                             {initials}
                           </span>
-                          <span className="text-[11px] font-medium uppercase tracking-[0.14em] text-slate-400">
+                          <span className="text-[11px] font-medium uppercase tracking-[0.14em] text-white/45">
                             {t('about.founderPhotoPending')}
                           </span>
                         </div>
@@ -184,19 +184,19 @@ export const About = () => {
                     </div>
 
                     <div className="flex flex-col">
-                      <h3 className="text-[22px] font-semibold leading-tight tracking-[-0.025em] text-[#0a1f38] sm:text-[24px]">
+                      <h3 className="text-[22px] font-semibold leading-tight tracking-[-0.025em] text-white sm:text-[24px]">
                         {f.name}
                       </h3>
-                      <p className="mt-1 text-[14px] font-medium text-[#4e6645]">{f.role[lang]}</p>
+                      <p className="mt-1 text-[14px] font-medium text-sage">{f.role[lang]}</p>
 
-                      <dl className="mt-5 grid grid-cols-[auto_1fr] gap-x-5 gap-y-2 border-t border-slate-200/70 pt-5 text-[14px]">
-                        <dt className="text-[12px] font-medium uppercase tracking-[0.14em] text-slate-500 leading-[1.7]">{t('about.founderFrom')}</dt>
-                        <dd className="text-[#0a1f38]">{f.origin[lang]}</dd>
-                        <dt className="text-[12px] font-medium uppercase tracking-[0.14em] text-slate-500 leading-[1.7]">{t('about.founderPrev')}</dt>
-                        <dd className="text-[#0a1f38]">{f.previously[lang]}</dd>
+                      <dl className="mt-5 grid grid-cols-[auto_1fr] gap-x-5 gap-y-2 border-t border-white/12 pt-5 text-[14px]">
+                        <dt className="text-[12px] font-medium uppercase tracking-[0.14em] text-white/60 leading-[1.7]">{t('about.founderFrom')}</dt>
+                        <dd className="text-white">{f.origin[lang]}</dd>
+                        <dt className="text-[12px] font-medium uppercase tracking-[0.14em] text-white/60 leading-[1.7]">{t('about.founderPrev')}</dt>
+                        <dd className="text-white">{f.previously[lang]}</dd>
                       </dl>
 
-                      <p className="mt-5 text-[15px] font-light leading-relaxed text-[#5a5a6a]">{f.bio[lang]}</p>
+                      <p className="mt-5 text-[15px] font-light leading-relaxed text-white/78">{f.bio[lang]}</p>
                     </div>
                   </article>
                 );
@@ -207,7 +207,7 @@ export const About = () => {
       </section>
 
       {/* ========== Team ========== */}
-      <section className="border-t border-slate-200/70 bg-[#f7f9fa] py-20 lg:py-28">
+      <section className="border-t border-white/12 bg-ink-panel/40 py-20 lg:py-28">
         <div className="container-custom">
           <div ref={team.ref} style={team.style}>
             <div className="max-w-[640px]">
@@ -219,8 +219,8 @@ export const About = () => {
               {teamItems.map(({ icon, titleKey, descKey }) => (
                 <div key={titleKey} className={`${CARD} p-6 sm:p-7`}>
                   <IconTile Icon={icon} />
-                  <h3 className="mt-5 text-[18px] font-medium tracking-[-0.02em] text-[#0a1f38]">{t(titleKey)}</h3>
-                  <p className="mt-2 text-[14.5px] font-light leading-relaxed text-[#5a5a6a]">{t(descKey)}</p>
+                  <h3 className="mt-5 text-[18px] font-medium tracking-[-0.02em] text-white">{t(titleKey)}</h3>
+                  <p className="mt-2 text-[14.5px] font-light leading-relaxed text-white/78">{t(descKey)}</p>
                 </div>
               ))}
             </div>
@@ -229,7 +229,7 @@ export const About = () => {
       </section>
 
       {/* ========== Values ========== */}
-      <section className="border-t border-slate-200/70 py-20 lg:py-28">
+      <section className="border-t border-white/12 py-20 lg:py-28">
         <div className="container-custom">
           <div ref={values.ref} style={values.style}>
             <div className="max-w-[640px]">
@@ -238,10 +238,10 @@ export const About = () => {
             </div>
             <div className="mt-12 grid grid-cols-2 gap-x-6 gap-y-8 lg:grid-cols-4 lg:gap-x-[30px]">
               {valueItems.map(({ icon: Icon, titleKey, descKey }) => (
-                <div key={titleKey} className="border-t border-[#0a1f38] pt-5">
-                  <Icon className="h-5 w-5 text-[#4e6645]" />
-                  <h3 className="mt-4 text-[16px] font-medium tracking-[-0.02em] text-[#0a1f38] sm:text-[18px]">{t(titleKey)}</h3>
-                  <p className="mt-2 text-[13.5px] font-light leading-relaxed text-[#5a5a6a] sm:text-[14.5px]">{t(descKey)}</p>
+                <div key={titleKey} className="border-t border-white/30 pt-5">
+                  <Icon className="h-5 w-5 text-sage" />
+                  <h3 className="mt-4 text-[16px] font-medium tracking-[-0.02em] text-white sm:text-[18px]">{t(titleKey)}</h3>
+                  <p className="mt-2 text-[13.5px] font-light leading-relaxed text-white/78 sm:text-[14.5px]">{t(descKey)}</p>
                 </div>
               ))}
             </div>
@@ -251,19 +251,19 @@ export const About = () => {
           <div
             ref={cta.ref}
             style={cta.style}
-            className="mt-20 flex flex-col items-start justify-between gap-6 rounded-[22px] bg-[#0a1f38] p-8 sm:flex-row sm:items-center lg:mt-28 lg:p-12"
+            className="mt-20 flex flex-col items-start justify-between gap-6 rounded-3xl bg-ink-panel/85 p-8 sm:flex-row sm:items-center lg:mt-28 lg:p-12"
           >
             <div>
               <p className="max-w-[560px] text-[24px] font-normal leading-[1.3] tracking-[-0.03em] text-white lg:text-[30px]">
                 {t('about.ctaTitle')}
               </p>
-              <p className="mt-3 text-[15px] font-light text-[#a8bacd]">{t('about.ctaBody')}</p>
+              <p className="mt-3 text-[15px] font-light text-mist">{t('about.ctaBody')}</p>
             </div>
             <a
               href={WAITLIST_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex shrink-0 items-center gap-2 rounded-[9px] bg-white px-6 py-3 text-[14px] font-medium text-[#0a1f38] transition-colors hover:bg-slate-100"
+              className="group inline-flex shrink-0 items-center gap-2 rounded-xl bg-white/5 px-6 py-3 text-[14px] font-medium text-white transition-colors hover:bg-white/10"
             >
               {t('about.ctaButton')}
               <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />

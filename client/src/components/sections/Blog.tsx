@@ -43,8 +43,8 @@ export const Blog = () => {
   const [featured, ...rest] = articles;
 
   const Meta = ({ tags, readTime }: { tags: string[]; readTime: string }) => (
-    <div className="flex items-center gap-2 text-[12px] font-medium uppercase tracking-[0.14em] text-slate-500">
-      <span className="text-[#4e6645]">{tags[0]}</span>
+    <div className="flex items-center gap-2 text-[12px] font-medium uppercase tracking-[0.14em] text-white/60">
+      <span className="text-sage">{tags[0]}</span>
       <span aria-hidden="true">·</span>
       <span>
         {readTime} {t('blog.readTime')}
@@ -53,7 +53,7 @@ export const Blog = () => {
   );
 
   return (
-    <section className="bg-white pt-12 pb-20 sm:pt-16 lg:pt-24 lg:pb-28">
+    <section className="pt-12 pb-20 sm:pt-16 lg:pt-24 lg:pb-28">
       <div className="container-custom">
         <div ref={ref} style={style}>
           <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
@@ -78,13 +78,13 @@ export const Blog = () => {
               </div>
               <div className="mt-5">
                 <Meta tags={featured.tags} readTime={featured.readTime} />
-                <h2 className="mt-3 text-[24px] font-semibold leading-[1.15] tracking-[-0.03em] text-[#0a1f38] sm:text-[30px]">
+                <h2 className="mt-3 font-sans font-light text-[clamp(1.5rem,2.6vw,2.25rem)] leading-[1.12] tracking-[0.01em] text-white">
                   {featured.title}
                 </h2>
-                <p className="mt-3 max-w-[600px] text-[15.5px] font-light leading-relaxed text-[#5a5a6a]">
+                <p className="mt-3 max-w-[600px] text-[15.5px] font-light leading-relaxed text-white/78">
                   {featured.description}
                 </p>
-                <span className="mt-4 inline-flex items-center gap-1.5 text-[14px] font-medium text-[#0a1f38]">
+                <span className="mt-4 inline-flex items-center gap-1.5 text-[14px] font-medium text-white">
                   {t('blog.readMore')}
                   <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                 </span>
@@ -94,14 +94,14 @@ export const Blog = () => {
             {/* Secondary */}
             <div className="flex flex-col gap-8 lg:col-span-2">
               {rest.map((article) => (
-                <Link key={article.link} href={article.link} className="group block border-t border-[#0a1f38] pt-5">
+                <Link key={article.link} href={article.link} className="group block border-t border-white/30 pt-5">
                   <div className="grid grid-cols-[1fr_120px] gap-5 sm:grid-cols-[1fr_160px]">
                     <div>
                       <Meta tags={article.tags} readTime={article.readTime} />
-                      <h2 className="mt-3 text-[18px] font-medium leading-snug tracking-[-0.02em] text-[#0a1f38] sm:text-[20px]">
+                      <h2 className="mt-3 text-[18px] font-medium leading-snug tracking-[-0.02em] text-white sm:text-[20px]">
                         {article.title}
                       </h2>
-                      <p className="mt-2 line-clamp-2 text-[14px] font-light leading-relaxed text-[#5a5a6a]">
+                      <p className="mt-2 line-clamp-2 text-[14px] font-light leading-relaxed text-white/78">
                         {article.description}
                       </p>
                     </div>

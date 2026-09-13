@@ -52,7 +52,7 @@ export function BackToTop({ className }: { className?: string }) {
    between 30–45vh so it never sits over the hero's store buttons; at page end
    it visually becomes the Colophon's bottom edge (the Colophon reserves the
    room). Hidden on the server and the first client render. --- */
-export function FloatingBar() {
+export function FloatingBar({ always = false }: { always?: boolean } = {}) {
   const { t } = useLanguage();
   const mounted = useMounted();
   const vh = useViewportHeight();
@@ -63,7 +63,7 @@ export function FloatingBar() {
   return (
     <motion.div
       className="fixed z-40 inset-x-[clamp(1rem,4.17vw,3.75rem)] bottom-[3vh] hidden h-12 md:flex items-center justify-between rounded-full fs-panel px-5"
-      style={mounted ? { y, opacity } : { transform: 'translateY(140%)', opacity: 0 }}
+      style={always ? undefined : mounted ? { y, opacity } : { transform: 'translateY(140%)', opacity: 0 }}
     >
       <p className={MICRO}>
         © {new Date().getFullYear()} MobiSoins · {t('footer.allRightsReserved')}

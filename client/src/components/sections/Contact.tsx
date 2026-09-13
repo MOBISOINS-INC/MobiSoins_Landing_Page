@@ -8,13 +8,13 @@ import { useReveal } from '../../hooks/useReveal';
 import { EYEBROW, H1, LEAD, CARD, FRAME } from '../layout/PageShell';
 
 const FIELD =
-  'flex h-11 w-full rounded-[9px] border border-slate-200 bg-white px-4 py-2 text-[14.5px] text-[#0a1f38] placeholder:text-slate-400 transition-colors focus-visible:outline-none focus-visible:border-[#0a1f38] focus-visible:ring-1 focus-visible:ring-[#0a1f38] disabled:cursor-not-allowed disabled:opacity-50';
+  'flex h-11 w-full rounded-xl border border-white/15 bg-white/5 px-4 py-2 text-[14.5px] text-white placeholder:text-white/40 transition-colors focus-visible:outline-none focus-visible:border-white/30 focus-visible:ring-1 focus-visible:ring-white/40 disabled:cursor-not-allowed disabled:opacity-50';
 
 const RawInput = ({ className = '', ...props }: React.InputHTMLAttributes<HTMLInputElement>) => (
   <input className={`${FIELD} ${className}`} {...props} />
 );
 
-const LABEL = 'text-[13px] font-medium text-[#0a1f38]';
+const LABEL = 'text-[13px] font-medium text-white';
 
 export const Contact = () => {
   const { t } = useLanguage();
@@ -81,7 +81,7 @@ export const Contact = () => {
   ];
 
   return (
-    <section id="contact" className="bg-white pt-12 pb-20 sm:pt-16 lg:pt-24 lg:pb-28">
+    <section id="contact" className="pt-12 pb-20 sm:pt-16 lg:pt-24 lg:pb-28">
       <div className="container-custom">
         <div ref={ref} style={style} className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
           {/* Left: title, photo, details */}
@@ -103,8 +103,8 @@ export const Contact = () => {
 
             <dl className="grid grid-cols-1 gap-x-6 sm:grid-cols-2">
               {contactDetails.map((item) => (
-                <div key={item.labelKey} className="border-t border-slate-200/70 py-4">
-                  <dt className="text-[12px] font-medium uppercase tracking-[0.14em] text-slate-500">
+                <div key={item.labelKey} className="border-t border-white/12 py-4">
+                  <dt className="text-[12px] font-medium uppercase tracking-[0.14em] text-white/60">
                     {t(item.labelKey)}
                   </dt>
                   <dd className="mt-1.5">
@@ -112,7 +112,7 @@ export const Contact = () => {
                       href={item.href}
                       target={item.external ? '_blank' : undefined}
                       rel={item.external ? 'noopener noreferrer' : undefined}
-                      className="text-[15px] text-[#0a1f38] underline decoration-slate-300 underline-offset-4 transition-colors hover:decoration-[#0a1f38]"
+                      className="text-[15px] text-white underline decoration-white/40 underline-offset-4 transition-colors hover:decoration-white"
                     >
                       {item.value}
                     </a>
@@ -151,7 +151,7 @@ export const Contact = () => {
                 id="message"
                 name="message"
                 placeholder={t('contact.messagePlaceholder')}
-                className="min-h-[140px] rounded-[9px] border-slate-200 bg-white text-[14.5px] text-[#0a1f38] placeholder:text-slate-400 focus-visible:border-[#0a1f38] focus-visible:ring-1 focus-visible:ring-[#0a1f38] focus-visible:bg-white backdrop-blur-none"
+                className="min-h-[140px] rounded-xl border-white/15 bg-white/5 text-[14.5px] text-white placeholder:text-white/40 focus-visible:border-white/30 focus-visible:ring-1 focus-visible:ring-white/40 focus-visible:bg-white/5 backdrop-blur-none"
                 required
               />
             </div>
@@ -159,18 +159,18 @@ export const Contact = () => {
             <button
               type="submit"
               disabled={sending || sent}
-              className="cta-navy mt-1 h-12 w-full rounded-[10px] text-[15px] font-medium disabled:cursor-not-allowed disabled:opacity-60"
+              className="bg-white text-ink-panel shadow-[0_10px_30px_-10px_rgba(0,0,0,.7)] transition-transform hover:-translate-y-0.5 mt-1 h-12 w-full rounded-full text-[15px] font-medium disabled:cursor-not-allowed disabled:opacity-60"
             >
               {sent ? t('contact.sent') : sending ? t('contact.sending') : t('contact.send')}
             </button>
 
             {sent && (
-              <p className="text-center text-[14px] font-medium text-[#4e6645]" role="status">
+              <p className="text-center text-[14px] font-medium text-sage" role="status">
                 {t('contact.sentConfirm')}
               </p>
             )}
             {error && (
-              <p className="text-center text-[14px] font-medium text-red-600" role="alert">
+              <p className="text-center text-[14px] font-medium text-red-300" role="alert">
                 {error}
               </p>
             )}
