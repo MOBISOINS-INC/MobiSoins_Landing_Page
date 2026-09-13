@@ -20,7 +20,7 @@ const CONTENT: { FR: LegalContent; EN: LegalContent } = {
         paragraphs: ['Nous recueillons les renseignements nécessaires à la prestation de nos services de soins à domicile, notamment :'],
         list: [
           'Renseignements d’identification (nom, adresse, coordonnées)',
-          'Données de santé pertinentes aux soins',
+          'Données de santé liées aux soins',
           'Renseignements de paiement (traités de manière sécurisée)',
           'Données de navigation et d’utilisation de l’application',
         ],

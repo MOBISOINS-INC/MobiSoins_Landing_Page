@@ -31,12 +31,12 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
         shortEn: 'Cleaning and redressing of wounds (simple or complex) to support healing and prevent infection.',
         longFr: 'L’infirmière évalue la plaie, la nettoie selon les protocoles cliniques et applique un pansement adapté. Elle surveille l’évolution de la guérison et ajuste les soins à chaque visite.',
         longEn: 'Your nurse assesses the wound, cleans it following clinical protocols, and applies the right dressing. She tracks healing and adjusts care at every visit.',
-        pointsFr: ['Plaies post-opératoires, ulcères et brûlures mineures', 'Matériel stérile fourni', 'Surveillance des signes d’infection'],
+        pointsFr: ['Plaies postopératoires, ulcères et brûlures mineures', 'Matériel stérile fourni', 'Surveillance des signes d’infection'],
         pointsEn: ['Post-op wounds, ulcers and minor burns', 'Sterile supplies provided', 'Monitoring for signs of infection'] },
       { slug: 'retrait-points', nameFr: 'Retrait de points', nameEn: 'Suture removal',
         shortFr: 'Retrait des points de suture ou des agrafes après une intervention, une fois la plaie cicatrisée.',
         shortEn: 'Removal of stitches or staples after a procedure, once the wound has healed.',
-        longFr: 'Sans vous déplacer à la clinique, l’infirmière retire vos points ou agrafes en douceur et vérifie que la cicatrisation est complète.',
+        longFr: 'Sans que vous ayez à vous déplacer à la clinique, l’infirmière retire vos points ou agrafes en douceur et vérifie que la cicatrisation est complète.',
         longEn: 'Without a trip to the clinic, your nurse gently removes stitches or staples and confirms the wound has fully closed.',
         pointsFr: ['Après une chirurgie ou une suture à l’urgence', 'Vérification de la cicatrisation', 'Conseils pour la suite des soins'],
         pointsEn: ['After surgery or an ER suture', 'Healing check', 'Aftercare advice'] },
@@ -97,9 +97,9 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
     ],
   },
   {
-    id: 'chronic', icon: 'chronic', nameFr: 'Suivi maladies chroniques', nameEn: 'Chronic disease follow-up',
+    id: 'chronic', icon: 'chronic', nameFr: 'Suivi des maladies chroniques', nameEn: 'Chronic disease follow-up',
     services: [
-      { slug: 'suivi-diabete', nameFr: 'Suivi diabète', nameEn: 'Diabetes follow-up',
+      { slug: 'suivi-diabete', nameFr: 'Suivi du diabète', nameEn: 'Diabetes follow-up',
         shortFr: 'Suivi du diabète : contrôle de la glycémie, enseignement et surveillance des complications.',
         shortEn: 'Diabetes follow-up: blood-sugar monitoring, education, and watching for complications.',
         longFr: 'Un suivi régulier pour garder votre diabète sous contrôle : mesure de la glycémie, enseignement et prévention des complications.',
@@ -116,7 +116,7 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
     ],
   },
   {
-    id: 'checkup', icon: 'checkup', nameFr: 'Bilan santé', nameEn: 'Health check-up',
+    id: 'checkup', icon: 'checkup', nameFr: 'Bilan de santé', nameEn: 'Health check-up',
     services: [
       { slug: 'bilan-complet', nameFr: 'Bilan complet', nameEn: 'Complete check-up',
         shortFr: 'Évaluation générale de l’état de santé : signes vitaux, antécédents et orientation au besoin.',
@@ -137,8 +137,8 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
   {
     id: 'sexual', icon: 'sexual', nameFr: 'Santé sexuelle', nameEn: 'Sexual health',
     services: [
-      { slug: 'depistage-its', nameFr: 'Dépistage MST', nameEn: 'STI screening',
-        shortFr: 'Dépistage des infections transmissibles sexuellement (ITSS), confidentiel et sans jugement.',
+      { slug: 'depistage-its', nameFr: 'Dépistage ITSS', nameEn: 'STI screening',
+        shortFr: 'Dépistage des infections transmissibles sexuellement et par le sang (ITSS), confidentiel et sans jugement.',
         shortEn: 'Confidential, judgment-free screening for sexually transmitted infections (STIs).',
         longFr: 'Un dépistage ITSS discret, à domicile, dans le respect total de votre confidentialité.',
         longEn: 'Discreet STI screening at home, with your privacy fully respected.',
@@ -163,7 +163,7 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
   {
     id: 'pediatrics', icon: 'pediatrics', nameFr: 'Pédiatrie', nameEn: 'Pediatrics',
     services: [
-      { slug: 'vaccins-enfant', nameFr: 'Vaccins enfant', nameEn: 'Children vaccines',
+      { slug: 'vaccins-enfant', nameFr: 'Vaccins enfant', nameEn: 'Children\'s vaccines',
         shortFr: 'Vaccins du calendrier régulier de l’enfant, administrés en douceur à domicile.',
         shortEn: 'Routine childhood vaccines, given gently at home.',
         longFr: 'Les vaccins de votre enfant, administrés dans le calme de la maison, avec douceur et patience.',

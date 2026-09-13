@@ -48,6 +48,9 @@ export function Colophon() {
             <BrandLogo className="h-8" />
           </Link>
           <p className="mt-4 max-w-xs text-[13px] font-light leading-relaxed text-white/55">{t('footer.description')}</p>
+          {/* Legal footing: not an emergency service; nothing promised before launch. */}
+          <p className="mt-3 max-w-xs text-[11.5px] leading-relaxed text-white/60">{t('v3.notEmergency')}</p>
+          <p className="mt-1.5 max-w-xs text-[11.5px] leading-relaxed text-white/60">{t('v3.prelaunch')}</p>
         </div>
 
         {/* Link columns */}
