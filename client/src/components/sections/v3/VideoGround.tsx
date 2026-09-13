@@ -6,10 +6,10 @@ import type { MotionStyle, MotionValue } from 'framer-motion';
 import { Hero } from '../Hero';
 import { useMounted } from '../../../hooks/useMounted';
 
-// Pause the hero clip once it is buried under the chapters — the ground is
-// sticky for the whole page, so the video would otherwise keep decoding under
-// an .86 scrim for the rest of the scroll. Resumes on the way back up.
-const FREEZE_VIDEO_WHEN_BURIED = true;
+// The owner wants the ground to keep looping for the whole scroll (it stays
+// faintly visible under the scrim). Flip to true to pause it once buried
+// (saves decoding on weak devices; resumes on the way back up).
+const FREEZE_VIDEO_WHEN_BURIED = false;
 // Desktop spec height; replaced by window.innerHeight after mount.
 const DEFAULT_VH = 900;
 
