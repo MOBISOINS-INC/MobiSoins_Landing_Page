@@ -146,7 +146,9 @@ export function VisitPinned() {
 
   return (
     <section id="visit" data-chapter="visit" ref={track} className="relative md:h-[100vh]">
-      <div className="relative flex flex-col items-center gap-8 px-6 py-[7vh] md:sticky md:top-0 md:h-[100svh] md:justify-center md:gap-0 md:py-0 md:overflow-hidden">
+      <div className="relative flex flex-col items-center gap-6 px-6 py-[7vh] md:sticky md:top-0 md:h-[100svh] md:justify-center md:gap-0 md:py-0 md:overflow-hidden">
+        {/* Ink band so the paragraph reads on any video frame */}
+        <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-[58%] bg-gradient-to-t from-ink/85 via-ink/45 to-transparent" />
         <div
           ref={caption.ref}
           style={caption.style}
@@ -157,15 +159,15 @@ export function VisitPinned() {
 
         {/* Stage: the ring and the core share one grid cell so they stay centred.
             Planets overflow the box by design (transforms take no layout space);
-            the mobile height reserves room for them. `md:mb-[10vh]` lifts the
+            the mobile height reserves room for them. `md:mb-[14vh]` lifts the
             centre so the ring, the paragraph and the pill never meet at 900px. */}
         <div
           ref={stage.ref}
           style={stage.style}
-          className="relative grid place-items-center w-full h-[22rem] md:w-[13rem] md:h-[13rem] md:mb-[10vh]"
+          className="relative grid place-items-center w-full h-[22rem] md:w-[13rem] md:h-[13rem] md:mb-[14vh]"
         >
           <motion.div
-            className="col-start-1 row-start-1 grid place-items-center [--r:7.25rem] md:[--r:clamp(8rem,14vw,11.5rem)]"
+            className="col-start-1 row-start-1 grid place-items-center [--r:7.25rem] md:[--r:clamp(8rem,13vw,10rem)]"
             style={active ? { rotate, scale, opacity: ringOpacity } : undefined}
           >
             {PLANETS.map((planet) => (
@@ -184,7 +186,7 @@ export function VisitPinned() {
           </div>
         </div>
 
-        <div ref={para.ref} style={para.style} className="w-full md:absolute md:inset-x-0 md:bottom-[13vh]">
+        <div ref={para.ref} style={para.style} className="w-full md:absolute md:inset-x-0 md:bottom-[10vh]">
           <motion.p
             key={language}
             className={`${LIT} max-w-[62rem] mx-auto px-6 text-center text-white [text-shadow:0_2px_18px_rgba(3,18,38,.6)]`}
@@ -200,11 +202,11 @@ export function VisitPinned() {
               )
             )}
           </motion.p>
-        </div>
 
-        {/* The ask, right where the story lands. Fades in with the last keyword
-            on desktop; always visible on phones. */}
-        <div ref={cta.ref} style={cta.style} className="md:absolute md:inset-x-0 md:bottom-[4vh] flex justify-center">
+          {/* The ask, right where the story lands. Fades in with the last keyword
+              on desktop; always visible on phones. Lives in the paragraph block
+              so it can never slide under the fixed bottom bar. */}
+          <div ref={cta.ref} style={cta.style} className="mt-5 flex justify-center">
           <motion.a
             href={WAITLIST_URL}
             target="_blank"
@@ -215,6 +217,7 @@ export function VisitPinned() {
             {t('hero.bookNow')}
             <Arrow size={14} />
           </motion.a>
+          </div>
         </div>
       </div>
     </section>

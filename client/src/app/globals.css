@@ -234,6 +234,9 @@
   /* Scrim over the video ground: deep navy with a little more blue up top so
      white type clears contrast everywhere (navy-800 -> ink, both palette values). */
   .fs-scrim { background: linear-gradient(180deg, #0B2247 0%, #04142a 100%); }
+  /* Soft ink pool behind a chapter's text so legibility never depends on how
+     bright the video frame underneath happens to be. */
+  .fs-vignette { background: radial-gradient(ellipse 60% 70% at 50% 50%, rgba(4, 20, 42, 0.6), transparent 75%); }
   .fs-noscrollbar { scrollbar-width: none; -ms-overflow-style: none; }
   .fs-noscrollbar::-webkit-scrollbar { display: none; }
   /* Planet on the visit ring: orbit by --a (deg) at radius --r, label kept upright */
