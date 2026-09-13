@@ -2,8 +2,9 @@
 
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { useMotionValueEvent, useScroll } from 'framer-motion';
 import { useLanguage } from '../../../contexts/LanguageContext';
+import { useDragScroll } from '../../../hooks/useDragScroll';
 import { useMounted } from '../../../hooks/useMounted';
 import { useReveal } from '../../../hooks/useReveal';
 import { WAITLIST_URL } from '../../layout/v3/navData';
@@ -12,9 +13,12 @@ import { Arrow, CARD_TEXT, CARD_TITLE, Chapter, MICRO, PILL_OUTLINE, PILL_WHITE 
 // The six `about.service{n}` entries; the corporate 7th lives behind "See all care".
 const CARDS = [1, 2, 3, 4, 5, 6] as const;
 
-// +1: the row slides left -> right as the page scrolls down (and back on the way
+// +1: the row drifts left -> right as the page scrolls down (and back on the way
 // up), per the owner's brief. -1 flips it to the more common right -> left.
 const SLIDE_DIRECTION = 1;
+// The page-scroll drift covers about one card (21rem card + 1rem gap); the rest
+// of the row is the reader's to drag, wheel or swipe.
+const DRIFT_PX = 352;
 
 const MD_QUERY = '(min-width: 768px)';
 
@@ -43,19 +47,19 @@ function CareCard({ n, index }: { n: (typeof CARDS)[number]; index: number }) {
   );
 }
 
-/* --- Chapter 3 "Des soins chez vous.": a full-bleed row of care cards driven
-   by the page scroll on md+ — scrolling down slides the row one way, scrolling
-   up brings it back — so it needs no drag affordance. Below md the row is a
-   plain native swipe (a scroll-linked 2000px of travel is far too fast on a
-   phone). The section clips the overshoot; body is overflow-x: clip. --- */
+/* --- Chapter 3 "Des soins chez vous.": a full-bleed row of care cards that is
+   always a real scroller (mouse drag, horizontal wheel, touch swipe reach every
+   card). On md+ the page scroll also nudges it about one card — applied as
+   scrollLeft deltas, so a reader's own scrolling is never overwritten. --- */
 export function CareCards() {
   const { t } = useLanguage();
   const mounted = useMounted();
   const row = useRef<HTMLDivElement>(null);
   const track = useRef<HTMLUListElement>(null);
   const [isMd, setIsMd] = useState(false);
-  // How far the row overflows the viewport; the slide covers exactly that.
-  const [travel, setTravel] = useState(0);
+  // The reader took the row in hand: hide the "drag" hint.
+  const [touched, setTouched] = useState(false);
+  useDragScroll(track);
 
   useEffect(() => {
     const mq = window.matchMedia(MD_QUERY);
@@ -65,25 +69,36 @@ export function CareCards() {
     return () => mq.removeEventListener('change', update);
   }, []);
 
-  useEffect(() => {
-    const measure = () => {
-      const el = track.current;
-      if (!el) return;
-      // scrollWidth reports the full content width even with overflow: visible.
-      setTravel(Math.max(0, el.scrollWidth - el.clientWidth));
-    };
-    measure();
-    window.addEventListener('resize', measure);
-    return () => window.removeEventListener('resize', measure);
-  }, [isMd]);
-
   // Progress 0 -> 1 while the row crosses the viewport bottom -> top.
   const { scrollYProgress: p } = useScroll({ target: row, offset: ['start end', 'end start'] });
-  const x = useTransform(p, [0, 1], SLIDE_DIRECTION > 0 ? [-travel, 0] : [0, -travel]);
-
-  // Hooks above always run; the slide is only applied on md+ after mount, so
+  // Hooks above always run; the drift only applies on md+ after mount, so
   // SSR/no-JS shows the row at rest, first card on the container's left edge.
   const active = mounted && isMd;
+  const prev = useRef<number | null>(null);
+
+  const driftFor = (el: HTMLElement) => Math.min(DRIFT_PX, el.scrollWidth - el.clientWidth);
+
+  // Seed the row where the drift expects it, then follow the page with deltas.
+  useEffect(() => {
+    const el = track.current;
+    if (!active || !el) {
+      prev.current = null;
+      return;
+    }
+    const v = p.get();
+    el.scrollLeft = SLIDE_DIRECTION > 0 ? driftFor(el) * (1 - v) : driftFor(el) * v;
+    prev.current = v;
+  }, [active, p]);
+
+  useMotionValueEvent(p, 'change', (v) => {
+    const el = track.current;
+    if (!active || !el || prev.current === null) return;
+    // Cards move right on the way down => scrollLeft shrinks as progress grows.
+    el.scrollLeft -= (v - prev.current) * driftFor(el) * SLIDE_DIRECTION;
+    prev.current = v;
+  });
+
+  const grab = () => setTouched(true);
 
   return (
     <Chapter
@@ -95,18 +110,32 @@ export function CareCards() {
       {/* Row breaks out of container-custom to viewport width; the first card
           sits on the container's left edge (1.5rem gutter, 1400px max). */}
       <div ref={row} className="relative mt-[3vh] w-screen ml-[calc(50%-50vw)]">
-        <motion.ul
+        {/* Drag hint (mouse only), on the row's right edge; fades once used. */}
+        <div
+          aria-hidden="true"
+          className={`hidden md:[@media(hover:hover)]:grid absolute z-10 top-1/2 -translate-y-1/2 right-[max(1.5rem,calc((100vw-1400px)/2+1.5rem))] h-20 w-20 rounded-full fs-panel place-items-center animate-spin-slow transition-opacity duration-300 ${
+            touched ? 'opacity-0' : 'opacity-100'
+          }`}
+        >
+          <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/70">{t('v3.dragBadge')}</span>
+        </div>
+        <ul
           ref={track}
-          style={active ? { x } : undefined}
+          onPointerDown={grab}
+          onTouchStart={grab}
+          onWheel={(e) => {
+            if (e.deltaX !== 0) grab();
+          }}
           // No `data-lenis-prevent` here: lenis.css gives prevented elements
           // `overscroll-behavior: contain`, which stops a vertical swipe that
-          // starts on a card from ever reaching the page.
-          className="fs-noscrollbar flex gap-4 overflow-x-auto md:overflow-x-visible snap-x snap-proximity md:snap-none overscroll-x-contain scroll-pl-6 pl-6 md:pl-[max(1.5rem,calc((100vw-1400px)/2+1.5rem))] pr-6 pb-2 text-left md:will-change-transform"
+          // starts on a card from ever reaching the page. Lenis already ignores
+          // deltaY === 0 gestures, so horizontal wheel stays native.
+          className="fs-noscrollbar flex gap-4 overflow-x-auto snap-x snap-proximity md:snap-none overscroll-x-contain scroll-pl-6 pl-6 md:pl-[max(1.5rem,calc((100vw-1400px)/2+1.5rem))] pr-6 pb-2 text-left md:cursor-grab md:active:cursor-grabbing select-none"
         >
           {CARDS.map((n, i) => (
             <CareCard key={n} n={n} index={i} />
           ))}
-        </motion.ul>
+        </ul>
       </div>
 
       <div className="mt-6 flex flex-wrap items-center justify-center gap-3 px-6">
