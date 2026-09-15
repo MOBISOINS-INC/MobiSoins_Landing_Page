@@ -51,7 +51,7 @@ export function ServicesCatalog() {
   const grid = useReveal();
 
   return (
-    <section className="border-t border-white/12 bg-white/5 py-16 lg:py-24">
+    <section className="border-t border-slate-200/70 bg-white py-16 lg:py-24">
       <div className="container-custom">
         {/* Intro */}
         <div ref={intro.ref} style={intro.style}>
@@ -70,7 +70,7 @@ export function ServicesCatalog() {
                 className="absolute inset-0 h-full w-full object-cover"
                 style={{ objectPosition: '50% 20%' }}
               />
-              <figcaption className="absolute bottom-4 left-4 rounded-xl bg-white/5 px-3 py-1.5 text-[12.5px] font-medium text-white">
+              <figcaption className="absolute bottom-4 left-4 rounded-lg bg-white px-3 py-1.5 text-[12.5px] font-medium text-[#0a1f38]">
                 {c.featureCaption}
               </figcaption>
             </figure>
@@ -80,7 +80,7 @@ export function ServicesCatalog() {
                 alt={c.seniorCaption}
                 className="absolute inset-0 h-full w-full object-cover object-center"
               />
-              <figcaption className="absolute bottom-4 left-4 rounded-xl bg-white/5 px-3 py-1.5 text-[12.5px] font-medium text-white">
+              <figcaption className="absolute bottom-4 left-4 rounded-lg bg-white px-3 py-1.5 text-[12.5px] font-medium text-[#0a1f38]">
                 {c.seniorCaption}
               </figcaption>
             </figure>
@@ -94,26 +94,26 @@ export function ServicesCatalog() {
             {SERVICE_CATEGORIES.map((cat) => {
               const Icon = ICONS[cat.icon];
               return (
-                <div key={cat.id} className="border-t border-white/30 pt-5">
+                <div key={cat.id} className="border-t border-[#0a1f38] pt-5">
                   <div className="flex items-center gap-3">
-                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-sage/40 bg-sage/15 text-sage">
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-[#cddcc9] bg-[#f4f7f2] text-[#4e6645]">
                       <Icon className="h-4 w-4" />
                     </span>
-                    <h3 className="text-[17px] font-medium tracking-[-0.02em] text-white">
+                    <h3 className="text-[17px] font-medium tracking-[-0.02em] text-[#0a1f38]">
                       {lang === 'fr' ? cat.nameFr : cat.nameEn}
                     </h3>
                   </div>
-                  <ul className="mt-3 flex flex-col divide-y divide-white/10">
+                  <ul className="mt-3 flex flex-col divide-y divide-slate-100">
                     {cat.services.map((s) => (
                       <li key={s.slug}>
                         <Link
                           href={`/services/${s.slug}`}
                           className="group flex items-center justify-between gap-3 py-2.5"
                         >
-                          <span className="text-[14.5px] leading-snug text-white/78 transition-colors group-hover:text-white">
+                          <span className="text-[14.5px] leading-snug text-[#5a5a6a] transition-colors group-hover:text-[#0a1f38]">
                             {lang === 'fr' ? s.nameFr : s.nameEn}
                           </span>
-                          <ArrowRight className="h-4 w-4 shrink-0 text-white/35 transition-all group-hover:translate-x-0.5 group-hover:text-sage" />
+                          <ArrowRight className="h-4 w-4 shrink-0 text-slate-300 transition-all group-hover:translate-x-0.5 group-hover:text-[#4e6645]" />
                         </Link>
                       </li>
                     ))}
@@ -124,7 +124,7 @@ export function ServicesCatalog() {
           </div>
 
           {/* CTA */}
-          <div className="mt-16 flex flex-col items-start justify-between gap-6 rounded-3xl bg-ink-panel/85 p-8 sm:flex-row sm:items-center lg:p-10">
+          <div className="mt-16 flex flex-col items-start justify-between gap-6 rounded-[22px] bg-[#0a1f38] p-8 sm:flex-row sm:items-center lg:p-10">
             <p className="max-w-[520px] text-[21px] font-normal leading-[1.35] tracking-[-0.03em] text-white lg:text-[24px]">
               {c.ctaTitle}
             </p>
@@ -132,7 +132,7 @@ export function ServicesCatalog() {
               href={WAITLIST_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex shrink-0 items-center gap-2 rounded-xl bg-white/5 px-6 py-3 text-[14px] font-medium text-white transition-colors hover:bg-white/10"
+              className="group inline-flex shrink-0 items-center gap-2 rounded-[9px] bg-white px-6 py-3 text-[14px] font-medium text-[#0a1f38] transition-colors hover:bg-slate-100"
             >
               {c.ctaButton}
               <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />

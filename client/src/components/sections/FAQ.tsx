@@ -25,7 +25,7 @@ export const FAQ = () => {
   );
 
   return (
-    <section id="faq" className="pt-12 pb-20 sm:pt-16 lg:pt-24 lg:pb-28">
+    <section id="faq" className="bg-white pt-12 pb-20 sm:pt-16 lg:pt-24 lg:pb-28">
       <div className="container-custom">
         <div ref={ref} style={style} className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
           {/* Left: intro + search (sticky on desktop) */}
@@ -35,11 +35,11 @@ export const FAQ = () => {
             <p className={`${LEAD} mt-5 max-w-[420px]`}>{t('faq.subtitle')}</p>
             <label className="relative mt-8 block max-w-[420px]">
               <span className="sr-only">{t('faq.searchPlaceholder')}</span>
-              <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-white/45" />
+              <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
               <input
                 type="search"
                 placeholder={t('faq.searchPlaceholder')}
-                className="h-12 w-full rounded-xl border border-white/15 bg-white/5 pl-11 pr-4 text-[14.5px] text-white placeholder:text-white/40 transition-colors focus:border-white/30 focus:outline-none focus:ring-1 focus:ring-white/40"
+                className="h-12 w-full rounded-[9px] border border-slate-200 bg-white pl-11 pr-4 text-[14.5px] text-[#0a1f38] placeholder:text-slate-400 transition-colors focus:border-[#0a1f38] focus:outline-none focus:ring-1 focus:ring-[#0a1f38]"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -47,23 +47,23 @@ export const FAQ = () => {
           </div>
 
           {/* Right: accordion list */}
-          <div className="border-t border-white/30">
+          <div className="border-t border-[#0a1f38]">
             {filteredFaqs.length > 0 ? (
               filteredFaqs.map((faq, index) => {
                 const open = openIndex === index;
                 return (
-                  <div key={faq.question} className="border-b border-white/12">
+                  <div key={faq.question} className="border-b border-slate-200/70">
                     <button
                       type="button"
                       aria-expanded={open}
                       className="flex w-full items-start justify-between gap-6 py-5 text-left sm:py-6"
                       onClick={() => setOpenIndex(open ? null : index)}
                     >
-                      <span className="text-[16px] font-medium leading-snug tracking-[-0.01em] text-white sm:text-[18px]">
+                      <span className="text-[16px] font-medium leading-snug tracking-[-0.01em] text-[#0a1f38] sm:text-[18px]">
                         {faq.question}
                       </span>
                       <Plus
-                        className={`mt-1 h-4 w-4 shrink-0 text-white/60 transition-transform duration-300 ${
+                        className={`mt-1 h-4 w-4 shrink-0 text-slate-500 transition-transform duration-300 ${
                           open ? 'rotate-45' : ''
                         }`}
                       />
@@ -73,7 +73,7 @@ export const FAQ = () => {
                       style={{ gridTemplateRows: open ? '1fr' : '0fr' }}
                     >
                       <div className="overflow-hidden">
-                        <p className="max-w-[640px] pb-6 text-[15px] font-light leading-relaxed text-white/78">
+                        <p className="max-w-[640px] pb-6 text-[15px] font-light leading-relaxed text-[#5a5a6a]">
                           {faq.answer}
                         </p>
                       </div>
@@ -82,7 +82,7 @@ export const FAQ = () => {
                 );
               })
             ) : (
-              <p className="py-12 text-center text-[15px] text-white/60">{t('faq.noResults')}</p>
+              <p className="py-12 text-center text-[15px] text-slate-500">{t('faq.noResults')}</p>
             )}
           </div>
         </div>

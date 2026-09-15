@@ -40,7 +40,7 @@ const article: { FR: ArticleData; EN: ArticleData } = {
       {
         title: '4. Comprendre ce que fait r\u00e9ellement une infirmi\u00e8re \u00e0 domicile',
         content: [
-          'Une infirmi\u00e8re ne fait pas que des soins techniques. Elle \u00e9value votre \u00e9tat de sant\u00e9, assure une surveillance clinique et adapte le plan de soins selon votre \u00e9volution.',
+          'Une infirmi\u00e8re ne fait pas que des soins techniques. Elle \u00e9value votre condition de sant\u00e9, assure une surveillance clinique et adapte le plan de soins selon votre \u00e9volution.',
         ],
       },
     ],
@@ -88,7 +88,7 @@ const article: { FR: ArticleData; EN: ArticleData } = {
       {
         title: '3. Express your needs clearly',
         content: [
-          'Describing your symptoms, expectations, and concerns allows the care plan to be tailored to your situation.',
+          'Describing your symptoms, expectations, and concerns allows the care plan to be adapted to your reality.',
         ],
       },
       {

@@ -64,15 +64,6 @@
   --color-mist: #B4C3DB;
   --color-mist-dim: #7F90AB;
 
-  /* v3 landing (fiftyseven language): ink ground + panel surfaces, reference ease */
-  --color-ink: #04142a;
-  --color-ink-hero: #031226;
-  --color-ink-panel: #0a1f38;
-  --color-ink-raised: #16324f;
-  --ease-fs: cubic-bezier(0.06, 0, 0, 1);
-  --animate-fs-rise: fsRise 0.9s cubic-bezier(0.06, 0, 0, 1) backwards;
-  --animate-fs-clip: fsClipRise 1s cubic-bezier(0.06, 0, 0, 1) backwards;
-
   --color-primary-light: #2d2d3a;
   --color-secondary: #10b981;
   --color-secondary-dark: #059669;
@@ -100,8 +91,6 @@
 
   @keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
   @keyframes slideUp { 0% { transform: translateY(24px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
-  @keyframes fsRise { 0% { transform: translateY(24px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
-  @keyframes fsClipRise { 0% { transform: translateY(110%); } 100% { transform: translateY(0); } }
   @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
   @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
   @keyframes marquee2 { 0% { transform: translateX(100%); } 100% { transform: translateX(0); } }
@@ -110,10 +99,8 @@
 @layer base {
   html, body {
     /* Clip any stray horizontal overflow from decorative blobs/transforms so the
-       page can't develop a sliver of horizontal scroll that makes mobile jitter.
-       `clip` (not `hidden`) so body never becomes a scroll container — the v3
-       landing relies on position: sticky against the viewport. */
-    overflow-x: clip;
+       page can't develop a sliver of horizontal scroll that makes mobile jitter. */
+    overflow-x: hidden;
     max-width: 100%;
     /* Dark base so mobile overscroll (rubber-band) never flashes white. */
     background-color: #04142a;
@@ -126,8 +113,6 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-  /* Footer "How it works" links to /#visit; land it under the floating pills. */
-  #visit { scroll-margin-top: 6rem; }
   h1, h2, h3, h4, h5, h6 {
     font-family: "Inter", -apple-system, sans-serif;
     font-weight: 600;
@@ -218,25 +203,6 @@
     transform: translateY(1px);
     box-shadow: 0 1px 0 #001a33, 0 2px 4px rgba(0, 0, 0, 0.2);
   }
-  /* ── v3 landing (fiftyseven language) ── */
-  /* Floating panel: header pills, menu sheet, bottom bar, colophon, drag badge */
-  /* No backdrop-filter: blurring a playing video under three fixed panels costs
-     a full re-blur every frame and was the scroll jank past the hero. */
-  .fs-panel {
-    background: color-mix(in srgb, var(--color-ink) 93%, transparent);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
-  }
-  /* Scrim over the video ground: deep navy with a little more blue up top so
-     white type clears contrast everywhere (navy-800 -> ink, both palette values). */
-  .fs-scrim { background: linear-gradient(180deg, #0B2247 0%, #04142a 100%); }
-  /* Soft ink pool behind a chapter's text so legibility never depends on how
-     bright the video frame underneath happens to be. */
-  .fs-vignette { background: radial-gradient(ellipse 60% 70% at 50% 50%, rgba(4, 20, 42, 0.6), transparent 75%); }
-  .fs-noscrollbar { scrollbar-width: none; -ms-overflow-style: none; }
-  .fs-noscrollbar::-webkit-scrollbar { display: none; }
-  /* Planet on the visit ring: orbit by --a (deg) at radius --r, label kept upright */
-  .fs-planet { transform: rotate(var(--a)) translate(var(--r)) rotate(calc(var(--a) * -1)); }
 }
 
 /* ── Nursing Dispatch Map animations ── */

@@ -9,7 +9,7 @@ const article: { FR: ArticleData; EN: ArticleData } = {
     tag: 'Tendance sant\u00e9',
     date: 'Mai 2026',
     title: 'Les avantages des soins \u00e0 domicile pour les a\u00een\u00e9s',
-    subtitle: 'Et si le meilleur endroit pour vieillir n\u2019\u00e9tait pas l\u2019h\u00f4pital\u2026 mais tout simplement chez soi? Aujourd\u2019hui, les soins \u00e0 domicile ne sont plus une option secondaire : ils deviennent une v\u00e9ritable r\u00e9volution silencieuse dans notre fa\u00e7on d\u2019accompagner les a\u00een\u00e9s.',
+    subtitle: 'Et si la meilleure place pour vieillir n\u2019\u00e9tait pas l\u2019h\u00f4pital\u2026 mais tout simplement chez soi ? Aujourd\u2019hui, les soins \u00e0 domicile ne sont plus une alternative secondaire : ils deviennent une v\u00e9ritable r\u00e9volution silencieuse dans notre fa\u00e7on d\u2019accompagner les a\u00een\u00e9s.',
     readTime: '6 min',
     image: '/images/articles/soins-aines.jpg',
     fallbackImage: 'https://images.unsplash.com/photo-1631815589968-fdb09a223b1e?auto=format&fit=crop&w=1200&q=80',
@@ -35,7 +35,7 @@ const article: { FR: ArticleData; EN: ArticleData } = {
       {
         title: '4. Un impact direct sur la sant\u00e9 mentale',
         content: [
-          'Vieillir chez soi, c\u2019est rester dans un environnement familier, entour\u00e9 de souvenirs. Cela peut contribuer \u00e0 r\u00e9duire le stress et l\u2019anxi\u00e9t\u00e9 et \u00e0 favoriser le bien-\u00eatre global.',
+          'Vieillir chez soi, c\u2019est rester dans un environnement familier, entour\u00e9 de souvenirs. Cela diminue significativement le stress, l\u2019anxi\u00e9t\u00e9 et favorise le bien-\u00eatre global.',
         ],
       },
       {
@@ -54,14 +54,14 @@ const article: { FR: ArticleData; EN: ArticleData } = {
     conclusion: {
       title: 'Ce qu\u2019il faut retenir',
       content: [
-        'Les soins \u00e0 domicile ne sont pas seulement pratiques \u2014 ils repr\u00e9sentent une transformation profonde du syst\u00e8me de sant\u00e9. Ils redonnent du pouvoir aux a\u00een\u00e9s, soutiennent les familles et permettent aux professionnels de la sant\u00e9 d\u2019intervenir autrement : plus pr\u00e8s, plus humainement.',
-        'Et si le futur des soins passait\u2026 par le retour \u00e0 la maison?',
+        'Les soins \u00e0 domicile ne sont pas seulement pratiques \u2014 ils repr\u00e9sentent une transformation profonde du syst\u00e8me de sant\u00e9. Ils redonnent du pouvoir aux a\u00een\u00e9s, soutiennent les familles et permettent aux professionnels de sant\u00e9 d\u2019intervenir autrement : plus pr\u00e8s, plus humainement.',
+        'Et si le futur des soins passait\u2026 par le retour \u00e0 la maison ?',
       ],
     },
   },
   EN: {
     slug: 'soins-aines',
-    tag: 'Health trend',
+    tag: 'Health Trend',
     date: 'May 2026',
     title: 'The Benefits of Home Care for Seniors',
     subtitle: 'What if the best place to age wasn\u2019t the hospital\u2026 but simply at home? Today, home care is no longer a secondary alternative: it\u2019s becoming a quiet revolution in how we support our seniors.',
@@ -90,7 +90,7 @@ const article: { FR: ArticleData; EN: ArticleData } = {
       {
         title: '4. A direct impact on mental health',
         content: [
-          'Aging at home means staying in a familiar environment, surrounded by memories. This can help reduce stress and anxiety and support overall well-being.',
+          'Aging at home means staying in a familiar environment, surrounded by memories. This significantly reduces stress and anxiety while promoting overall well-being.',
         ],
       },
       {

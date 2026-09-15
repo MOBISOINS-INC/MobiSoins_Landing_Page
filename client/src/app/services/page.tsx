@@ -6,7 +6,7 @@ import { ServicesCatalog } from '../../components/sections/ServicesCatalog';
 
 export default function ServicesPage() {
   return (
-    <PageShell labelKey="header.services">
+    <PageShell>
       <Services showViewAll={false} />
       <ServicesCatalog />
     </PageShell>

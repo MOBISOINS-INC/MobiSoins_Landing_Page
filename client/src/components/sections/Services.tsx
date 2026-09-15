@@ -50,7 +50,7 @@ export const Services = ({ showViewAll = true }: { showViewAll?: boolean } = {})
     .join(' ');
 
   return (
-    <section id="services" className="pt-12 pb-16 sm:pt-16 lg:pt-24 lg:pb-24">
+    <section id="services" className="bg-white pt-12 pb-16 sm:pt-16 lg:pt-24 lg:pb-24">
       <div className="container-custom">
         <div ref={ref} style={style}>
           <div className="max-w-[720px]">
@@ -61,7 +61,7 @@ export const Services = ({ showViewAll = true }: { showViewAll?: boolean } = {})
           <div className="mt-12 grid gap-4 md:grid-cols-3 md:gap-[30px]">
             {cards.map((card) => (
               <article key={card.title} className={`${CARD} flex flex-col overflow-hidden`}>
-                <div className="relative aspect-[16/10] border-b border-white/12 bg-ink-panel/50">
+                <div className="relative aspect-[16/10] border-b border-slate-200/70 bg-slate-50">
                   <Image
                     src={card.image}
                     alt={card.title}
@@ -72,19 +72,19 @@ export const Services = ({ showViewAll = true }: { showViewAll?: boolean } = {})
                   />
                 </div>
                 <div className="flex flex-1 flex-col p-6 sm:p-7">
-                  <span className="text-[12px] font-medium uppercase tracking-[0.14em] text-sage">
+                  <span className="text-[12px] font-medium uppercase tracking-[0.14em] text-[#4e6645]">
                     {card.badge}
                   </span>
-                  <h2 className="mt-3 text-[19px] font-medium leading-snug tracking-[-0.02em] text-white">
+                  <h2 className="mt-3 text-[19px] font-medium leading-snug tracking-[-0.02em] text-[#0a1f38]">
                     {card.title}
                   </h2>
-                  <p className="mt-2 text-[14.5px] font-light leading-relaxed text-white/78">
+                  <p className="mt-2 text-[14.5px] font-light leading-relaxed text-[#5a5a6a]">
                     {card.description}
                   </p>
-                  <ul className="mt-5 flex flex-col gap-2.5 border-t border-white/10 pt-5">
+                  <ul className="mt-5 flex flex-col gap-2.5 border-t border-slate-100 pt-5">
                     {card.points.map((point) => (
-                      <li key={point} className="flex items-start gap-2.5 text-[13.5px] leading-snug text-white">
-                        <Check className="mt-0.5 h-4 w-4 shrink-0 text-sage" strokeWidth={2.5} />
+                      <li key={point} className="flex items-start gap-2.5 text-[13.5px] leading-snug text-[#0a1f38]">
+                        <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#4e6645]" strokeWidth={2.5} />
                         <span>{point}</span>
                       </li>
                     ))}
@@ -98,7 +98,7 @@ export const Services = ({ showViewAll = true }: { showViewAll?: boolean } = {})
             <div className="mt-12 flex justify-center">
               <Link
                 href="/services"
-                className="group inline-flex items-center gap-2 rounded-xl border border-white/15 px-6 py-3 text-[14px] font-medium text-white transition-colors hover:bg-white/5"
+                className="group inline-flex items-center gap-2 rounded-[9px] border border-slate-200 px-6 py-3 text-[14px] font-medium text-[#0a1f38] transition-colors hover:bg-slate-50"
               >
                 {t('services.seeAll')}
                 <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
