@@ -32,8 +32,8 @@ const COPY = {
       { t: 'Le soin est prodigué', d: 'En toute sécurité, dans le confort de votre domicile.' },
       { t: 'Rapport dans l’application', d: 'Un compte rendu clinique est disponible après la visite.' },
     ],
-    reassure: ['Infirmières certifiées OIIQ', 'À domicile', 'Environ 30 minutes'],
-    ctaTitle: 'Besoin de ce soin à la maison ?',
+    reassure: ['Infirmières autorisées OIIQ', 'À domicile', 'Environ 30 minutes'],
+    ctaTitle: 'Besoin de ce soin à la maison?',
     ctaButton: 'Rejoindre la liste d’attente',
     related: 'Autres soins dans cette catégorie',
     notFound: 'Ce service est introuvable.',
@@ -50,9 +50,9 @@ const COPY = {
       { t: 'Care is delivered', d: 'Safely, in the comfort of your own home.' },
       { t: 'Report in the app', d: 'A clinical summary is available after the visit.' },
     ],
-    reassure: ['OIIQ-certified nurses', 'At home', 'About 30 minutes'],
+    reassure: ['OIIQ-licensed nurses', 'At home', 'About 30 minutes'],
     ctaTitle: 'Need this care at home?',
-    ctaButton: 'Join the waiting list',
+    ctaButton: 'Join the waitlist',
     related: 'Other services in this category',
     notFound: 'This service could not be found.',
     notFoundCta: 'View all services',
@@ -69,13 +69,13 @@ export default function ServiceDetailPage() {
   const found = slug ? getServiceBySlug(slug) : undefined;
 
   return (
-    <PageShell>
+    <PageShell labelKey="header.services">
       {!found ? (
         <div className="container-custom py-24 text-center">
           <p className={BODY}>{c.notFound}</p>
           <Link
             href="/services"
-            className="mt-6 inline-block text-[15px] font-medium text-[#0a1f38] underline underline-offset-4"
+            className="mt-6 inline-block text-[15px] font-medium text-white underline underline-offset-4"
           >
             {c.notFoundCta}
           </Link>
@@ -106,11 +106,11 @@ function ServiceBody({
   const { ref, style } = useReveal();
 
   return (
-    <div className="bg-white pt-10 pb-20 sm:pt-12 lg:pt-16 lg:pb-28">
+    <div className="pt-10 pb-20 sm:pt-12 lg:pt-16 lg:pb-28">
       <div ref={ref} style={style} className="container-custom">
         <Link
           href="/services"
-          className="inline-flex items-center gap-2 text-[13.5px] font-medium text-slate-500 transition-colors hover:text-[#0a1f38]"
+          className="inline-flex items-center gap-2 text-[13.5px] font-medium text-white/60 transition-colors hover:text-white"
         >
           <ArrowLeft className="h-4 w-4" />
           {c.back}
@@ -119,7 +119,7 @@ function ServiceBody({
         {/* Header */}
         <div className="mt-8 max-w-[760px]">
           <div className="flex items-center gap-3">
-            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-[#cddcc9] bg-[#f4f7f2] text-[#4e6645]">
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-sage/40 bg-sage/15 text-sage">
               <Icon className="h-5 w-5" />
             </span>
             <span className={EYEBROW}>{catName}</span>
@@ -132,18 +132,18 @@ function ServiceBody({
           {/* Left: what it is + how it works */}
           <div className="flex flex-col gap-12">
             <section>
-              <h2 className="text-[20px] font-medium tracking-[-0.02em] text-[#0a1f38]">{c.whatTitle}</h2>
+              <h2 className="text-[20px] font-medium tracking-[-0.02em] text-white">{c.whatTitle}</h2>
               <p className={`${BODY} mt-3`}>{long}</p>
             </section>
 
             <section>
-              <h2 className="text-[20px] font-medium tracking-[-0.02em] text-[#0a1f38]">{c.howTitle}</h2>
+              <h2 className="text-[20px] font-medium tracking-[-0.02em] text-white">{c.howTitle}</h2>
               <ol className="mt-5 grid gap-x-[30px] sm:grid-cols-2">
                 {c.steps.map((s, i) => (
-                  <li key={s.t} className="border-t border-slate-200/70 py-5">
-                    <span className="text-[13px] font-semibold text-[#0a1f38]">0{i + 1}</span>
-                    <p className="mt-2 text-[16px] font-medium leading-snug tracking-[-0.01em] text-[#0a1f38]">{s.t}</p>
-                    <p className="mt-1 text-[14px] font-light leading-relaxed text-[#5a5a6a]">{s.d}</p>
+                  <li key={s.t} className="border-t border-white/12 py-5">
+                    <span className="text-[13px] font-semibold text-white">0{i + 1}</span>
+                    <p className="mt-2 text-[16px] font-medium leading-snug tracking-[-0.01em] text-white">{s.t}</p>
+                    <p className="mt-1 text-[14px] font-light leading-relaxed text-white/78">{s.d}</p>
                   </li>
                 ))}
               </ol>
@@ -155,18 +155,18 @@ function ServiceBody({
             <h2 className={EYEBROW}>{c.goodTitle}</h2>
             <ul className="mt-4 flex flex-col gap-3">
               {points.map((p) => (
-                <li key={p} className="flex items-start gap-2.5 text-[14.5px] leading-snug text-[#0a1f38]">
-                  <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#4e6645]" strokeWidth={2.5} />
+                <li key={p} className="flex items-start gap-2.5 text-[14.5px] leading-snug text-white">
+                  <Check className="mt-0.5 h-4 w-4 shrink-0 text-sage" strokeWidth={2.5} />
                   <span>{p}</span>
                 </li>
               ))}
             </ul>
-            <div className="mt-6 flex flex-col gap-2.5 border-t border-slate-100 pt-5">
+            <div className="mt-6 flex flex-col gap-2.5 border-t border-white/10 pt-5">
               {c.reassure.map((r, i) => {
                 const RI = reassureIcons[i];
                 return (
-                  <div key={r} className="flex items-center gap-2.5 text-[13.5px] text-[#5a5a6a]">
-                    <RI className="h-4 w-4 shrink-0 text-[#4e6645]" />
+                  <div key={r} className="flex items-center gap-2.5 text-[13.5px] text-white/78">
+                    <RI className="h-4 w-4 shrink-0 text-sage" />
                     {r}
                   </div>
                 );
@@ -176,7 +176,7 @@ function ServiceBody({
               href={WAITLIST_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="cta-navy group mt-6 inline-flex w-full items-center justify-center gap-2 rounded-[10px] px-6 py-3.5 text-[15px] font-medium"
+              className="bg-white text-ink-panel shadow-[0_10px_30px_-10px_rgba(0,0,0,.7)] transition-transform hover:-translate-y-0.5 group mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-3.5 text-[15px] font-medium"
             >
               {c.ctaButton}
               <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
@@ -186,24 +186,24 @@ function ServiceBody({
 
         {/* Related services */}
         {siblings.length > 0 && (
-          <section className="mt-16 border-t border-[#0a1f38] pt-8">
+          <section className="mt-16 border-t border-white/30 pt-8">
             <h2 className={EYEBROW}>{c.related}</h2>
             <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-[30px]">
               {siblings.map((s) => (
                 <Link
                   key={s.slug}
                   href={`/services/${s.slug}`}
-                  className="group flex items-center justify-between gap-3 rounded-2xl border border-slate-200/70 p-5 transition-colors hover:bg-slate-50"
+                  className="group flex items-center justify-between gap-3 rounded-2xl border border-white/12 p-5 transition-colors hover:bg-white/5"
                 >
                   <div>
-                    <p className="text-[15.5px] font-medium leading-snug tracking-[-0.01em] text-[#0a1f38]">
+                    <p className="text-[15.5px] font-medium leading-snug tracking-[-0.01em] text-white">
                       {lang === 'fr' ? s.nameFr : s.nameEn}
                     </p>
-                    <p className="mt-1 line-clamp-2 text-[13px] font-light leading-relaxed text-[#5a5a6a]">
+                    <p className="mt-1 line-clamp-2 text-[13px] font-light leading-relaxed text-white/78">
                       {lang === 'fr' ? s.shortFr : s.shortEn}
                     </p>
                   </div>
-                  <ArrowRight className="h-4 w-4 shrink-0 text-slate-300 transition-all group-hover:translate-x-0.5 group-hover:text-[#4e6645]" />
+                  <ArrowRight className="h-4 w-4 shrink-0 text-white/35 transition-all group-hover:translate-x-0.5 group-hover:text-sage" />
                 </Link>
               ))}
             </div>

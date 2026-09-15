@@ -5,7 +5,7 @@ import { FAQ } from '../../components/sections/FAQ';
 
 export default function FAQPage() {
   return (
-    <PageShell>
+    <PageShell labelKey="header.faq">
       <FAQ />
     </PageShell>
   );

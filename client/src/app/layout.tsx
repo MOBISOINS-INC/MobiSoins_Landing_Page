@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono, Instrument_Serif } from 'next/font/google';
 import { LanguageProvider } from '../contexts/LanguageContext';
+import { CookieConsent } from '../components/consent/CookieConsent';
 import './globals.css';
 
 const geist = Geist({ subsets: ['latin'], variable: '--font-geist', display: 'swap' });
@@ -59,8 +60,12 @@ export default function RootLayout({
         <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="" />
         <link rel="dns-prefetch" href="https://placehold.co" />
       </head>
-      <body style={{ background: '#ffffff' }}>
-        <LanguageProvider>{children}</LanguageProvider>
+      <body style={{ background: '#04142a', color: '#ffffff' }}>
+        <LanguageProvider>
+          {children}
+          {/* Consent panel: first visit until a choice is made; re-opened from the footer. */}
+          <CookieConsent />
+        </LanguageProvider>
       </body>
     </html>
   );
