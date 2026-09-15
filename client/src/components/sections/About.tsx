@@ -66,17 +66,17 @@ export const About = () => {
 
           <div ref={facts.ref} style={facts.style} className="mt-14 lg:mt-20">
             <Photo
-              src="/nurses/elder-03.jpeg"
+              src="/about/hero.jpg"
               alt="Aînée souriante accompagnée par MobiSoins"
               className="aspect-[16/9] sm:aspect-[21/9]"
             />
-            <dl className="mt-10 grid grid-cols-1 gap-x-[30px] gap-y-6 sm:grid-cols-3 lg:mt-12">
+            <dl className="mt-8 grid grid-cols-3 gap-x-4 sm:gap-x-[30px] lg:mt-12">
               {[1, 2, 3].map((n) => (
                 <div key={n} className="border-t border-[#0a1f38] pt-5">
-                  <dt className="text-[32px] font-semibold leading-none tracking-[-0.035em] text-[#0a1f38] lg:text-[40px]">
+                  <dt className="text-[24px] font-semibold leading-none tracking-[-0.035em] text-[#0a1f38] sm:text-[32px] lg:text-[40px]">
                     {t(`about.fact${n}Value`)}
                   </dt>
-                  <dd className="mt-3 text-[14px] leading-relaxed text-[#5a5a6a]">{t(`about.fact${n}Label`)}</dd>
+                  <dd className="mt-2 text-[12px] leading-snug text-[#5a5a6a] sm:mt-3 sm:text-[14px] sm:leading-relaxed">{t(`about.fact${n}Label`)}</dd>
                 </div>
               ))}
             </dl>
@@ -99,7 +99,7 @@ export const About = () => {
               <p className="mt-3 text-[15px] font-light leading-relaxed text-[#a8bacd]">{t('about.statement3')}</p>
             </div>
             <Photo
-              src="/nurses/commitment.png"
+              src="/about/commitment.jpg"
               alt="Des patients de tous âges accompagnés par MobiSoins"
               className="aspect-[4/3] min-h-[260px] lg:aspect-auto lg:min-h-full"
             />
@@ -143,7 +143,7 @@ export const About = () => {
                 <p className={BODY}>{t('about.storyText4')}</p>
               </div>
               <Photo
-                src="/nurses/care-3.png"
+                src="/about/story.jpg"
                 alt="L'équipe MobiSoins"
                 className="aspect-[4/3] lg:sticky lg:top-32 lg:aspect-auto lg:h-[32rem]"
               />
@@ -162,21 +162,21 @@ export const About = () => {
               <p className={`${LEAD} mt-5`}>{t('about.foundersLead')}</p>
             </div>
 
-            <div className="mt-12 grid gap-10 sm:grid-cols-2 lg:mt-16 lg:gap-x-[30px] lg:gap-y-16">
+            <div className="mt-10 grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 lg:mt-16 lg:gap-x-[30px] lg:gap-y-16">
               {FOUNDERS.map((f) => {
                 const initials = f.name.split(' ').map((n) => n[0]).join('');
                 return (
-                  <article key={f.slug} className="grid gap-6 sm:grid-cols-[minmax(0,200px)_1fr] sm:gap-7 lg:grid-cols-[240px_1fr]">
+                  <article key={f.slug} className="grid gap-4 lg:grid-cols-[220px_1fr] lg:gap-7">
                     {/* Portrait — 4:5, initials tile until a photo is provided */}
-                    <div className={`${FRAME} aspect-[4/5] w-full max-w-[280px] sm:max-w-none`}>
+                    <div className={`${FRAME} aspect-[4/5] w-full`}>
                       {f.photo ? (
                         <img src={f.photo} alt={f.name} className="absolute inset-0 h-full w-full object-cover" />
                       ) : (
                         <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-[#f1f5f9]">
-                          <span className="flex h-16 w-16 items-center justify-center rounded-full bg-[#0a1f38] text-[18px] font-semibold text-white">
+                          <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[#0a1f38] text-[15px] font-semibold text-white sm:h-16 sm:w-16 sm:text-[18px]">
                             {initials}
                           </span>
-                          <span className="text-[11px] font-medium uppercase tracking-[0.14em] text-slate-400">
+                          <span className="px-2 text-center text-[10px] font-medium uppercase tracking-[0.14em] text-slate-400 sm:text-[11px]">
                             {t('about.founderPhotoPending')}
                           </span>
                         </div>
@@ -184,19 +184,19 @@ export const About = () => {
                     </div>
 
                     <div className="flex flex-col">
-                      <h3 className="text-[22px] font-semibold leading-tight tracking-[-0.025em] text-[#0a1f38] sm:text-[24px]">
+                      <h3 className="text-[17px] font-semibold leading-tight tracking-[-0.025em] text-[#0a1f38] sm:text-[22px] lg:text-[24px]">
                         {f.name}
                       </h3>
-                      <p className="mt-1 text-[14px] font-medium text-[#4e6645]">{f.role[lang]}</p>
+                      <p className="mt-1 text-[13px] font-medium text-[#4e6645] sm:text-[14px]">{f.role[lang]}</p>
 
-                      <dl className="mt-5 grid grid-cols-[auto_1fr] gap-x-5 gap-y-2 border-t border-slate-200/70 pt-5 text-[14px]">
+                      <dl className="mt-4 grid grid-cols-1 gap-y-2 border-t border-slate-200/70 pt-4 text-[13px] sm:grid-cols-[auto_1fr] sm:gap-x-5 sm:text-[14px]">
                         <dt className="text-[12px] font-medium uppercase tracking-[0.14em] text-slate-500 leading-[1.7]">{t('about.founderFrom')}</dt>
                         <dd className="text-[#0a1f38]">{f.origin[lang]}</dd>
                         <dt className="text-[12px] font-medium uppercase tracking-[0.14em] text-slate-500 leading-[1.7]">{t('about.founderPrev')}</dt>
                         <dd className="text-[#0a1f38]">{f.previously[lang]}</dd>
                       </dl>
 
-                      <p className="mt-5 text-[15px] font-light leading-relaxed text-[#5a5a6a]">{f.bio[lang]}</p>
+                      <p className="mt-4 text-[13.5px] font-light leading-relaxed text-[#5a5a6a] sm:text-[15px]">{f.bio[lang]}</p>
                     </div>
                   </article>
                 );
@@ -215,12 +215,12 @@ export const About = () => {
               <h2 className={`${H2} mt-4`}>{t('about.teamTitle')}</h2>
               <p className={`${LEAD} mt-5`}>{t('about.teamLead')}</p>
             </div>
-            <div className="mt-12 grid gap-4 sm:grid-cols-3 sm:gap-[30px]">
+            <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-[30px]">
               {teamItems.map(({ icon, titleKey, descKey }) => (
-                <div key={titleKey} className={`${CARD} p-6 sm:p-7`}>
+                <div key={titleKey} className={`${CARD} p-4 sm:p-7`}>
                   <IconTile Icon={icon} />
-                  <h3 className="mt-5 text-[18px] font-medium tracking-[-0.02em] text-[#0a1f38]">{t(titleKey)}</h3>
-                  <p className="mt-2 text-[14.5px] font-light leading-relaxed text-[#5a5a6a]">{t(descKey)}</p>
+                  <h3 className="mt-4 text-[15px] font-medium tracking-[-0.02em] text-[#0a1f38] sm:mt-5 sm:text-[18px]">{t(titleKey)}</h3>
+                  <p className="mt-2 text-[13px] font-light leading-relaxed text-[#5a5a6a] sm:text-[14.5px]">{t(descKey)}</p>
                 </div>
               ))}
             </div>
