@@ -1,145 +1,266 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
-import {
-  Stethoscope, Syringe, HeartPulse, ClipboardCheck,
-  ShieldCheck, Baby, HeartHandshake, FlaskConical, Building2, ArrowRight,
-} from 'lucide-react';
 import { useLanguage } from '../../contexts/LanguageContext';
-import { useReveal } from '../../hooks/useReveal';
+import { useScrollMotion } from '../../hooks/useScrollMotion';
 import { SERVICE_CATEGORIES, type ServiceCategory } from '../../data/services';
-import { EYEBROW, H2, LEAD, FRAME } from '../layout/PageShell';
+import { SERVICE_PHOTOS } from '../../data/servicePhotos';
+import { ArrowRight, DISPLAY, Eyebrow } from '../ui/editorial';
+import { PulseLine } from '../ui/PulseLine';
 
 const WAITLIST_URL =
   'https://docs.google.com/forms/d/1TaBNJ9M7Ks6LW5_Vfyqx5DodEPQZbo06bxX8PvJFLiw/viewform';
 
-const ICONS: Record<ServiceCategory['icon'], React.ComponentType<{ className?: string }>> = {
-  nursing: Stethoscope, vaccination: Syringe, chronic: HeartPulse, checkup: ClipboardCheck,
-  sexual: ShieldCheck, pediatrics: Baby, seniors: HeartHandshake, analysis: FlaskConical, enterprises: Building2,
-};
-
 const COPY = {
   FR: {
     badge: 'Le catalogue',
-    title: 'Des soins complets, directement à domicile',
+    title: 'Des soins complets, directement à domicile.',
     subtitle:
-      '9 spécialités et plus de 25 soins offerts par des infirmières certifiées OIIQ — des tout-petits aux aînés. Touchez un soin pour découvrir en quoi il consiste.',
+      '9 spécialités et plus de 25 soins offerts par des infirmières certifiées OIIQ, des tout-petits aux aînés. Choisissez un soin pour découvrir en quoi il consiste.',
+    indexLabel: 'Spécialités',
     featureCaption: 'Soins professionnels à domicile',
-    seniorCaption: 'Accompagnement des aînés',
-    hint: 'Touchez un soin pour en savoir plus',
+    featureAlt: 'Une infirmière refait le pansement d’un homme assis dans son salon',
+    service: 'soin',
+    services: 'soins',
+    insuranceBadge: 'Assurances',
+    insurance:
+      'Certains soins sont admissibles au remboursement par assurances privées. Reçu officiel fourni après chaque visite.',
     ctaTitle: 'Prêt à recevoir des soins à la maison ?',
     ctaButton: 'Rejoindre la liste d’attente',
   },
   EN: {
     badge: 'The catalogue',
-    title: 'Complete care, right at home',
+    title: 'Complete care, right at home.',
     subtitle:
-      '9 specialties and 25+ treatments delivered by OIIQ-certified nurses — from toddlers to seniors. Tap any service to see what it involves.',
+      '9 specialties and 25+ treatments delivered by OIIQ-certified nurses, from toddlers to seniors. Choose any service to see what it involves.',
+    indexLabel: 'Specialties',
     featureCaption: 'Professional home care',
-    seniorCaption: 'Dedicated senior care',
-    hint: 'Tap a service to learn more',
+    featureAlt: 'A nurse changes a dressing on a man’s forearm in his living room',
+    service: 'service',
+    services: 'services',
+    insuranceBadge: 'Insurance',
+    insurance:
+      'Some services are eligible for private insurance reimbursement. An official receipt is provided after every visit.',
     ctaTitle: 'Ready to get care at home?',
     ctaButton: 'Join the waiting list',
   },
 } as const;
 
+// Specialties that carry a photograph beside their title (by service slug).
+const SPECIALTY_PHOTO: Partial<Record<ServiceCategory['id'], string>> = {
+  vaccination: 'grippe',
+  pediatrics: 'vaccins-enfant',
+  seniors: 'soins-domicile-aines',
+  analysis: 'prise-sang-labo',
+  enterprises: 'bilan-sante-entreprise',
+};
+
+type Lang = 'fr' | 'en';
+
+// One specialty: a rule draws in, the number and title rise, the photo wipes
+// open, then the service rows follow in a short stagger.
+function Specialty({
+  cat,
+  index,
+  lang,
+  c,
+}: {
+  cat: ServiceCategory;
+  index: number;
+  lang: Lang;
+  c: (typeof COPY)[keyof typeof COPY];
+}) {
+  const m = useScrollMotion<HTMLElement>();
+  const photoSlug = SPECIALTY_PHOTO[cat.id];
+  const photo = photoSlug ? SERVICE_PHOTOS[photoSlug] : undefined;
+  const n = cat.services.length;
+
+  return (
+    <section ref={m.ref} id={cat.id} className="relative scroll-mt-28 py-10 lg:py-16">
+      <div className="absolute inset-x-0 top-0 h-px bg-ink" style={m.rule()} aria-hidden="true" />
+      <div className="grid grid-cols-1 gap-y-7 lg:grid-cols-[320px_minmax(0,1fr)] lg:items-start lg:gap-x-24">
+        <div className="flex flex-col gap-3.5 lg:sticky lg:top-28">
+          <div className="flex items-baseline gap-4" style={m.rise(0, 0.1)}>
+            <span className="font-display text-[44px] font-light leading-none text-ink-faint lg:text-[56px]">
+              {String(index + 1).padStart(2, '0')}
+            </span>
+            <span className="text-[13px] text-ink-soft">
+              {n} {n > 1 ? c.services : c.service}
+            </span>
+          </div>
+          <h2
+            className={`${DISPLAY} text-[32px] leading-[1.05] lg:text-[40px]`}
+            style={m.rise(1, 0.1)}
+          >
+            {lang === 'fr' ? cat.nameFr : cat.nameEn}
+          </h2>
+          {photo && (
+            <div className="mt-3 overflow-hidden rounded" style={m.photo(0.25)}>
+              <Image
+                src={photo.src}
+                alt={photo[lang]}
+                width={photo.w}
+                height={photo.h}
+                unoptimized
+                className={`h-[240px] w-full object-cover lg:h-[300px] ${photo.pos ?? 'object-center'}`}
+              />
+            </div>
+          )}
+        </div>
+
+        <ul className="m-0 flex list-none flex-col border-t border-rule p-0">
+          {cat.services.map((s, i) => (
+            <li key={s.slug} style={m.rise(i, 0.2)}>
+              <Link
+                href={`/services/${s.slug}`}
+                className="group grid grid-cols-[minmax(0,1fr)_24px] gap-x-5 gap-y-1.5 border-b border-rule py-5 lg:grid-cols-[250px_minmax(0,1fr)_24px] lg:gap-x-8 lg:py-6"
+              >
+                <h3 className="font-sans text-[17px] font-semibold leading-[1.3] tracking-normal text-ink lg:text-[18px]">
+                  {lang === 'fr' ? s.nameFr : s.nameEn}
+                </h3>
+                <p className="col-start-1 text-[14px] leading-[1.6] text-ink-soft lg:col-start-2 lg:text-[15px]">
+                  {lang === 'fr' ? s.shortFr : s.shortEn}
+                </p>
+                <span className="col-start-2 row-start-1 pt-[3px] text-leaf transition-transform duration-300 group-hover:translate-x-1 lg:col-start-3">
+                  <ArrowRight />
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
 export function ServicesCatalog() {
   const { language } = useLanguage();
   const c = COPY[language];
-  const lang = language === 'FR' ? 'fr' : 'en';
-  const intro = useReveal();
-  const grid = useReveal();
+  const lang: Lang = language === 'FR' ? 'fr' : 'en';
+  const hero = useScrollMotion();
+  const figure = useScrollMotion<HTMLElement>();
+  const note = useScrollMotion<HTMLElement>();
+  const cta = useScrollMotion();
 
   return (
-    <section className="border-t border-slate-200/70 bg-white py-16 lg:py-24">
-      <div className="container-custom">
-        {/* Intro */}
-        <div ref={intro.ref} style={intro.style}>
-          <div className="max-w-[720px]">
-            <span className={EYEBROW}>{c.badge}</span>
-            <h2 className={`${H2} mt-4`}>{c.title}</h2>
-            <p className={`${LEAD} mt-5`}>{c.subtitle}</p>
+    <div className="bg-paper">
+      {/* ========== Opening: title + jump index ========== */}
+      <section className="pt-14 sm:pt-20 lg:pt-28">
+        <div className="container-custom">
+          <div
+            ref={hero.ref}
+            className="grid grid-cols-1 gap-y-10 lg:grid-cols-[minmax(0,1fr)_400px] lg:items-start lg:gap-x-24"
+          >
+            <div className="flex flex-col gap-5 lg:gap-7">
+              <div style={hero.rise(0)}>
+                <Eyebrow>{c.badge}</Eyebrow>
+              </div>
+              <h1
+                className={`${DISPLAY} text-[46px] leading-none tracking-[-0.03em] sm:text-[64px] lg:text-[92px] lg:leading-[0.98]`}
+                style={hero.rise(1)}
+              >
+                {c.title}
+              </h1>
+              <p className="max-w-[560px] text-[16px] leading-[1.7] text-ink-soft lg:text-[18px]" style={hero.rise(2)}>
+                {c.subtitle}
+              </p>
+            </div>
+
+            <nav aria-label={c.indexLabel} className="relative flex flex-col lg:mt-2">
+              <div className="absolute inset-x-0 top-0 h-px bg-ink" style={hero.rule(0.15)} aria-hidden="true" />
+              {SERVICE_CATEGORIES.map((cat, i) => (
+                <a
+                  key={cat.id}
+                  href={`#${cat.id}`}
+                  className="group grid min-h-11 grid-cols-[36px_minmax(0,1fr)_auto] items-baseline gap-x-3 border-b border-rule py-[11px] text-[15px] font-medium text-ink"
+                  style={hero.rise(i, 0.2)}
+                >
+                  <span className="text-[12px] font-semibold tracking-[0.1em] text-leaf-text">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <span className="transition-transform duration-300 group-hover:translate-x-1">
+                    {lang === 'fr' ? cat.nameFr : cat.nameEn}
+                  </span>
+                  <span className="text-[13px] font-normal tabular-nums text-ink-soft">{cat.services.length}</span>
+                </a>
+              ))}
+            </nav>
           </div>
 
-          {/* Feature image band */}
-          <div className="mt-10 grid gap-4 md:grid-cols-3 md:gap-[30px]">
-            <figure className={`${FRAME} aspect-[16/9] md:col-span-2 md:aspect-auto md:h-[400px]`}>
-              <img
-                src="/nurses/hero-nurse.png"
-                alt={c.featureCaption}
-                className="absolute inset-0 h-full w-full object-cover"
-                style={{ objectPosition: '50% 20%' }}
+          <figure ref={figure.ref} className="m-0 mt-12 flex flex-col gap-3.5 lg:mt-[72px]">
+            <div className="overflow-hidden rounded" style={figure.photo()}>
+              <Image
+                src="/services/pansements.jpg"
+                alt={c.featureAlt}
+                width={1800}
+                height={1146}
+                priority
+                unoptimized
+                className="h-[260px] w-full object-cover object-[50%_55%] sm:h-[400px] lg:h-[520px]"
               />
-              <figcaption className="absolute bottom-4 left-4 rounded-lg bg-white px-3 py-1.5 text-[12.5px] font-medium text-[#0a1f38]">
-                {c.featureCaption}
-              </figcaption>
-            </figure>
-            <figure className={`${FRAME} hidden md:block md:h-[400px]`}>
-              <img
-                src="/nurses/elder-06.jpeg"
-                alt={c.seniorCaption}
-                className="absolute inset-0 h-full w-full object-cover object-center"
-              />
-              <figcaption className="absolute bottom-4 left-4 rounded-lg bg-white px-3 py-1.5 text-[12.5px] font-medium text-[#0a1f38]">
-                {c.seniorCaption}
-              </figcaption>
-            </figure>
-          </div>
+            </div>
+            <figcaption className="flex items-center gap-2.5 text-[13px] text-leaf-text" style={figure.rise(0, 0.5)}>
+              <span className="h-px w-6 bg-leaf" aria-hidden="true" />
+              {c.featureCaption}
+            </figcaption>
+          </figure>
         </div>
+      </section>
 
-        {/* Catalog — one column per expertise; each service links to its page */}
-        <div ref={grid.ref} style={grid.style} className="mt-16">
-          <p className={EYEBROW}>{c.hint}</p>
-          <div className="mt-6 grid grid-cols-1 gap-x-[30px] gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
-            {SERVICE_CATEGORIES.map((cat) => {
-              const Icon = ICONS[cat.icon];
-              return (
-                <div key={cat.id} className="border-t border-[#0a1f38] pt-5">
-                  <div className="flex items-center gap-3">
-                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-[#cddcc9] bg-[#f4f7f2] text-[#4e6645]">
-                      <Icon className="h-4 w-4" />
-                    </span>
-                    <h3 className="text-[17px] font-medium tracking-[-0.02em] text-[#0a1f38]">
-                      {lang === 'fr' ? cat.nameFr : cat.nameEn}
-                    </h3>
-                  </div>
-                  <ul className="mt-3 flex flex-col divide-y divide-slate-100">
-                    {cat.services.map((s) => (
-                      <li key={s.slug}>
-                        <Link
-                          href={`/services/${s.slug}`}
-                          className="group flex items-center justify-between gap-3 py-2.5"
-                        >
-                          <span className="text-[14.5px] leading-snug text-[#5a5a6a] transition-colors group-hover:text-[#0a1f38]">
-                            {lang === 'fr' ? s.nameFr : s.nameEn}
-                          </span>
-                          <ArrowRight className="h-4 w-4 shrink-0 text-slate-300 transition-all group-hover:translate-x-0.5 group-hover:text-[#4e6645]" />
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              );
-            })}
+      {/* ========== Catalogue — one ruled block per specialty ========== */}
+      <div className="container-custom pb-6 pt-14 lg:pb-10 lg:pt-24">
+        {SERVICE_CATEGORIES.map((cat, i) => (
+          <Specialty key={cat.id} cat={cat} index={i} lang={lang} c={c} />
+        ))}
+      </div>
+
+      {/* ========== Insurance note ========== */}
+      <section ref={note.ref} className="bg-leaf-tint py-14 lg:py-[72px]">
+        <div className="container-custom grid grid-cols-1 gap-y-4 lg:grid-cols-[320px_minmax(0,1fr)] lg:items-center lg:gap-x-24">
+          <div style={note.rise(0)}>
+            <Eyebrow>{c.insuranceBadge}</Eyebrow>
           </div>
+          <p
+            className="font-display text-[22px] font-light leading-[1.35] tracking-[-0.01em] text-ink lg:text-[30px]"
+            style={note.rise(1)}
+          >
+            {c.insurance}
+          </p>
+        </div>
+      </section>
 
-          {/* CTA */}
-          <div className="mt-16 flex flex-col items-start justify-between gap-6 rounded-[22px] bg-[#0a1f38] p-8 sm:flex-row sm:items-center lg:p-10">
-            <p className="max-w-[520px] text-[21px] font-normal leading-[1.35] tracking-[-0.03em] text-white lg:text-[24px]">
-              {c.ctaTitle}
-            </p>
+      {/* ========== Closing CTA ========== */}
+      <section className="bg-ink py-[72px] text-white lg:py-[120px]">
+        <div className="container-custom">
+          <div
+            ref={cta.ref}
+            className="grid grid-cols-1 gap-y-7 lg:grid-cols-[minmax(0,1fr)_minmax(0,420px)] lg:items-end lg:gap-x-[120px]"
+          >
+            <div className="flex flex-col gap-6 lg:gap-7">
+              <div style={cta.rule()}>
+                <PulseLine className="h-9 w-[200px] text-leaf-on-dark lg:h-11 lg:w-80" />
+              </div>
+              <h2
+                className="font-display text-[44px] font-light leading-none tracking-[-0.03em] text-white lg:text-[80px]"
+                style={cta.rise(0, 0.15)}
+              >
+                {c.ctaTitle}
+              </h2>
+            </div>
             <a
               href={WAITLIST_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex shrink-0 items-center gap-2 rounded-[9px] bg-white px-6 py-3 text-[14px] font-medium text-[#0a1f38] transition-colors hover:bg-slate-100"
+              className="inline-flex h-14 items-center justify-center gap-3 rounded bg-white px-7 text-[16px] font-semibold text-ink transition-colors hover:bg-leaf-on-dark hover:text-ink-deep"
+              style={cta.rise(1, 0.15)}
             >
               {c.ctaButton}
-              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+              <ArrowRight />
             </a>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 }

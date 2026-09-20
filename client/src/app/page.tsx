@@ -26,6 +26,14 @@ const Newsletter = dynamic(
   () => import('../components/sections/Newsletter').then((m) => ({ default: m.Newsletter })),
   { loading: () => <SectionLoader /> }
 );
+const Patients = dynamic(
+  () => import('../components/sections/Patients').then((m) => ({ default: m.Patients })),
+  { loading: () => <SectionLoader /> }
+);
+const NurseRecruit = dynamic(
+  () => import('../components/sections/NurseRecruit').then((m) => ({ default: m.NurseRecruit })),
+  { loading: () => <SectionLoader /> }
+);
 const NursingMapSection = dynamic(
   () => import('../components/sections/NursingMapSection').then((m) => ({ default: m.NursingMapSection })),
   { loading: () => <SectionLoader /> }
@@ -33,17 +41,19 @@ const NursingMapSection = dynamic(
 
 export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div className="min-h-screen flex flex-col bg-paper">
       <Header />
       <main className="flex-grow">
         <Hero />
 
-        {/* The hero dissolves into white on desktop, so the page below is one
-            continuous light ground — no gradient seam to manage any more. */}
-        <HowItWorks />
+        {/* The hero ends on a clean hard edge; everything below sits on the
+            paper ground. */}
         <Credentials />
+        <HowItWorks />
         <NursingMapSection />
         <ServicesAtHome />
+        <Patients />
+        <NurseRecruit />
         <Newsletter />
       </main>
       <Footer />

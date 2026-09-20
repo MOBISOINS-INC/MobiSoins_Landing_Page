@@ -22,6 +22,7 @@ class Target {
 
 class FakeVideo extends Target {
   src = '';
+  currentSrc = '';
   poster = '';
   paused = true;
   ended = false;
@@ -183,6 +184,24 @@ test('prefers-reduced-motion: never plays, even on gesture or watchdog', async (
   await flush();
   assert.equal(v.playCalls, 0);
   assert.equal(v.src, '/d.mp4'); // still shows the right first frame
+});
+
+test('source already chosen natively from <source> is left alone (no reload)', async () => {
+  const v = new FakeVideo();
+  v.currentSrc = 'https://site.test/d.mp4';
+  v.paused = false; // browser autoplayed before JS arrived
+  const doc = Object.assign(new Target(), { visibilityState: 'visible' });
+  const win = Object.assign(new Target(), { setInterval: () => 1, clearInterval: () => {}, matchMedia: () => undefined });
+  keepVideoPlaying(v as unknown as HTMLVideoElement, {
+    reduceMotion: false,
+    pickSource: () => ({ src: '/d.mp4', poster: '/d.jpg' }),
+    log: () => {},
+    win: win as unknown as Window,
+    doc: doc as unknown as Document,
+  });
+  await flush();
+  assert.equal(v.src, '');
+  assert.equal(v.playCalls, 0);
 });
 
 test('breakpoint change swaps the cut', () => {

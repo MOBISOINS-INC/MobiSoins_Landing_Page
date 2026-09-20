@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono, Instrument_Serif } from 'next/font/google';
+import { Geist, Geist_Mono, Instrument_Serif, Newsreader } from 'next/font/google';
 import { LanguageProvider } from '../contexts/LanguageContext';
 import './globals.css';
 
@@ -10,6 +10,15 @@ const instrumentSerif = Instrument_Serif({
   weight: '400',
   style: ['normal', 'italic'],
   variable: '--font-instrument',
+  display: 'swap',
+});
+
+// Display serif for the landing sections below the hero.
+const newsreader = Newsreader({
+  subsets: ['latin'],
+  weight: ['300', '400'],
+  style: ['normal', 'italic'],
+  variable: '--font-newsreader',
   display: 'swap',
 });
 
@@ -53,7 +62,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="fr" suppressHydrationWarning className={`${geist.variable} ${geistMono.variable} ${instrumentSerif.variable}`}>
+    <html lang="fr" suppressHydrationWarning className={`${geist.variable} ${geistMono.variable} ${instrumentSerif.variable} ${newsreader.variable}`}>
       <head>
         <link rel="preconnect" href="https://api.web3forms.com" crossOrigin="" />
         <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="" />

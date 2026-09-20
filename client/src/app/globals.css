@@ -72,7 +72,22 @@
   --color-background-light: #f7f9fa;
   --color-background-white: #ffffff;
 
+  /* Editorial landing palette - all drawn from the logo: its navy as ink, its
+     sage as the single accent (deliberately the darker end of the sage scale). */
+  --color-ink: #003366;
+  --color-ink-deep: #001f40;
+  --color-ink-soft: #486581;
+  --color-ink-faint: #9fb3c8;
+  --color-rule: #d9e2ec;
+  --color-paper: #fbfaf7;
+  --color-panel: #f0f4f8;
+  --color-leaf: #63825b;
+  --color-leaf-text: #3d5036;
+  --color-leaf-tint: #f1f5ef;
+  --color-leaf-on-dark: #98B690;
+
   /* Fonts */
+  --font-display: var(--font-newsreader), Georgia, serif;
   --font-sans: var(--font-geist), "Inter", system-ui, sans-serif;
   --font-serif: var(--font-instrument), Georgia, serif;
   --font-mono: var(--font-geist-mono), "SF Mono", Menlo, monospace;
@@ -91,6 +106,13 @@
 
   @keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
   @keyframes slideUp { 0% { transform: translateY(24px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
+  /* Scroll motion for the services pages: a rule that draws in from the left
+     and a photo that wipes open from the top. Both rest fully visible. */
+  @keyframes ruleDraw { 0% { transform: scaleX(0); } 100% { transform: scaleX(1); } }
+  @keyframes photoReveal {
+    0% { clip-path: inset(0 0 100% 0); transform: scale(1.04); }
+    100% { clip-path: inset(0 0 0 0); transform: scale(1); }
+  }
   @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
   @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
   @keyframes marquee2 { 0% { transform: translateX(100%); } 100% { transform: translateX(0); } }

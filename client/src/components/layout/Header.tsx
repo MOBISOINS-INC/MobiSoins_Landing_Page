@@ -96,15 +96,19 @@ export const Header = () => {
   const pathname = usePathname();
   const isHome = pathname === '/';
   const overHero = isHome && !scrolled;
-  // Persistent waitlist CTA: always shown on inner pages; on the home page it
-  // fades in only after scrolling past the hero (which has its own CTA).
-  const showWaitlistCta = !isHome || scrolled;
+  // Persistent waitlist CTA: always in the bar, white over the home hero and
+  // ink on the light bar.
+  const showWaitlistCta = true;
   // Two looks: light text over the home hero; otherwise a white bar with navy
   // text (inner pages, and the home page once scrolled into white content).
   const light = !overHero;
-  const navColor = light ? '#5a5a6a' : 'rgba(255,255,255,0.88)';
-  const navHoverColor = light ? '#0a1f38' : '#ffffff';
-  const navHoverBg = light ? '#f1f5f9' : 'rgba(255,255,255,0.14)';
+  // Editorial bar: plain text links, the current page marked with a sage rule
+  // (no pill hover fills), squared waitlist button.
+  const navColor = light ? '#003366' : '#ffffff';
+  const navHoverColor = navColor;
+  const navHoverBg = 'transparent';
+  const navRule = light ? '#63825b' : '#98B690';
+  const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.startsWith(href));
   const ui = light
     ? {
         text: '#0a1f38',
@@ -145,11 +149,11 @@ export const Header = () => {
         // doesn't bleed through behind the logo (mobile-only — the menu never opens
         // on desktop, so the web layout is unaffected).
         background: light
-          ? 'rgba(255,255,255,0.92)'
+          ? 'rgba(251,250,247,0.94)'
           : isMobileOpen
           ? 'rgba(6,20,40,0.98)'
           : 'linear-gradient(to bottom, rgba(3,18,38,0.55) 0%, rgba(3,18,38,0.28) 55%, rgba(3,18,38,0) 100%)',
-        borderBottom: light ? '1px solid rgba(226,232,240,0.7)' : 'none',
+        borderBottom: light ? '1px solid #d9e2ec' : 'none',
         backdropFilter: overHero && !isMobileOpen ? 'none' : 'blur(16px)',
         WebkitBackdropFilter: overHero && !isMobileOpen ? 'none' : 'blur(16px)',
         transition: 'background 0.3s ease, border-color 0.3s ease',
@@ -164,22 +168,25 @@ export const Header = () => {
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-1">
+          <nav className="hidden md:flex items-center gap-7 lg:gap-9">
             {navLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
                 target={link.external ? '_blank' : undefined}
                 rel={link.external ? 'noopener noreferrer' : undefined}
-                className="px-3.5 py-2 text-[13px] font-medium rounded-lg transition-colors whitespace-nowrap"
-                style={{ color: navColor }}
+                aria-current={!link.external && isActive(link.href) ? 'page' : undefined}
+                className="border-b pb-[3px] pt-1 text-[15px] font-medium whitespace-nowrap transition-[border-color] duration-200"
+                style={{
+                  color: navColor,
+                  borderColor: !link.external && isActive(link.href) ? navRule : 'transparent',
+                }}
                 onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLElement).style.color = navHoverColor;
-                  (e.currentTarget as HTMLElement).style.background = navHoverBg;
+                  (e.currentTarget as HTMLElement).style.borderColor = navRule;
                 }}
                 onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLElement).style.color = navColor;
-                  (e.currentTarget as HTMLElement).style.background = 'transparent';
+                  (e.currentTarget as HTMLElement).style.borderColor =
+                    !link.external && isActive(link.href) ? navRule : 'transparent';
                 }}
               >
                 {link.name}
@@ -190,8 +197,13 @@ export const Header = () => {
             <div ref={articlesRef} className="relative">
               <button
                 onClick={() => setArticlesOpen((v) => !v)}
-                className="flex items-center gap-1 px-3.5 py-2 text-[13px] font-medium rounded-lg transition-colors whitespace-nowrap"
-                style={{ color: articlesOpen ? navHoverColor : navColor, background: articlesOpen ? navHoverBg : 'transparent' }}
+                aria-expanded={articlesOpen}
+                className="flex items-center gap-1 border-b pb-[3px] pt-1 text-[15px] font-medium whitespace-nowrap transition-[border-color] duration-200"
+                style={{
+                  color: articlesOpen ? navHoverColor : navColor,
+                  background: navHoverBg,
+                  borderColor: articlesOpen || pathname.startsWith('/articles') ? navRule : 'transparent',
+                }}
               >
                 Articles
                 <svg
@@ -247,19 +259,17 @@ export const Header = () => {
           {/* Right side */}
           <div className="flex items-center gap-3">
             {/* Lang switcher */}
-            <div
-              className="hidden md:flex items-center gap-0.5 rounded-lg p-0.5"
-              style={{ background: ui.langBg }}
-            >
+            <div className="hidden md:flex items-center gap-2.5 mr-2">
               {(['FR', 'EN'] as const).map((lang) => (
                 <button
                   key={lang}
                   onClick={() => setLanguage(lang)}
-                  className="px-3 py-1.5 rounded-md text-xs font-medium transition-all"
+                  aria-pressed={language === lang}
+                  className="border-b pb-0.5 text-[14px] font-semibold transition-colors"
                   style={
                     language === lang
-                      ? { background: '#fff', color: '#0a1f38', boxShadow: '0 1px 3px rgba(10,31,56,0.14)' }
-                      : { color: navColor }
+                      ? { color: navColor, borderColor: navRule }
+                      : { color: light ? '#486581' : 'rgba(255,255,255,0.6)', borderColor: 'transparent' }
                   }
                 >
                   {lang}
@@ -279,14 +289,17 @@ export const Header = () => {
                   href={WAITLIST_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="cta-navy group relative hidden md:inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-[13px] font-semibold"
-                 
+                  className={`group relative hidden md:inline-flex h-11 items-center gap-2 rounded px-[22px] text-[15px] font-semibold transition-colors ${
+                    light
+                      ? 'bg-ink text-white hover:bg-ink-deep'
+                      : 'bg-white text-ink hover:bg-leaf-on-dark hover:text-ink-deep'
+                  }`}
                 >
                   <span className="relative">{t('header.joinWaitlist')}</span>
                   <svg
                     className="relative transition-transform duration-300 group-hover:translate-x-0.5"
-                    width="15" height="15" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+                    width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"
                   >
                     <path d="M5 12h14" /><path d="M13 6l6 6-6 6" />
                   </svg>

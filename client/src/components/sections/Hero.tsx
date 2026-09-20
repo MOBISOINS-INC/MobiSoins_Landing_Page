@@ -84,8 +84,14 @@ export const Hero = () => {
         playsInline
         preload="auto"
         aria-hidden="true"
-      />
-      <style>{'.hero-video{object-position:50% 50%;}@media (max-width:640px){.hero-video{object-position:50% 42%;}}'}</style>
+      >
+        {/* Sources are in the server HTML so the phone starts fetching and
+            autoplaying natively, before any JS has loaded. `media` is only
+            honoured at first load; keepVideoPlaying re-picks on resize. */}
+        <source src={HERO_VIDEO_MOBILE} type="video/mp4" media={MOBILE_QUERY} />
+        <source src={HERO_VIDEO} type="video/mp4" />
+      </video>
+      <style>{'.hero-video::-webkit-media-controls,.hero-video::-webkit-media-controls-start-playback-button,.hero-video::-webkit-media-controls-overlay-play-button{display:none!important;-webkit-appearance:none;opacity:0;}.hero-video{object-position:50% 50%;}@media (max-width:640px){.hero-video{object-position:50% 42%;}}'}</style>
 
       {/* Global cool-down: a light overall tint keeps the footage from washing out
           the white type without dulling the whole frame. */}
@@ -118,15 +124,6 @@ export const Hero = () => {
             'linear-gradient(180deg, rgba(3,18,38,0) 0%, rgba(3,18,38,0.35) 40%, rgba(3,18,38,0.8) 70%, #031226 92%, #031226 100%)',
         }}
       />
-      {/* Desktop: the video dissolves into the white page below — no seam to look at.
-          Mobile keeps the navy fade above, so this is sm+ only. */}
-      <div
-        className="absolute inset-0 pointer-events-none hidden sm:block"
-        style={{
-          background:
-            'linear-gradient(180deg, rgba(255,255,255,0) 84%, rgba(255,255,255,0.08) 90%, rgba(255,255,255,0.30) 95%, rgba(255,255,255,0.72) 98.5%, #ffffff 100%)',
-        }}
-      />
       {/* Mobile only: gentle bottom-up gradient so the bottom-anchored text sits on a
           calm base (transparent up top keeps the nurse's face clear). */}
       <div
@@ -144,50 +141,68 @@ export const Hero = () => {
 
       <div className="container-custom w-full relative z-10 pt-28 pb-16 sm:pb-20 lg:pb-24">
         <div className="max-w-[40rem]">
+          <div
+            className="mb-5 flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-leaf-on-dark sm:mb-7 sm:text-[13px]"
+            style={entrance(0)}
+          >
+            <span className="h-px w-5 bg-leaf-on-dark sm:w-7" aria-hidden="true" />
+            {t('v2.heroBadge')}
+          </div>
+
           <h1
-            className="text-[2.15rem] sm:text-[clamp(2.4rem,3.6vw,3.5rem)] font-light leading-[1.05] tracking-[-0.035em] mb-7 md:mb-9"
+            className="mb-5 font-display text-[2.9rem] font-light leading-none tracking-[-0.025em] sm:mb-7 sm:text-[clamp(3.4rem,5.4vw,5.25rem)] sm:leading-[0.98]"
             style={{
-              ...entrance(0),
-              fontWeight: 300,
-              color: 'rgba(255,255,255,0.92)',
-              textShadow: '0 1px 2px rgba(2,9,20,0.6), 0 6px 34px rgba(2,9,20,0.75)',
+              ...entrance(0.08),
+              color: '#ffffff',
+              textShadow: '0 1px 2px rgba(2,9,20,0.5), 0 6px 34px rgba(2,9,20,0.7)',
               WebkitFontSmoothing: 'antialiased',
               MozOsxFontSmoothing: 'grayscale',
             }}
           >
-            {t('hero.title')}<br />
-            <span>
-              {t('hero.titleHighlight')}
-            </span>
+            {t('hero.title')}{' '}
+            <em className="text-leaf-on-dark">{t('hero.titleHighlight')}.</em>
           </h1>
 
+          <p
+            className="mb-7 max-w-[470px] text-[16px] leading-[1.55] text-white/85 sm:mb-8 sm:text-[19px]"
+            style={{ ...entrance(0.16), textShadow: '0 1px 12px rgba(2,9,20,0.6)' }}
+          >
+            <span className="sm:hidden">{t('hero.subtitleShort')}</span>
+            <span className="hidden sm:inline">{t('hero.subtitle')}</span>
+          </p>
 
           <div
-            className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-8"
-            style={entrance(0.2)}
+            className="mb-8 flex flex-col items-stretch gap-4 sm:flex-row sm:items-center sm:gap-6"
+            style={entrance(0.24)}
           >
             <a
               href="https://docs.google.com/forms/d/1TaBNJ9M7Ks6LW5_Vfyqx5DodEPQZbo06bxX8PvJFLiw/viewform"
               target="_blank"
               rel="noopener noreferrer"
-              className="cta-navy group relative inline-flex items-center gap-2.5 px-8 py-4 rounded-full font-semibold cursor-pointer"
-             
+              className="group inline-flex h-14 items-center justify-center gap-3 rounded bg-white px-7 text-[16px] font-semibold text-ink transition-colors hover:bg-leaf-on-dark hover:text-ink-deep"
             >
-              <span className="relative">{t('hero.bookNow')}</span>
+              {t('hero.bookNow')}
               <svg
-                className="relative transition-transform duration-300 group-hover:translate-x-1"
+                className="transition-transform duration-300 group-hover:translate-x-1"
                 width="18" height="18" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+                stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"
+                aria-hidden="true"
               >
                 <path d="M5 12h14" /><path d="M13 6l6 6-6 6" />
               </svg>
+            </a>
+            <a
+              href="#how-it-works"
+              className="hidden self-center border-b border-white/50 pb-[3px] text-[16px] font-medium text-white transition-colors hover:border-white sm:inline"
+            >
+              {t('v2.heroCtaSecondary')}
             </a>
           </div>
 
           {/* Store buttons */}
           <div
             className="flex flex-wrap items-center gap-4"
-            style={entrance(0.35)}
+            style={entrance(0.32)}
           >
             <AppStoreButton />
             <PlayStoreButton />

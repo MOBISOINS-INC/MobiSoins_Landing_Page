@@ -1,64 +1,64 @@
 'use client';
 
+import Link from 'next/link';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useReveal } from '../../hooks/useReveal';
+import { ArrowRight, DISPLAY, Eyebrow } from '../ui/editorial';
 
-// Replaces the patients/testimonials section. There are no real patient quotes
-// yet, and inventing them for a healthcare service is not an option — so this
-// slot answers the question visitors actually arrive with ("can they do the
-// thing I need?") using the service copy that already exists under `about.*`.
-const SERVICES = [1, 2, 3, 4, 5, 6] as const;
+// There are no real patient quotes yet, and inventing them for a healthcare
+// service is not an option — so this slot answers the question visitors actually
+// arrive with ("can they do the thing I need?") using the service copy that
+// already exists under `about.*`. Set as a numbered, ruled index: not cards.
+const SERVICES = [1, 2, 3, 4, 5, 6, 7] as const;
 
 export const ServicesAtHome = () => {
   const { t } = useLanguage();
   const { ref, style } = useReveal();
 
   return (
-    <section id="services-at-home" className="bg-white pb-32">
+    <section id="services-at-home" className="bg-paper pb-16 pt-[72px] lg:pb-[120px] lg:pt-[136px]">
       <div className="container-custom">
-        <div ref={ref} style={style}>
-          <div className="max-w-[640px]">
-            <span className="text-[12px] font-medium uppercase tracking-[0.14em] text-slate-500">
-              {t('v2.servicesEyebrow')}
-            </span>
-            <h2 className="mt-5 text-[32px] font-semibold leading-[1.08] tracking-[-0.035em] text-[#0a1f38] lg:text-[44px]">
-              {t('v2.servicesTitle')}
-            </h2>
+        <div ref={ref} style={style} className="flex flex-col gap-8 lg:gap-16">
+          <div className="grid grid-cols-1 gap-y-4 lg:grid-cols-[minmax(0,1fr)_380px] lg:items-end lg:gap-x-20">
+            <div className="flex flex-col gap-4 lg:gap-6">
+              <Eyebrow>{t('v2.servicesEyebrow')}</Eyebrow>
+              <h2 className={`${DISPLAY} max-w-[680px] text-[40px] leading-[1.05] lg:text-[60px] lg:leading-[1.04]`}>
+                {t('v2.servicesTitle')}
+              </h2>
+            </div>
+            <p className="order-last text-[13px] leading-relaxed text-ink-soft lg:order-none lg:text-[15px]">
+              {t('v2.servicesNote')}
+            </p>
           </div>
 
-          <div className="mt-12 grid grid-cols-3 gap-x-3 gap-y-6 sm:gap-x-[30px] sm:gap-y-10">
+          <div className="grid grid-cols-1 border-t border-ink lg:grid-cols-2 lg:gap-x-20">
             {SERVICES.map((n) => (
-              <div key={n} className="border-t border-[#0a1f38] pt-3 sm:pt-5">
-                <h3 className="text-[12.5px] leading-tight sm:text-[18px] font-medium tracking-[-0.02em] text-[#0a1f38]">
-                  {t(`about.service${n}Title`)}
-                </h3>
-                <p className="mt-1.5 sm:mt-2.5 text-[10.5px] sm:text-[14.5px] font-light leading-relaxed text-[#5a5a6a]">
-                  {t(`about.service${n}Desc`)}
-                </p>
+              <div
+                key={n}
+                className="grid grid-cols-[36px_minmax(0,1fr)] gap-x-3 border-b border-rule py-5 lg:grid-cols-[48px_minmax(0,1fr)] lg:gap-x-4 lg:py-7"
+              >
+                <div className="pt-1 text-[12px] font-semibold text-leaf-text lg:pt-[5px] lg:text-[13px]">
+                  {String(n).padStart(2, '0')}
+                </div>
+                <div>
+                  <h3 className="font-sans text-[18px] font-semibold tracking-normal text-ink lg:text-[21px]">
+                    {t(`about.service${n}Title`)}
+                  </h3>
+                  <p className="mt-1.5 text-[14px] leading-[1.55] text-ink-soft lg:mt-2 lg:text-[15px]">
+                    {t(`about.service${n}Desc`)}
+                  </p>
+                </div>
               </div>
             ))}
-          </div>
-
-          <p className="mt-12 text-[13px] text-slate-500">{t('v2.servicesNote')}</p>
-
-          {/* Nurse recruitment — carried over from the section this replaces */}
-          <div className="mt-14 flex flex-col items-start justify-between gap-6 rounded-2xl bg-[#0a1f38] p-8 sm:flex-row sm:items-center lg:p-10">
-            <div>
-              <span className="text-[12px] font-medium uppercase tracking-[0.14em] text-[#98B690]">
-                {t('v2.nursesEyebrow')}
-              </span>
-              <p className="mt-3.5 max-w-[520px] text-[21px] font-normal leading-[1.35] tracking-[-0.03em] text-white lg:text-[24px]">
-                {t('v2.nursesPitch')}
-              </p>
+            <div className="flex items-center py-6 lg:py-7">
+              <Link
+                href="/services"
+                className="inline-flex min-h-11 items-center gap-2.5 border-b border-leaf pb-1 text-[16px] font-semibold text-ink transition-colors hover:border-ink"
+              >
+                {t('v2.servicesMore')}
+                <ArrowRight className="h-4 w-4" />
+              </Link>
             </div>
-            <a
-              href="https://docs.google.com/forms/d/1TaBNJ9M7Ks6LW5_Vfyqx5DodEPQZbo06bxX8PvJFLiw/viewform"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="shrink-0 rounded-[9px] border border-white/25 px-6 py-3 text-[14px] text-white transition-colors hover:bg-white/10"
-            >
-              {t('v2.nursesCta')}
-            </a>
           </div>
         </div>
       </div>

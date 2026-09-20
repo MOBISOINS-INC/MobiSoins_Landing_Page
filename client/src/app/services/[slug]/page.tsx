@@ -1,24 +1,18 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import {
-  Stethoscope, Syringe, HeartPulse, ClipboardCheck, ShieldCheck, Baby,
-  HeartHandshake, FlaskConical, Building2, Check, ArrowRight, ArrowLeft,
-  Home, Clock,
-} from 'lucide-react';
-import { PageShell, EYEBROW, H1, LEAD, BODY, CARD } from '../../../components/layout/PageShell';
-import { getServiceBySlug, type ServiceCategory } from '../../../data/services';
+import { PageShell } from '../../../components/layout/PageShell';
+import { SERVICE_CATEGORIES, getServiceBySlug } from '../../../data/services';
+import { SERVICE_PHOTOS } from '../../../data/servicePhotos';
 import { useLanguage } from '../../../contexts/LanguageContext';
-import { useReveal } from '../../../hooks/useReveal';
+import { useScrollMotion } from '../../../hooks/useScrollMotion';
+import { ArrowRight, DISPLAY, Eyebrow } from '../../../components/ui/editorial';
+import { PulseLine } from '../../../components/ui/PulseLine';
 
 const WAITLIST_URL =
   'https://docs.google.com/forms/d/1TaBNJ9M7Ks6LW5_Vfyqx5DodEPQZbo06bxX8PvJFLiw/viewform';
-
-const ICONS: Record<ServiceCategory['icon'], React.ComponentType<{ className?: string }>> = {
-  nursing: Stethoscope, vaccination: Syringe, chronic: HeartPulse, checkup: ClipboardCheck,
-  sexual: ShieldCheck, pediatrics: Baby, seniors: HeartHandshake, analysis: FlaskConical, enterprises: Building2,
-};
 
 const COPY = {
   FR: {
@@ -38,6 +32,8 @@ const COPY = {
     related: 'Autres soins dans cette catégorie',
     notFound: 'Ce service est introuvable.',
     notFoundCta: 'Voir tous les services',
+    insurance: 'Certains soins sont admissibles au remboursement par assurances privées. Reçu officiel fourni après chaque visite.',
+    crumb: 'Fil d’Ariane',
   },
   EN: {
     back: 'All services',
@@ -56,6 +52,8 @@ const COPY = {
     related: 'Other services in this category',
     notFound: 'This service could not be found.',
     notFoundCta: 'View all services',
+    insurance: 'Some services are eligible for private insurance reimbursement. An official receipt is provided after every visit.',
+    crumb: 'Breadcrumb',
   },
 } as const;
 
@@ -71,21 +69,54 @@ export default function ServiceDetailPage() {
   return (
     <PageShell>
       {!found ? (
-        <div className="container-custom py-24 text-center">
-          <p className={BODY}>{c.notFound}</p>
-          <Link
-            href="/services"
-            className="mt-6 inline-block text-[15px] font-medium text-[#0a1f38] underline underline-offset-4"
-          >
-            {c.notFoundCta}
-          </Link>
+        <div className="bg-paper">
+          <div className="container-custom py-24 text-center">
+            <p className="text-[16px] leading-[1.7] text-ink-soft">{c.notFound}</p>
+            <Link
+              href="/services"
+              className="mt-6 inline-flex min-h-11 items-center border-b border-leaf pb-1 text-[16px] font-semibold text-ink"
+            >
+              {c.notFoundCta}
+            </Link>
+          </div>
         </div>
       ) : (
-        <ServiceBody found={found} c={c} lang={lang} />
+        // Keyed so the entrance replays when moving between sibling services.
+        <ServiceBody key={found.service.slug} found={found} c={c} lang={lang} />
       )}
     </PageShell>
   );
 }
+
+const ArrowLeft = () => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.8"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+    className="h-4 w-4"
+  >
+    <path d="M19 12H5M11 6l-6 6 6 6" />
+  </svg>
+);
+
+const Check = () => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+    className="h-[18px] w-[18px] text-leaf"
+  >
+    <path d="M5 12.5l4.5 4.5L19 7.5" />
+  </svg>
+);
 
 function ServiceBody({
   found, c, lang,
@@ -95,121 +126,251 @@ function ServiceBody({
   lang: 'fr' | 'en';
 }) {
   const { service, category } = found;
-  const Icon = ICONS[category.icon];
   const name = lang === 'fr' ? service.nameFr : service.nameEn;
   const short = lang === 'fr' ? service.shortFr : service.shortEn;
   const long = lang === 'fr' ? service.longFr : service.longEn;
   const points = lang === 'fr' ? service.pointsFr : service.pointsEn;
   const catName = lang === 'fr' ? category.nameFr : category.nameEn;
-  const reassureIcons = [ShieldCheck, Home, Clock];
+  const catIndex = SERVICE_CATEGORIES.findIndex((k) => k.id === category.id);
   const siblings = category.services.filter((s) => s.slug !== service.slug);
-  const { ref, style } = useReveal();
+  const photo = SERVICE_PHOTOS[service.slug];
+
+  const hero = useScrollMotion();
+  const figure = useScrollMotion<HTMLElement>();
+  const what = useScrollMotion();
+  const how = useScrollMotion();
+  const aside = useScrollMotion<HTMLElement>();
+  const related = useScrollMotion<HTMLElement>();
+  const cta = useScrollMotion();
 
   return (
-    <div className="bg-white pt-10 pb-20 sm:pt-12 lg:pt-16 lg:pb-28">
-      <div ref={ref} style={style} className="container-custom">
-        <Link
-          href="/services"
-          className="inline-flex items-center gap-2 text-[13.5px] font-medium text-slate-500 transition-colors hover:text-[#0a1f38]"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          {c.back}
-        </Link>
+    <div className="bg-paper">
+      {/* ========== Title ========== */}
+      <section className="pt-8 sm:pt-10 lg:pt-14">
+        <div ref={hero.ref} className="container-custom flex flex-col gap-8 lg:gap-14">
+          <nav
+            aria-label={c.crumb}
+            className="flex items-center gap-3 text-[14px] font-medium text-ink-soft"
+            style={hero.rise(0)}
+          >
+            <Link href="/services" className="group inline-flex min-h-11 items-center gap-2 text-ink">
+              <span className="transition-transform duration-300 group-hover:-translate-x-1">
+                <ArrowLeft />
+              </span>
+              {c.back}
+            </Link>
+            <span aria-hidden="true" className="text-ink-faint">/</span>
+            <Link href={`/services#${category.id}`} className="inline-flex min-h-11 items-center hover:text-ink">
+              {catName}
+            </Link>
+          </nav>
 
-        {/* Header */}
-        <div className="mt-8 max-w-[760px]">
-          <div className="flex items-center gap-3">
-            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-[#cddcc9] bg-[#f4f7f2] text-[#4e6645]">
-              <Icon className="h-5 w-5" />
-            </span>
-            <span className={EYEBROW}>{catName}</span>
+          <div className="grid grid-cols-1 gap-y-6 lg:grid-cols-[minmax(0,1fr)_400px] lg:items-end lg:gap-x-24">
+            <div className="flex flex-col gap-4 lg:gap-6">
+              <div className="flex items-baseline gap-4" style={hero.rise(1)}>
+                <span className="font-display text-[32px] font-light leading-none text-ink-faint lg:text-[40px]">
+                  {String(catIndex + 1).padStart(2, '0')}
+                </span>
+                <Eyebrow>{catName}</Eyebrow>
+              </div>
+              <h1
+                className={`${DISPLAY} text-[44px] leading-none tracking-[-0.03em] sm:text-[60px] lg:text-[84px]`}
+                style={hero.rise(2)}
+              >
+                {name}
+              </h1>
+            </div>
+            <p className="text-[16px] leading-[1.7] text-ink-soft lg:pb-2 lg:text-[18px]" style={hero.rise(3)}>
+              {short}
+            </p>
           </div>
-          <h1 className={`${H1} mt-5`}>{name}</h1>
-          <p className={`${LEAD} mt-5`}>{short}</p>
         </div>
+      </section>
 
-        <div className="mt-12 grid items-start gap-10 lg:grid-cols-[1.4fr_1fr] lg:gap-16">
-          {/* Left: what it is + how it works */}
-          <div className="flex flex-col gap-12">
-            <section>
-              <h2 className="text-[20px] font-medium tracking-[-0.02em] text-[#0a1f38]">{c.whatTitle}</h2>
-              <p className={`${BODY} mt-3`}>{long}</p>
-            </section>
+      {/* ========== Photo + reassurance strip ========== */}
+      <section className="pt-10 lg:pt-14">
+        <figure ref={figure.ref} className="container-custom m-0 flex flex-col">
+          {photo && (
+            <div className="overflow-hidden rounded" style={figure.photo()}>
+              <Image
+                src={photo.src}
+                alt={lang === 'fr' ? photo.fr : photo.en}
+                width={photo.w}
+                height={photo.h}
+                priority
+                unoptimized
+                className={`h-[260px] w-full object-cover sm:h-[400px] lg:h-[520px] ${photo.pos ?? 'object-center'}`}
+              />
+            </div>
+          )}
+          <div className="relative grid grid-cols-1 sm:grid-cols-3">
+            {!photo && (
+              <div className="absolute inset-x-0 top-0 h-px bg-ink" style={figure.rule()} aria-hidden="true" />
+            )}
+            {c.reassure.map((r, i) => (
+              <div
+                key={r}
+                className="border-b border-rule py-4 text-[14px] font-medium text-ink sm:border-l sm:px-6 sm:py-[22px] sm:first:border-l-0 sm:first:pl-0"
+                style={figure.rise(i, 0.45)}
+              >
+                {r}
+              </div>
+            ))}
+          </div>
+        </figure>
+      </section>
 
-            <section>
-              <h2 className="text-[20px] font-medium tracking-[-0.02em] text-[#0a1f38]">{c.howTitle}</h2>
-              <ol className="mt-5 grid gap-x-[30px] sm:grid-cols-2">
-                {c.steps.map((s, i) => (
-                  <li key={s.t} className="border-t border-slate-200/70 py-5">
-                    <span className="text-[13px] font-semibold text-[#0a1f38]">0{i + 1}</span>
-                    <p className="mt-2 text-[16px] font-medium leading-snug tracking-[-0.01em] text-[#0a1f38]">{s.t}</p>
-                    <p className="mt-1 text-[14px] font-light leading-relaxed text-[#5a5a6a]">{s.d}</p>
-                  </li>
-                ))}
-              </ol>
-            </section>
+      {/* ========== What / how / included ========== */}
+      <section className="py-[72px] lg:pb-[120px] lg:pt-28">
+        <div className="container-custom grid grid-cols-1 gap-y-14 lg:grid-cols-[minmax(0,1fr)_400px] lg:items-start lg:gap-x-24">
+          <div className="flex flex-col gap-14 lg:gap-[88px]">
+            <div ref={what.ref} className="flex flex-col gap-5 lg:gap-6">
+              <div style={what.rise(0)}>
+                <Eyebrow>{c.whatTitle}</Eyebrow>
+              </div>
+              <p
+                className="font-display text-[24px] font-light leading-[1.38] tracking-[-0.01em] text-ink lg:text-[32px]"
+                style={what.rise(1)}
+              >
+                {long}
+              </p>
+            </div>
+
+            <div ref={how.ref} className="flex flex-col gap-5 lg:gap-6">
+              <div style={how.rise(0)}>
+                <Eyebrow>{c.howTitle}</Eyebrow>
+              </div>
+              <div className="relative">
+                <div className="absolute inset-x-0 top-0 h-px bg-ink" style={how.rule(0.1)} aria-hidden="true" />
+                <ol className="m-0 flex list-none flex-col p-0">
+                  {c.steps.map((s, i) => (
+                    <li
+                      key={s.t}
+                      className="grid grid-cols-[52px_minmax(0,1fr)] items-baseline gap-x-4 border-b border-rule py-6 lg:grid-cols-[72px_minmax(0,1fr)] lg:gap-x-6 lg:py-[26px]"
+                      style={how.rise(i, 0.2)}
+                    >
+                      <span className="font-display text-[32px] font-light leading-none text-ink-faint lg:text-[40px]">
+                        0{i + 1}
+                      </span>
+                      <div className="flex flex-col gap-1.5">
+                        <h2 className="font-sans text-[18px] font-semibold tracking-normal text-ink lg:text-[19px]">
+                          {s.t}
+                        </h2>
+                        <p className="text-[15px] leading-[1.6] text-ink-soft">{s.d}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            </div>
           </div>
 
-          {/* Right: included + reassurance + CTA */}
-          <aside className={`${CARD} p-6 sm:p-7 lg:sticky lg:top-32`}>
-            <h2 className={EYEBROW}>{c.goodTitle}</h2>
-            <ul className="mt-4 flex flex-col gap-3">
-              {points.map((p) => (
-                <li key={p} className="flex items-start gap-2.5 text-[14.5px] leading-snug text-[#0a1f38]">
-                  <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#4e6645]" strokeWidth={2.5} />
+          <aside
+            ref={aside.ref}
+            className="flex flex-col gap-6 rounded-md border border-rule bg-white p-6 lg:sticky lg:top-28 lg:gap-7 lg:p-8"
+            style={aside.rise(0)}
+          >
+            <Eyebrow>{c.goodTitle}</Eyebrow>
+            <ul className="m-0 flex list-none flex-col border-t border-rule p-0">
+              {points.map((p, i) => (
+                <li
+                  key={p}
+                  className="grid grid-cols-[26px_minmax(0,1fr)] items-start border-b border-rule py-3.5 text-[15px] leading-normal text-ink"
+                  style={aside.rise(i, 0.2)}
+                >
+                  <span className="pt-px">
+                    <Check />
+                  </span>
                   <span>{p}</span>
                 </li>
               ))}
             </ul>
-            <div className="mt-6 flex flex-col gap-2.5 border-t border-slate-100 pt-5">
-              {c.reassure.map((r, i) => {
-                const RI = reassureIcons[i];
-                return (
-                  <div key={r} className="flex items-center gap-2.5 text-[13.5px] text-[#5a5a6a]">
-                    <RI className="h-4 w-4 shrink-0 text-[#4e6645]" />
-                    {r}
-                  </div>
-                );
-              })}
+            <a
+              href={WAITLIST_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex h-14 items-center justify-center gap-3 rounded bg-ink px-7 text-[16px] font-semibold text-white transition-colors hover:bg-ink-deep"
+            >
+              {c.ctaButton}
+              <span className="transition-transform duration-300 group-hover:translate-x-1">
+                <ArrowRight />
+              </span>
+            </a>
+            <p className="text-[13px] leading-[1.6] text-ink-soft">{c.insurance}</p>
+          </aside>
+        </div>
+      </section>
+
+      {/* ========== Related services ========== */}
+      {siblings.length > 0 && (
+        <section ref={related.ref} className="bg-leaf-tint py-[72px] lg:py-[104px]">
+          <div className="container-custom grid grid-cols-1 gap-y-8 lg:grid-cols-[320px_minmax(0,1fr)] lg:items-start lg:gap-x-24">
+            <div className="flex flex-col gap-4">
+              <div style={related.rise(0)}>
+                <Eyebrow>{catName}</Eyebrow>
+              </div>
+              <h2 className={`${DISPLAY} text-[32px] leading-[1.06] lg:text-[44px] lg:leading-[1.05]`} style={related.rise(1)}>
+                {c.related}
+              </h2>
+            </div>
+            <div className="relative">
+              <div className="absolute inset-x-0 top-0 h-px bg-ink" style={related.rule(0.1)} aria-hidden="true" />
+              <ul className="m-0 flex list-none flex-col p-0">
+                {siblings.map((s, i) => (
+                  <li key={s.slug} style={related.rise(i, 0.2)}>
+                    <Link
+                      href={`/services/${s.slug}`}
+                      className="group grid grid-cols-[minmax(0,1fr)_24px] gap-x-5 gap-y-1.5 border-b border-rule py-5 lg:grid-cols-[250px_minmax(0,1fr)_24px] lg:gap-x-8 lg:py-6"
+                    >
+                      <h3 className="font-sans text-[17px] font-semibold leading-[1.3] tracking-normal text-ink lg:text-[18px]">
+                        {lang === 'fr' ? s.nameFr : s.nameEn}
+                      </h3>
+                      <p className="col-start-1 text-[14px] leading-[1.6] text-ink-soft lg:col-start-2 lg:text-[15px]">
+                        {lang === 'fr' ? s.shortFr : s.shortEn}
+                      </p>
+                      <span className="col-start-2 row-start-1 pt-[3px] text-leaf transition-transform duration-300 group-hover:translate-x-1 lg:col-start-3">
+                        <ArrowRight />
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ========== Closing CTA ========== */}
+      <section className="bg-ink py-[72px] text-white lg:py-28">
+        <div className="container-custom">
+          <div
+            ref={cta.ref}
+            className="grid grid-cols-1 gap-y-7 lg:grid-cols-[minmax(0,1fr)_minmax(0,420px)] lg:items-end lg:gap-x-[120px]"
+          >
+            <div className="flex flex-col gap-6 lg:gap-7">
+              <div style={cta.rule()}>
+                <PulseLine className="h-9 w-[200px] text-leaf-on-dark lg:h-11 lg:w-80" />
+              </div>
+              <h2
+                className="font-display text-[44px] font-light leading-none tracking-[-0.03em] text-white lg:text-[76px]"
+                style={cta.rise(0, 0.15)}
+              >
+                {c.ctaTitle}
+              </h2>
             </div>
             <a
               href={WAITLIST_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="cta-navy group mt-6 inline-flex w-full items-center justify-center gap-2 rounded-[10px] px-6 py-3.5 text-[15px] font-medium"
+              className="inline-flex h-14 items-center justify-center gap-3 rounded bg-white px-7 text-[16px] font-semibold text-ink transition-colors hover:bg-leaf-on-dark hover:text-ink-deep"
+              style={cta.rise(1, 0.15)}
             >
               {c.ctaButton}
-              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+              <ArrowRight />
             </a>
-          </aside>
+          </div>
         </div>
-
-        {/* Related services */}
-        {siblings.length > 0 && (
-          <section className="mt-16 border-t border-[#0a1f38] pt-8">
-            <h2 className={EYEBROW}>{c.related}</h2>
-            <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-[30px]">
-              {siblings.map((s) => (
-                <Link
-                  key={s.slug}
-                  href={`/services/${s.slug}`}
-                  className="group flex items-center justify-between gap-3 rounded-2xl border border-slate-200/70 p-5 transition-colors hover:bg-slate-50"
-                >
-                  <div>
-                    <p className="text-[15.5px] font-medium leading-snug tracking-[-0.01em] text-[#0a1f38]">
-                      {lang === 'fr' ? s.nameFr : s.nameEn}
-                    </p>
-                    <p className="mt-1 line-clamp-2 text-[13px] font-light leading-relaxed text-[#5a5a6a]">
-                      {lang === 'fr' ? s.shortFr : s.shortEn}
-                    </p>
-                  </div>
-                  <ArrowRight className="h-4 w-4 shrink-0 text-slate-300 transition-all group-hover:translate-x-0.5 group-hover:text-[#4e6645]" />
-                </Link>
-              ))}
-            </div>
-          </section>
-        )}
-      </div>
+      </section>
     </div>
   );
 }

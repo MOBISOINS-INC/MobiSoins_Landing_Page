@@ -50,8 +50,10 @@ export function keepVideoPlaying(v: HTMLVideoElement, opts: KeepPlayingOptions):
 
   const applySource = () => {
     const { src, poster } = opts.pickSource();
-    if (!v.src.endsWith(src)) {
-      v.poster = poster;
+    // currentSrc covers a source chosen natively from <source> children, so we
+    // do not restart a video the browser is already autoplaying.
+    if (!v.poster.endsWith(poster)) v.poster = poster;
+    if (!(v.currentSrc || v.src).endsWith(src)) {
       v.src = src;
       log('info', `source -> ${src}`);
     }
