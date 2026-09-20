@@ -13,3 +13,11 @@
   for = "/*"
   [headers.values]
     X-Robots-Tag = "index, follow"
+
+# Hero video loops forever: without this every loop re-validates the file with
+# the server (max-age=0), which hitches on mobile networks. If a clip is ever
+# replaced, give it a new filename.
+[[headers]]
+  for = "/video/*"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"

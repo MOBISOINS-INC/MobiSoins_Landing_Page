@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { keepVideoPlaying } from '../../lib/keepVideoPlaying';
 import { PlayStoreButton } from '../ui/play-store-button';
 import { AppStoreButton } from '../ui/app-store-button';
 
@@ -46,42 +47,23 @@ export const Hero = () => {
   const { t } = useLanguage();
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Autoplay is best-effort: some browsers (and background tabs) refuse or defer
-  // it, so we nudge play() on mount and whenever the tab becomes visible again.
-  // prefers-reduced-motion wins — we hold the first frame instead of looping.
+  // Playback must never need a tap on the video: keepVideoPlaying retries on
+  // every resume signal, on the first gesture anywhere, and when playback
+  // stalls. prefers-reduced-motion wins — we hold the first frame instead.
   useEffect(() => {
-    const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-    const start = () => {
-      const v = videoRef.current;
-      if (!v) return;
+    const v = videoRef.current;
+    if (!v) return;
+    return keepVideoPlaying(v, {
+      reduceMotion: !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches,
       // Pick the cut here rather than with <source media> (browsers only honour
-      // that at first load) or two elements (both files would download).
-      const mobile = window.matchMedia?.(MOBILE_QUERY).matches;
-      const src = mobile ? HERO_VIDEO_MOBILE : HERO_VIDEO;
-      if (!v.src.endsWith(src)) {
-        v.poster = mobile ? HERO_POSTER_MOBILE : HERO_POSTER;
-        v.src = src;
-      }
-      if (reduce) {
-        v.pause();
-        return;
-      }
-      // play() rejects when the browser blocks autoplay — the poster then stays
-      // up, which is an acceptable fallback, so swallow it rather than crash.
-      v.play().catch(() => {});
-    };
-    start();
-    const onVisible = () => {
-      if (document.visibilityState === 'visible') start();
-    };
-    document.addEventListener('visibilitychange', onVisible);
-    // Re-pick the cut when the viewport crosses the breakpoint (rotation, resize).
-    const mq = window.matchMedia?.(MOBILE_QUERY);
-    mq?.addEventListener('change', start);
-    return () => {
-      document.removeEventListener('visibilitychange', onVisible);
-      mq?.removeEventListener('change', start);
-    };
+      // that at first load) or two elements (both files would download). It is
+      // re-picked when the viewport crosses the breakpoint (rotation, resize).
+      sourceQuery: MOBILE_QUERY,
+      pickSource: () =>
+        window.matchMedia?.(MOBILE_QUERY).matches
+          ? { src: HERO_VIDEO_MOBILE, poster: HERO_POSTER_MOBILE }
+          : { src: HERO_VIDEO, poster: HERO_POSTER },
+    });
   }, []);
 
   return (
