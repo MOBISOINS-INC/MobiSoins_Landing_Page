@@ -17,7 +17,7 @@ export const Blog = () => {
       tags: [t('blog.article1Tag1'), t('blog.article1Tag2')],
       title: t('blog.article1Title'),
       description: t('blog.article1Description'),
-      readTime: '5 min',
+      readTime: '9 min',
       link: '/articles/telesante',
     },
     {
@@ -26,7 +26,7 @@ export const Blog = () => {
       tags: [t('blog.article2Tag1'), t('blog.article2Tag2')],
       title: t('blog.article2Title'),
       description: t('blog.article2Description'),
-      readTime: '4 min',
+      readTime: '8 min',
       link: '/articles/premiere-visite',
     },
     {
@@ -35,7 +35,7 @@ export const Blog = () => {
       tags: [t('blog.article3Tag1'), t('blog.article3Tag2')],
       title: t('blog.article3Title'),
       description: t('blog.article3Description'),
-      readTime: '6 min',
+      readTime: '10 min',
       link: '/articles/soins-aines',
     },
   ];

@@ -128,6 +128,11 @@
     background-color: #04142a;
   }
   body {
+    /* `hidden` on body (on top of html) makes body its own scroll container,
+       which silently disables every position: sticky on the site. `clip` cuts
+       the same horizontal overflow without creating one. Browsers without
+       `clip` keep the `hidden` above. */
+    overflow-x: clip;
     position: relative;
     background-color: #04142a;
     color: #1a1a24;

@@ -6,10 +6,10 @@ import { useParams } from 'next/navigation';
 import { PageShell } from '../../../components/layout/PageShell';
 import { SERVICE_CATEGORIES, getServiceBySlug } from '../../../data/services';
 import { SERVICE_PHOTOS } from '../../../data/servicePhotos';
+import { SERVICE_DETAILS } from '../../../data/serviceDetails';
 import { useLanguage } from '../../../contexts/LanguageContext';
 import { useScrollMotion } from '../../../hooks/useScrollMotion';
 import { ArrowRight, DISPLAY, Eyebrow } from '../../../components/ui/editorial';
-import { PulseLine } from '../../../components/ui/PulseLine';
 
 const WAITLIST_URL =
   'https://docs.google.com/forms/d/1TaBNJ9M7Ks6LW5_Vfyqx5DodEPQZbo06bxX8PvJFLiw/viewform';
@@ -34,6 +34,13 @@ const COPY = {
     notFoundCta: 'Voir tous les services',
     insurance: 'Certains soins sont admissibles au remboursement par assurances privées. Reçu officiel fourni après chaque visite.',
     crumb: 'Fil d’Ariane',
+    atWork: 'Dans vos locaux',
+    workSteps: [
+      { t: 'Planifiez avec nous', d: 'Nous convenons des dates, du local et du nombre de participants.' },
+      { t: 'Une infirmière se rend sur place', d: 'Certifiée OIIQ, elle s’installe dans vos locaux le jour prévu.' },
+      { t: 'Les employés sont rencontrés', d: 'Individuellement et en toute confidentialité.' },
+      { t: 'Chacun repart informé', d: 'Les résultats individuels ne sont jamais transmis à l’employeur.' },
+    ],
   },
   EN: {
     back: 'All services',
@@ -54,6 +61,13 @@ const COPY = {
     notFoundCta: 'View all services',
     insurance: 'Some services are eligible for private insurance reimbursement. An official receipt is provided after every visit.',
     crumb: 'Breadcrumb',
+    atWork: 'At your workplace',
+    workSteps: [
+      { t: 'Plan it with us', d: 'We agree on dates, the room and the number of participants.' },
+      { t: 'A nurse comes on site', d: 'OIIQ-certified, she sets up in your premises on the day.' },
+      { t: 'Employees are seen', d: 'One at a time, in complete confidence.' },
+      { t: 'Everyone leaves informed', d: 'Individual results are never passed on to the employer.' },
+    ],
   },
 } as const;
 
@@ -134,6 +148,10 @@ function ServiceBody({
   const catIndex = SERVICE_CATEGORIES.findIndex((k) => k.id === category.id);
   const siblings = category.services.filter((s) => s.slug !== service.slug);
   const photo = SERVICE_PHOTOS[service.slug];
+  const detail = SERVICE_DETAILS[service.slug]?.[lang] ?? [];
+  // Corporate services happen at the workplace, not at home.
+  const steps = category.id === 'enterprises' ? c.workSteps : c.steps;
+  const reassure = c.reassure.map((r, i) => (i === 1 && category.id === 'enterprises' ? c.atWork : r));
 
   const hero = useScrollMotion();
   const figure = useScrollMotion<HTMLElement>();
@@ -187,43 +205,12 @@ function ServiceBody({
         </div>
       </section>
 
-      {/* ========== Photo + reassurance strip ========== */}
-      <section className="pt-10 lg:pt-14">
-        <figure ref={figure.ref} className="container-custom m-0 flex flex-col">
-          {photo && (
-            <div className="overflow-hidden rounded" style={figure.photo()}>
-              <Image
-                src={photo.src}
-                alt={lang === 'fr' ? photo.fr : photo.en}
-                width={photo.w}
-                height={photo.h}
-                priority
-                unoptimized
-                className={`h-[260px] w-full object-cover sm:h-[400px] lg:h-[520px] ${photo.pos ?? 'object-center'}`}
-              />
-            </div>
-          )}
-          <div className="relative grid grid-cols-1 sm:grid-cols-3">
-            {!photo && (
-              <div className="absolute inset-x-0 top-0 h-px bg-ink" style={figure.rule()} aria-hidden="true" />
-            )}
-            {c.reassure.map((r, i) => (
-              <div
-                key={r}
-                className="border-b border-rule py-4 text-[14px] font-medium text-ink sm:border-l sm:px-6 sm:py-[22px] sm:first:border-l-0 sm:first:pl-0"
-                style={figure.rise(i, 0.45)}
-              >
-                {r}
-              </div>
-            ))}
-          </div>
-        </figure>
-      </section>
-
-      {/* ========== What / how / included ========== */}
-      <section className="py-[72px] lg:pb-[120px] lg:pt-28">
-        <div className="container-custom grid grid-cols-1 gap-y-14 lg:grid-cols-[minmax(0,1fr)_400px] lg:items-start lg:gap-x-24">
-          <div className="flex flex-col gap-14 lg:gap-[88px]">
+      {/* ========== What it involves + what's included ==========
+          Directly under the title, above the photograph: the explanation is
+          the reason someone opened this page, so it must not sit a full screen
+          below a tall image. */}
+      <section className="pt-10 lg:pt-16">
+        <div className="container-custom grid grid-cols-1 gap-y-10 border-t border-rule pt-10 lg:grid-cols-[minmax(0,1fr)_400px] lg:items-start lg:gap-x-24 lg:pt-14">
             <div ref={what.ref} className="flex flex-col gap-5 lg:gap-6">
               <div style={what.rise(0)}>
                 <Eyebrow>{c.whatTitle}</Eyebrow>
@@ -234,36 +221,16 @@ function ServiceBody({
               >
                 {long}
               </p>
+              {detail.map((para, i) => (
+                <p
+                  key={i}
+                  className="max-w-[680px] text-[16px] leading-[1.75] text-ink-soft lg:text-[17px]"
+                  style={what.rise(i + 2)}
+                >
+                  {para}
+                </p>
+              ))}
             </div>
-
-            <div ref={how.ref} className="flex flex-col gap-5 lg:gap-6">
-              <div style={how.rise(0)}>
-                <Eyebrow>{c.howTitle}</Eyebrow>
-              </div>
-              <div className="relative">
-                <div className="absolute inset-x-0 top-0 h-px bg-ink" style={how.rule(0.1)} aria-hidden="true" />
-                <ol className="m-0 flex list-none flex-col p-0">
-                  {c.steps.map((s, i) => (
-                    <li
-                      key={s.t}
-                      className="grid grid-cols-[52px_minmax(0,1fr)] items-baseline gap-x-4 border-b border-rule py-6 lg:grid-cols-[72px_minmax(0,1fr)] lg:gap-x-6 lg:py-[26px]"
-                      style={how.rise(i, 0.2)}
-                    >
-                      <span className="font-display text-[32px] font-light leading-none text-ink-faint lg:text-[40px]">
-                        0{i + 1}
-                      </span>
-                      <div className="flex flex-col gap-1.5">
-                        <h2 className="font-sans text-[18px] font-semibold tracking-normal text-ink lg:text-[19px]">
-                          {s.t}
-                        </h2>
-                        <p className="text-[15px] leading-[1.6] text-ink-soft">{s.d}</p>
-                      </div>
-                    </li>
-                  ))}
-                </ol>
-              </div>
-            </div>
-          </div>
 
           <aside
             ref={aside.ref}
@@ -298,6 +265,80 @@ function ServiceBody({
             </a>
             <p className="text-[13px] leading-[1.6] text-ink-soft">{c.insurance}</p>
           </aside>
+        </div>
+      </section>
+
+      {/* ========== Photo + reassurance strip ========== */}
+      <section className="pt-14 lg:pt-24">
+        <div className="container-custom">
+        <figure ref={figure.ref} className="m-0 flex flex-col">
+          {photo && (
+            // The whole photograph, at its own proportions: a fixed-height strip
+            // cut people's heads off. Near-square frames are held narrower so
+            // they are neither upscaled nor taller than the screen.
+            <div
+              className="overflow-hidden rounded"
+              style={{ ...figure.photo(), maxWidth: photo.w / photo.h < 1.3 ? 720 : undefined }}
+            >
+              <Image
+                src={photo.src}
+                alt={lang === 'fr' ? photo.fr : photo.en}
+                width={photo.w}
+                height={photo.h}
+                priority
+                unoptimized
+                className="block h-auto w-full"
+              />
+            </div>
+          )}
+          <div className="relative grid grid-cols-1 sm:grid-cols-3">
+            {!photo && (
+              <div className="absolute inset-x-0 top-0 h-px bg-ink" style={figure.rule()} aria-hidden="true" />
+            )}
+            {reassure.map((r, i) => (
+              <div
+                key={r}
+                className="border-b border-rule py-4 text-[14px] font-medium text-ink sm:border-l sm:px-6 sm:py-[22px] sm:first:border-l-0 sm:first:pl-0"
+                style={figure.rise(i, 0.45)}
+              >
+                {r}
+              </div>
+            ))}
+          </div>
+        </figure>
+        </div>
+      </section>
+
+      {/* ========== How it works ========== */}
+      <section className="py-[72px] lg:py-28">
+        <div className="container-custom">
+            <div ref={how.ref} className="grid grid-cols-1 gap-y-6 lg:grid-cols-[320px_minmax(0,1fr)] lg:items-start lg:gap-x-24">
+              <h2 className={`${DISPLAY} text-[32px] leading-[1.06] lg:text-[44px] lg:leading-[1.05]`} style={how.rise(0)}>
+                {c.howTitle}
+              </h2>
+              <div className="relative">
+                <div className="absolute inset-x-0 top-0 h-px bg-ink" style={how.rule(0.1)} aria-hidden="true" />
+                <ol className="m-0 flex list-none flex-col p-0">
+                  {steps.map((s, i) => (
+                    <li
+                      key={s.t}
+                      className="grid grid-cols-[52px_minmax(0,1fr)] items-baseline gap-x-4 border-b border-rule py-6 lg:grid-cols-[72px_minmax(0,1fr)] lg:gap-x-6 lg:py-[26px]"
+                      style={how.rise(i, 0.2)}
+                    >
+                      <span className="font-display text-[32px] font-light leading-none text-ink-faint lg:text-[40px]">
+                        0{i + 1}
+                      </span>
+                      <div className="flex flex-col gap-1.5">
+                        <h3 className="font-sans text-[18px] font-semibold tracking-normal text-ink lg:text-[19px]">
+                          {s.t}
+                        </h3>
+                        <p className="text-[15px] leading-[1.6] text-ink-soft">{s.d}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            </div>
         </div>
       </section>
 
@@ -348,9 +389,6 @@ function ServiceBody({
             className="grid grid-cols-1 gap-y-7 lg:grid-cols-[minmax(0,1fr)_minmax(0,420px)] lg:items-end lg:gap-x-[120px]"
           >
             <div className="flex flex-col gap-6 lg:gap-7">
-              <div style={cta.rule()}>
-                <PulseLine className="h-9 w-[200px] text-leaf-on-dark lg:h-11 lg:w-80" />
-              </div>
               <h2
                 className="font-display text-[44px] font-light leading-none tracking-[-0.03em] text-white lg:text-[76px]"
                 style={cta.rise(0, 0.15)}

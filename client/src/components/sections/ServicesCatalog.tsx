@@ -7,7 +7,7 @@ import { useScrollMotion } from '../../hooks/useScrollMotion';
 import { SERVICE_CATEGORIES, type ServiceCategory } from '../../data/services';
 import { SERVICE_PHOTOS } from '../../data/servicePhotos';
 import { ArrowRight, DISPLAY, Eyebrow } from '../ui/editorial';
-import { PulseLine } from '../ui/PulseLine';
+import { ServicesTrack } from './ServicesTrack';
 
 const WAITLIST_URL =
   'https://docs.google.com/forms/d/1TaBNJ9M7Ks6LW5_Vfyqx5DodEPQZbo06bxX8PvJFLiw/viewform';
@@ -103,7 +103,7 @@ function Specialty({
                 width={photo.w}
                 height={photo.h}
                 unoptimized
-                className={`h-[240px] w-full object-cover lg:h-[300px] ${photo.pos ?? 'object-center'}`}
+                className="block h-auto w-full"
               />
             </div>
           )}
@@ -197,7 +197,10 @@ export function ServicesCatalog() {
                 height={1146}
                 priority
                 unoptimized
-                className="h-[260px] w-full object-cover object-[50%_55%] sm:h-[400px] lg:h-[520px]"
+                // This opening photo alone stays a cropped wide band (both faces
+                // sit mid-frame, so nothing is cut); every other service photo is
+                // shown whole.
+                className="block h-[260px] w-full object-cover object-[50%_55%] sm:h-[400px] lg:h-[520px]"
               />
             </div>
             <figcaption className="flex items-center gap-2.5 text-[13px] text-leaf-text" style={figure.rise(0, 0.5)}>
@@ -208,12 +211,19 @@ export function ServicesCatalog() {
         </div>
       </section>
 
-      {/* ========== Catalogue — one ruled block per specialty ========== */}
-      <div className="container-custom pb-6 pt-14 lg:pb-10 lg:pt-24">
-        {SERVICE_CATEGORIES.map((cat, i) => (
-          <Specialty key={cat.id} cat={cat} index={i} lang={lang} c={c} />
-        ))}
-      </div>
+      {/* ========== Catalogue — pinned one-per-screen on desktop, ruled blocks otherwise ========== */}
+      <ServicesTrack
+        lang={lang}
+        labels={c}
+        photoSlugs={SPECIALTY_PHOTO}
+        stacked={
+          <div className="container-custom pb-6 pt-14 lg:pb-10 lg:pt-24">
+            {SERVICE_CATEGORIES.map((cat, i) => (
+              <Specialty key={cat.id} cat={cat} index={i} lang={lang} c={c} />
+            ))}
+          </div>
+        }
+      />
 
       {/* ========== Insurance note ========== */}
       <section ref={note.ref} className="bg-leaf-tint py-14 lg:py-[72px]">
@@ -238,9 +248,6 @@ export function ServicesCatalog() {
             className="grid grid-cols-1 gap-y-7 lg:grid-cols-[minmax(0,1fr)_minmax(0,420px)] lg:items-end lg:gap-x-[120px]"
           >
             <div className="flex flex-col gap-6 lg:gap-7">
-              <div style={cta.rule()}>
-                <PulseLine className="h-9 w-[200px] text-leaf-on-dark lg:h-11 lg:w-80" />
-              </div>
               <h2
                 className="font-display text-[44px] font-light leading-none tracking-[-0.03em] text-white lg:text-[80px]"
                 style={cta.rise(0, 0.15)}

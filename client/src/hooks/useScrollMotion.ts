@@ -53,7 +53,12 @@ export const useScrollMotion = <T extends HTMLElement = HTMLDivElement>() => {
     };
     window.addEventListener('scroll', check, { passive: true });
     window.addEventListener('resize', check, { passive: true });
+    // Observers and scroll events are both tied to rendering, which a browser
+    // may pause (background tab, some embedded webviews). A slow timer is not,
+    // so it guarantees an armed block is revealed once it is in position.
+    const timer = window.setInterval(check, 500);
     function cleanup() {
+      window.clearInterval(timer);
       io.disconnect();
       window.removeEventListener('scroll', check);
       window.removeEventListener('resize', check);

@@ -26,6 +26,7 @@ export const Header = () => {
       img: '/images/articles/telesante.jpg',
       tag: t('blog.article1Tag1'),
       title: t('blog.article1Title'),
+      desc: t('blog.article1Description'),
       href: '/articles/telesante',
       fallback: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=200&q=70',
     },
@@ -33,6 +34,7 @@ export const Header = () => {
       img: '/images/articles/premiere-visite.jpg',
       tag: t('blog.article2Tag1'),
       title: t('blog.article2Title'),
+      desc: t('blog.article2Description'),
       href: '/articles/premiere-visite',
       fallback: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=200&q=70',
     },
@@ -40,6 +42,7 @@ export const Header = () => {
       img: '/images/articles/soins-aines.jpg',
       tag: t('blog.article3Tag1'),
       title: t('blog.article3Title'),
+      desc: t('blog.article3Description'),
       href: '/articles/soins-aines',
       fallback: 'https://images.unsplash.com/photo-1631815589968-fdb09a223b1e?auto=format&fit=crop&w=200&q=70',
     },
@@ -218,34 +221,53 @@ export const Header = () => {
 
               <AnimatePresence>
                 {articlesOpen && (
+                  // Panel hangs off the bar (ink rule on top, squared) rather than
+                  // floating as a rounded card: a titled column, then ruled rows.
                   <motion.div
-                    initial={{ opacity: 0, y: 6, scale: 0.98 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 6, scale: 0.98 }}
-                    transition={{ duration: 0.18, ease: 'easeOut' }}
-                    className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-[380px] rounded-2xl overflow-hidden border backdrop-blur-xl"
-                    style={{ background: ui.panelBg, borderColor: ui.panelBorder, boxShadow: ui.panelShadow }}
+                    initial={{ opacity: 0, y: -6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -6 }}
+                    transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+                    className="absolute right-0 top-full mt-[33px] grid w-[min(860px,calc(100vw-48px))] grid-cols-[260px_minmax(0,1fr)] overflow-hidden rounded-b-md border border-t-ink border-rule bg-white shadow-[0_24px_48px_-28px_rgba(0,31,64,0.35)] lg:-right-40 xl:-right-56"
                   >
-                    <div className="p-2">
-                      <p className="text-[10px] font-semibold uppercase tracking-widest px-3 py-2" style={{ color: ui.muted }}>
-                        {t('blog.title')}
-                      </p>
+                    <div className="flex flex-col justify-between gap-10 bg-leaf-tint px-8 py-9">
+                      <div className="flex flex-col gap-4">
+                        <span className="text-[13px] font-semibold uppercase tracking-[0.14em] text-leaf-text">
+                          Articles
+                        </span>
+                        <p className="font-display text-[34px] font-light leading-[1.08] tracking-[-0.02em] text-ink">
+                          {t('blog.title')}
+                        </p>
+                      </div>
+                      <Link
+                        href="/articles"
+                        onClick={() => setArticlesOpen(false)}
+                        className="group inline-flex min-h-11 items-center gap-2.5 self-start border-b border-leaf text-[15px] font-semibold text-ink"
+                      >
+                        {t('header.allArticles')}
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1">
+                          <path d="M5 12h14M13 6l6 6-6 6" />
+                        </svg>
+                      </Link>
+                    </div>
+                    <div className="flex flex-col px-8 pb-[18px] pt-3.5">
                       {articles.map((a, i) => (
                         <Link
                           key={i}
                           href={a.href}
                           onClick={() => setArticlesOpen(false)}
-                          className={`group flex items-center gap-3 rounded-xl p-3 transition-colors ${ui.rowHover}`}
+                          className="group grid grid-cols-[112px_minmax(0,1fr)_24px] items-center gap-x-5 border-b border-rule py-[18px] last:border-b-0"
                         >
-                          <div className="w-12 h-12 rounded-lg overflow-hidden shrink-0 border" style={{ borderColor: ui.thumbBorder }}>
-                            <img src={a.img} alt={a.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" onError={(e) => { (e.target as HTMLImageElement).src = a.fallback; }} />
+                          <div className="h-20 w-28 overflow-hidden rounded">
+                            <img src={a.img} alt="" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" onError={(e) => { (e.target as HTMLImageElement).src = a.fallback; }} />
                           </div>
-                          <div className="flex-1 min-w-0">
-                            <span className="text-[10px] font-semibold uppercase tracking-widest" style={{ color: '#98B690' }}>{a.tag}</span>
-                            <p className="text-xs font-medium leading-snug line-clamp-2 mt-0.5" style={{ color: ui.text }}>{a.title}</p>
+                          <div className="flex min-w-0 flex-col gap-[5px]">
+                            <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-leaf-text">{a.tag}</span>
+                            <p className="text-[16px] font-semibold leading-[1.3] text-ink">{a.title}</p>
+                            <p className="line-clamp-1 text-[13px] leading-normal text-ink-soft">{a.desc}</p>
                           </div>
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="shrink-0 opacity-0 group-hover:opacity-60 transition-opacity" style={{ color: ui.text }}>
-                            <path d="M7 17L17 7M17 7H7M17 7v10" />
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="text-leaf transition-transform duration-300 group-hover:translate-x-1">
+                            <path d="M5 12h14M13 6l6 6-6 6" />
                           </svg>
                         </Link>
                       ))}

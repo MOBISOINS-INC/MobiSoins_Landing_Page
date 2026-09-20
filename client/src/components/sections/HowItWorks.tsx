@@ -5,7 +5,6 @@ import type { ReactNode } from 'react';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useReveal } from '../../hooks/useReveal';
 import { DISPLAY, Eyebrow } from '../ui/editorial';
-import { PulseLine } from '../ui/PulseLine';
 
 // Each step shows a fragment of the actual app surface rather than a stock icon
 // in a rounded square. Laid out as ruled rows beside a sticky title — not three
@@ -82,7 +81,6 @@ export const HowItWorks = () => {
             <h2 className={`${DISPLAY} text-[40px] leading-[1.04] lg:text-[60px] lg:leading-[1.02]`}>
               {t('v2.stepsTitle')}
             </h2>
-            <PulseLine className="h-9 w-60 text-leaf lg:h-11 lg:w-full" />
           </div>
 
           <div className="flex flex-col">
