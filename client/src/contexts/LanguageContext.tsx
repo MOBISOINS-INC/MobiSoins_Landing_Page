@@ -1,9 +1,10 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect } from 'react';
 import type { ReactNode } from 'react';
-
-type Language = 'FR' | 'EN';
+import { usePathname, useRouter } from 'next/navigation';
+import { localeFromPath, localizePath, stripLocale } from '../lib/i18n';
+import type { Language } from '../lib/i18n';
 
 interface LanguageContextType {
   language: Language;
@@ -26,22 +27,24 @@ interface LanguageProviderProps {
 }
 
 export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
-  // Always start at 'FR' so the server render and the first client render match
-  // (avoids a hydration mismatch). Browser/stored preference is applied after mount.
-  const [language, setLanguageState] = useState<Language>('FR');
+  // The URL decides the language (/en/... is English), so the server render and
+  // the first client render always match and every URL is indexable in one language.
+  const pathname = usePathname() ?? '/';
+  const router = useRouter();
+  const language: Language = localeFromPath(pathname);
 
   useEffect(() => {
-    const stored = localStorage.getItem('language');
-    if (stored === 'FR' || stored === 'EN') {
-      setLanguageState(stored);
-    } else if (!navigator.language.startsWith('fr')) {
-      setLanguageState('EN');
-    }
-  }, []);
+    document.documentElement.lang = language === 'EN' ? 'en-CA' : 'fr-CA';
+  }, [language]);
 
   const setLanguage = (lang: Language) => {
-    setLanguageState(lang);
-    localStorage.setItem('language', lang);
+    if (lang === language) return;
+    try {
+      localStorage.setItem('language', lang);
+    } catch (err) {
+      console.error('[i18n] could not store language preference', err);
+    }
+    router.push(localizePath(stripLocale(pathname) + window.location.hash, lang));
   };
 
   const t = (key: string): string => {
@@ -121,6 +124,9 @@ const translations = {
       patientsPhotoAlt: 'Une infirmière MobiSoins prend la tension d\'une patiente sur son canapé',
       nursesPhotoAlt: 'Trois infirmières MobiSoins en route vers une visite',
       servicesMore: 'Voir tous les soins en détail',
+      guidesEyebrow: 'Guides pratiques',
+      guidesTitle: 'Comprendre les soins à domicile.',
+      guidesAll: 'Tous les articles',
 
       ctaTitle1: 'Nous lançons bientôt',
       ctaTitle2: 'au Québec.',
@@ -625,6 +631,9 @@ const translations = {
       patientsPhotoAlt: 'A MobiSoins nurse taking a patient\'s blood pressure on her sofa',
       nursesPhotoAlt: 'Three MobiSoins nurses walking to a visit',
       servicesMore: 'See every service in detail',
+      guidesEyebrow: 'Practical guides',
+      guidesTitle: 'Understanding home care.',
+      guidesAll: 'All articles',
 
       ctaTitle1: 'We launch soon',
       ctaTitle2: 'in Quebec.',

@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
+import Link from '../../../components/ui/LocaleLink';
 import { useParams } from 'next/navigation';
 import { PageShell } from '../../../components/layout/PageShell';
 import { SERVICE_CATEGORIES, getServiceBySlug } from '../../../data/services';

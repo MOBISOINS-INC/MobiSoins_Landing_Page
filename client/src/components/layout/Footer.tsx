@@ -2,8 +2,9 @@
 
 import type { ComponentProps, ReactNode } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import Link from 'next/link';
+import Link from '../ui/LocaleLink';
 import { BrandLogo } from '../ui/BrandLogo';
+import { localizePath } from '../../lib/i18n';
 import { useLanguage } from '../../contexts/LanguageContext';
 /* ─── Inline SVG social icons ────────────────────────────────── */
 
@@ -50,7 +51,7 @@ function AnimatedContainer({ className, delay = 0.1, children }: AnimatedContain
 /* ─── Footer ─────────────────────────────────────────────────── */
 
 export const Footer = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   // Link columns. Absolute "/#visit" so the anchor also works from the other pages.
   const footerSections: { label: string; links: FooterLink[] }[] = [
@@ -125,7 +126,7 @@ export const Footer = () => {
                     {section.links.map((link) => (
                       <li key={link.title}>
                         <a
-                          href={link.href}
+                          href={localizePath(link.href, language)}
                           target={link.href.startsWith('http') ? '_blank' : undefined}
                           rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
                           className="inline-flex items-center gap-1.5 text-sm font-light transition-colors duration-200"

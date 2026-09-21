@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
+import Link from '../ui/LocaleLink';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useScrollMotion } from '../../hooks/useScrollMotion';
 import { SERVICE_CATEGORIES, type ServiceCategory } from '../../data/services';

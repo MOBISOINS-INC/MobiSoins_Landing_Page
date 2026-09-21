@@ -5,6 +5,7 @@ import { Plus, Search } from 'lucide-react';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useReveal } from '../../hooks/useReveal';
 import { EYEBROW, H1, LEAD } from '../layout/PageShell';
+import { jsonLd } from '../../lib/seo';
 
 const QUESTIONS = [1, 2, 3, 4, 5, 6, 7, 8] as const;
 
@@ -24,8 +25,20 @@ export const FAQ = () => {
     (faq) => faq.question.toLowerCase().includes(q) || faq.answer.toLowerCase().includes(q)
   );
 
+  // All questions (not the search-filtered list) so search engines see the full FAQ.
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.question,
+      acceptedAnswer: { '@type': 'Answer', text: f.answer },
+    })),
+  };
+
   return (
     <section id="faq" className="bg-white pt-12 pb-20 sm:pt-16 lg:pt-24 lg:pb-28">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(faqJsonLd) }} />
       <div className="container-custom">
         <div ref={ref} style={style} className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
           {/* Left: intro + search (sticky on desktop) */}

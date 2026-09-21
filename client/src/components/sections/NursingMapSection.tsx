@@ -18,43 +18,43 @@ export const NursingMapSection = () => {
   ];
 
   return (
-    <section id="dispatch" className="bg-ink py-[72px] text-white lg:py-32">
+    <section id="dispatch" className="bg-ink py-12 text-white lg:py-32">
       <div className="container-custom">
         <div
           ref={ref}
           style={style}
-          className="grid grid-cols-1 items-center gap-y-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,520px)] lg:gap-x-[120px]"
+          className="grid grid-cols-2 items-start gap-x-4 lg:items-center lg:grid-cols-[minmax(0,1fr)_minmax(0,520px)] lg:gap-x-[120px]"
         >
-          <div className="flex flex-col gap-5 lg:gap-7">
+          <div className="flex flex-col gap-3 lg:gap-7">
             <Eyebrow onDark>{t('v2.dispatchEyebrow')}</Eyebrow>
-            <h2 className="font-display text-[44px] font-light leading-[1.02] tracking-[-0.025em] text-white lg:text-[76px] lg:leading-none">
+            <h2 className="font-display text-[26px] font-light leading-[1.05] tracking-[-0.025em] text-white lg:text-[76px] lg:leading-none">
               {t('v2.dispatchTitle1')}
               <br />
               <em className="text-leaf-on-dark">{t('v2.dispatchTitle2')}</em>
             </h2>
-            <p className="max-w-[500px] text-[16px] leading-relaxed text-white/85 lg:text-[19px]">
+            <p className="max-w-[500px] text-[12px] leading-relaxed text-white/85 lg:text-[19px]">
               {t('v2.dispatchBody')}
             </p>
-            <p className="max-w-[500px] border-t border-white/20 pt-5 text-[13px] text-leaf-on-dark lg:text-[14px]">
+            <p className="max-w-[500px] border-t border-white/20 pt-3 text-[11px] lg:pt-5 text-leaf-on-dark lg:text-[14px]">
               {t('v2.dispatchNote')}
             </p>
           </div>
 
           <div>
-            <ol className="m-0 flex list-none flex-col gap-5 p-0 lg:gap-8" aria-label={t('v2.dispatchThreadLabel')}>
+            <ol className="m-0 flex list-none flex-col gap-3 p-0 lg:gap-8" aria-label={t('v2.dispatchThreadLabel')}>
               {messages.map((m) => (
                 <li
                   key={m.time}
-                  className="flex flex-col items-start gap-2 lg:grid lg:grid-cols-[84px_minmax(0,1fr)] lg:gap-x-6"
+                  className="flex flex-col items-start gap-1 lg:grid lg:grid-cols-[84px_minmax(0,1fr)] lg:gap-x-6"
                 >
-                  <time className="text-[12px] font-semibold tabular-nums text-leaf-on-dark lg:pt-4 lg:text-[14px]">
+                  <time className="text-[10px] font-semibold tabular-nums text-leaf-on-dark lg:pt-4 lg:text-[14px]">
                     {m.time}
                   </time>
                   <p
-                    className={`m-0 rounded-[14px] rounded-bl-[2px] px-4 py-3.5 text-[15px] leading-normal lg:px-[18px] lg:py-4 lg:text-[16px] ${
+                    className={`m-0 rounded-[12px] rounded-bl-[2px] px-2.5 py-2 text-[11.5px] lg:rounded-[14px] leading-normal lg:px-[18px] lg:py-4 lg:text-[16px] ${
                       m.last
                         ? 'justify-self-start bg-leaf-on-dark font-medium text-ink-deep'
-                        : 'mr-7 bg-white text-ink lg:mr-0'
+                        : 'bg-white text-ink'
                     }`}
                   >
                     {m.text}
@@ -62,7 +62,7 @@ export const NursingMapSection = () => {
                 </li>
               ))}
             </ol>
-            <p className="mt-6 text-[12px] text-white/60 lg:mt-7 lg:pl-[108px]">{t('v2.dispatchThreadLabel')}</p>
+            <p className="mt-3 text-[10px] text-white/60 lg:mt-7 lg:text-[12px] lg:pl-[108px]">{t('v2.dispatchThreadLabel')}</p>
           </div>
         </div>
       </div>

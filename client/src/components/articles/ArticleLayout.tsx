@@ -1,14 +1,16 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
+import Link from '../ui/LocaleLink';
 import { ArrowLeft, ArrowUpRight } from 'lucide-react';
 import { motion, useScroll } from 'framer-motion';
 import { PageShell, FRAME } from '../layout/PageShell';
 import { ArrowRight, Eyebrow } from '../ui/editorial';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useReveal } from '../../hooks/useReveal';
-import { relatedArticles } from '../../data/articleIndex';
+import { ARTICLE_INDEX, relatedArticles } from '../../data/articleIndex';
+import { SITE_URL, absoluteUrl, jsonLd } from '../../lib/seo';
+import { localizePath } from '../../lib/i18n';
 
 const WAITLIST_URL =
   'https://docs.google.com/forms/d/1TaBNJ9M7Ks6LW5_Vfyqx5DodEPQZbo06bxX8PvJFLiw/viewform';
@@ -181,8 +183,38 @@ export const ArticleLayout: React.FC<ArticleLayoutProps> = ({ article }) => {
       }
     : null;
 
+  const card = ARTICLE_INDEX.find((a) => a.slug === data.slug);
+  const articleUrl = absoluteUrl(localizePath(`/articles/${data.slug}`, language));
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Article',
+        headline: data.title,
+        description: (language === 'EN' ? card?.descriptionEn : card?.descriptionFr) ?? data.subtitle,
+        image: absoluteUrl(data.image),
+        inLanguage: language === 'FR' ? 'fr-CA' : 'en-CA',
+        datePublished: card?.datePublished,
+        dateModified: card?.dateModified,
+        mainEntityOfPage: articleUrl,
+        author: { '@id': `${SITE_URL}/#organization` },
+        publisher: { '@id': `${SITE_URL}/#organization` },
+        citation: data.sources?.map((s) => s.url),
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: language === 'FR' ? 'Accueil' : 'Home', item: absoluteUrl(localizePath('/', language)) },
+          { '@type': 'ListItem', position: 2, name: 'Articles', item: absoluteUrl(localizePath('/articles', language)) },
+          { '@type': 'ListItem', position: 3, name: data.title, item: articleUrl },
+        ],
+      },
+    ],
+  };
+
   return (
     <PageShell>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(articleJsonLd) }} />
       {/* Reading progress — pinned to the very top of the viewport, above the
           header, so it never floats over the text when the header slides away */}
       <motion.div
@@ -405,7 +437,7 @@ export const ArticleLayout: React.FC<ArticleLayoutProps> = ({ article }) => {
                   {faqJsonLd && (
                     <script
                       type="application/ld+json"
-                      dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd).replace(/</g, '\\u003c') }}
+                      dangerouslySetInnerHTML={{ __html: jsonLd(faqJsonLd) }}
                     />
                   )}
                 </section>

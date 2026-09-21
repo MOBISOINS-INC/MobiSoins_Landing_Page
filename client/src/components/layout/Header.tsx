@@ -1,9 +1,10 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import Link from 'next/link';
+import Link from '../ui/LocaleLink';
 import { usePathname } from 'next/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
+import { localizePath, stripLocale } from '../../lib/i18n';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { BrandLogo } from '../ui/BrandLogo';
 
@@ -97,7 +98,7 @@ export const Header = () => {
   // Inner pages sit on a white ground with no hero, so they always use the
   // frosted navy bar (the same state the home page reaches once scrolled).
   const pathname = usePathname();
-  const isHome = pathname === '/';
+  const isHome = stripLocale(pathname) === '/';
   const overHero = isHome && !scrolled;
   // Persistent waitlist CTA: always in the bar, white over the home hero and
   // ink on the light bar.
@@ -111,7 +112,8 @@ export const Header = () => {
   const navHoverColor = navColor;
   const navHoverBg = 'transparent';
   const navRule = light ? '#63825b' : '#98B690';
-  const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.startsWith(href));
+  const basePath = stripLocale(pathname);
+  const isActive = (href: string) => (href === '/' ? basePath === '/' : basePath.startsWith(href));
   const ui = light
     ? {
         text: '#0a1f38',
@@ -175,7 +177,7 @@ export const Header = () => {
             {navLinks.map((link) => (
               <a
                 key={link.name}
-                href={link.href}
+                href={localizePath(link.href, language)}
                 target={link.external ? '_blank' : undefined}
                 rel={link.external ? 'noopener noreferrer' : undefined}
                 aria-current={!link.external && isActive(link.href) ? 'page' : undefined}
@@ -205,7 +207,7 @@ export const Header = () => {
                 style={{
                   color: articlesOpen ? navHoverColor : navColor,
                   background: navHoverBg,
-                  borderColor: articlesOpen || pathname.startsWith('/articles') ? navRule : 'transparent',
+                  borderColor: articlesOpen || stripLocale(pathname).startsWith('/articles') ? navRule : 'transparent',
                 }}
               >
                 Articles
@@ -368,7 +370,7 @@ export const Header = () => {
                 {navLinks.map((link) => (
                   <a
                     key={link.name}
-                    href={link.href}
+                    href={localizePath(link.href, language)}
                     target={link.external ? '_blank' : undefined}
                     rel={link.external ? 'noopener noreferrer' : undefined}
                     className={`py-2 text-sm font-medium transition-colors whitespace-nowrap ${ui.menuLink}`}

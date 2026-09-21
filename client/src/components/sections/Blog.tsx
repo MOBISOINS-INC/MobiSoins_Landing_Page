@@ -1,6 +1,6 @@
 'use client';
 
-import Link from 'next/link';
+import Link from '../ui/LocaleLink';
 import { ArrowUpRight } from 'lucide-react';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useReveal } from '../../hooks/useReveal';
@@ -17,7 +17,7 @@ export const Blog = () => {
       tags: [t('blog.article1Tag1'), t('blog.article1Tag2')],
       title: t('blog.article1Title'),
       description: t('blog.article1Description'),
-      readTime: '9 min',
+      readTime: '35 min',
       link: '/articles/telesante',
     },
     {
@@ -26,7 +26,7 @@ export const Blog = () => {
       tags: [t('blog.article2Tag1'), t('blog.article2Tag2')],
       title: t('blog.article2Title'),
       description: t('blog.article2Description'),
-      readTime: '8 min',
+      readTime: '35 min',
       link: '/articles/premiere-visite',
     },
     {
@@ -35,7 +35,7 @@ export const Blog = () => {
       tags: [t('blog.article3Tag1'), t('blog.article3Tag2')],
       title: t('blog.article3Title'),
       description: t('blog.article3Description'),
-      readTime: '10 min',
+      readTime: '35 min',
       link: '/articles/soins-aines',
     },
   ];

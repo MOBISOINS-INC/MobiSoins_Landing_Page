@@ -271,7 +271,7 @@ export const WaitlistForm = () => {
                   />
                   <label htmlFor="consent" className="text-sm text-gray-600">
                     J'accepte de recevoir des communications de MobiSoins et j'ai lu la{' '}
-                    <a href="/privacy" className="text-navy-800 hover:underline">
+                    <a href="/confidentialite" className="text-navy-800 hover:underline">
                       Politique de confidentialité
                     </a>
                   </label>

@@ -1,0 +1,7 @@
+import { staticPageMetadata } from '../../../lib/pageSeo';
+
+export const metadata = staticPageMetadata('articles', 'EN');
+
+export default function Layout({ children }: { children: React.ReactNode }) {
+  return children;
+}

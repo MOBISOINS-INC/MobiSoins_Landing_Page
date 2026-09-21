@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import type { ReactNode } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
+import Link from '../ui/LocaleLink';
 import { motion, useTransform } from 'framer-motion';
 import type { MotionValue } from 'framer-motion';
 import { panelPose, usePinnedSteps } from '../../hooks/usePinnedSteps';
