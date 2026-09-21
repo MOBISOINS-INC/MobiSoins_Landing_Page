@@ -21,7 +21,7 @@ export const NurseRecruit = () => {
           style={style}
           className="grid grid-cols-1 items-center gap-y-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,640px)] lg:gap-x-24"
         >
-          <div className="order-2 flex flex-col items-stretch gap-6 lg:order-none lg:items-start lg:gap-7">
+          <div className="order-2 flex flex-col items-center gap-6 text-center lg:order-none lg:items-start lg:text-left lg:gap-7">
             <Eyebrow>{t('v2.nursesEyebrow')}</Eyebrow>
             <h2 className={`${DISPLAY} text-[34px] leading-[1.1] lg:text-[50px] lg:leading-[1.08]`}>
               {t('v2.nursesPitch')}
@@ -30,7 +30,7 @@ export const NurseRecruit = () => {
               href={NURSE_FORM}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex h-[54px] items-center justify-center gap-3 rounded border border-ink px-[26px] text-[16px] font-semibold text-ink transition-colors hover:bg-ink hover:text-white"
+              className="inline-flex h-11 self-center items-center lg:self-start justify-center gap-2.5 rounded border border-ink px-5 text-[15px] font-semibold text-ink lg:h-[54px] lg:gap-3 lg:px-[26px] lg:text-[16px] transition-colors hover:bg-ink hover:text-white"
             >
               {t('v2.nursesCta')}
               <ArrowRight />

@@ -154,7 +154,7 @@ const WaitlistCta = ({ copy }: { copy: (typeof COPY)['FR' | 'EN'] }) => (
       href={WAITLIST_URL}
       target="_blank"
       rel="noopener noreferrer"
-      className="mt-7 inline-flex h-12 items-center gap-3 rounded bg-white px-6 text-[15px] font-semibold text-ink transition-colors hover:bg-leaf-on-dark hover:text-ink-deep"
+      className="mt-7 inline-flex h-11 items-center gap-2.5 rounded bg-white px-5 text-[14.5px] lg:h-12 lg:gap-3 lg:px-6 lg:text-[15px] font-semibold text-ink transition-colors hover:bg-leaf-on-dark hover:text-ink-deep"
     >
       {copy.ctaButton}
       <ArrowRight />
@@ -405,7 +405,7 @@ export const ArticleLayout: React.FC<ArticleLayoutProps> = ({ article }) => {
                   href={WAITLIST_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-7 inline-flex h-12 items-center gap-3 rounded bg-white px-6 text-[15px] font-semibold text-ink transition-colors hover:bg-leaf-on-dark hover:text-ink-deep"
+                  className="mt-7 inline-flex h-11 items-center gap-2.5 rounded bg-white px-5 text-[14.5px] lg:h-12 lg:gap-3 lg:px-6 lg:text-[15px] font-semibold text-ink transition-colors hover:bg-leaf-on-dark hover:text-ink-deep"
                 >
                   {copy.ctaButton}
                   <ArrowRight />

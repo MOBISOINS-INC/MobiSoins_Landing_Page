@@ -1,10 +1,10 @@
 /**
- * Service catalog for the marketing site — mirrors the MobiSoins app catalog
+ * Service catalog for the marketing site, mirrors the MobiSoins app catalog
  * (FrontendApp/src/data/mockServices.ts) and the official patient-facing
  * descriptions (FrontendApp/src/data/serviceDefinitions.ts). `short` is the
  * app's own wording; `long` + `points` expand it for the web detail page.
  *
- * These are general, non-clinical explanations — not medical advice.
+ * These are general, non-clinical explanations, not medical advice.
  */
 
 export interface ServiceDef {
@@ -51,7 +51,7 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
         shortFr: 'Administration de médicaments par injection intramusculaire (IM) ou sous-cutanée (SC).',
         shortEn: 'Administering medication by intramuscular (IM) or subcutaneous (SC) injection.',
         longFr: 'Vos injections prescrites sont administrées à domicile, en toute sécurité, sans attente ni déplacement.',
-        longEn: 'Your prescribed injections are given safely at home — no waiting, no travel.',
+        longEn: 'Your prescribed injections are given safely at home, no waiting, no travel.',
         pointsFr: ['Injections IM et SC prescrites', 'Traitements réguliers ou ponctuels', 'Gestion sécuritaire des aiguilles'],
         pointsEn: ['Prescribed IM & SC injections', 'One-time or recurring treatments', 'Safe sharps handling'] },
       { slug: 'lavage-oreilles', nameFr: 'Lavage d’oreilles', nameEn: 'Ear irrigation',
@@ -69,8 +69,8 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
       { slug: 'grippe', nameFr: 'Grippe', nameEn: 'Flu',
         shortFr: 'Vaccin saisonnier contre l’influenza, pour réduire le risque de grippe et de ses complications.',
         shortEn: 'Seasonal influenza vaccine to reduce the risk of the flu and its complications.',
-        longFr: 'Faites-vous vacciner contre la grippe sans sortir de chez vous — idéal pour les familles, les aînés et les personnes à risque.',
-        longEn: 'Get your flu shot without leaving home — ideal for families, seniors and at-risk individuals.',
+        longFr: 'Faites-vous vacciner contre la grippe sans sortir de chez vous, idéal pour les familles, les aînés et les personnes à risque.',
+        longEn: 'Get your flu shot without leaving home, ideal for families, seniors and at-risk individuals.',
         pointsFr: ['Vaccin saisonnier', 'Pour toute la famille', 'Sans salle d’attente'],
         pointsEn: ['Seasonal vaccine', 'For the whole family', 'No waiting room'] },
       { slug: 'covid', nameFr: 'COVID', nameEn: 'COVID',
@@ -128,8 +128,8 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
       { slug: 'prise-sang', nameFr: 'Prise de sang', nameEn: 'Blood draw',
         shortFr: 'Prélèvement sanguin à domicile pour des analyses de laboratoire prescrites.',
         shortEn: 'At-home blood draw for prescribed laboratory tests.',
-        longFr: 'L’infirmière effectue votre prise de sang à domicile et achemine les échantillons au laboratoire — vous recevez ensuite vos résultats.',
-        longEn: 'Your nurse draws your blood at home and sends the samples to the lab — results follow.',
+        longFr: 'L’infirmière effectue votre prise de sang à domicile et achemine les échantillons au laboratoire, vous recevez ensuite vos résultats.',
+        longEn: 'Your nurse draws your blood at home and sends the samples to the lab, results follow.',
         pointsFr: ['À domicile, sans file d’attente', 'Analyses prescrites', 'Résultats acheminés'],
         pointsEn: ['At home, no lineup', 'Prescribed tests', 'Results delivered'] },
     ],
@@ -173,8 +173,8 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
       { slug: 'suivi-bebe', nameFr: 'Suivi bébé', nameEn: 'Baby follow-up',
         shortFr: 'Suivi de la croissance et du bien-être de bébé (poids, alimentation, sommeil).',
         shortEn: 'Follow-up on baby’s growth and well-being (weight, feeding, sleep).',
-        longFr: 'Un suivi rassurant du développement de bébé — poids, alimentation, sommeil — avec des conseils pour les parents.',
-        longEn: 'Reassuring follow-up on baby’s development — weight, feeding, sleep — with guidance for parents.',
+        longFr: 'Un suivi rassurant du développement de bébé (poids, alimentation, sommeil) avec des conseils pour les parents.',
+        longEn: 'Reassuring follow-up on baby’s development (weight, feeding, sleep) with guidance for parents.',
         pointsFr: ['Poids et croissance', 'Alimentation et sommeil', 'Conseils aux parents'],
         pointsEn: ['Weight & growth', 'Feeding & sleep', 'Parent guidance'] },
       { slug: 'bilan-pediatrique', nameFr: 'Bilan pédiatrique', nameEn: 'Pediatric check-up',
@@ -218,8 +218,8 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
       { slug: 'prise-sang-labo', nameFr: 'Prise de sang', nameEn: 'Blood draw',
         shortFr: 'Prélèvement sanguin à domicile, acheminé au laboratoire pour analyse.',
         shortEn: 'At-home blood draw sent to the lab for analysis.',
-        longFr: 'Votre prise de sang effectuée à domicile, puis acheminée au laboratoire — simple et sans déplacement.',
-        longEn: 'Your blood draw done at home, then delivered to the lab — simple and travel-free.',
+        longFr: 'Votre prise de sang effectuée à domicile, puis acheminée au laboratoire, simple et sans déplacement.',
+        longEn: 'Your blood draw done at home, then delivered to the lab, simple and travel-free.',
         pointsFr: ['À domicile', 'Acheminé au laboratoire', 'Résultats suivis'],
         pointsEn: ['At home', 'Sent to the lab', 'Tracked results'] },
       { slug: 'analyse-urine', nameFr: 'Analyse d’urine', nameEn: 'Urine analysis',
@@ -251,8 +251,8 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
       { slug: 'vaccination-collective', nameFr: 'Vaccination collective', nameEn: 'Group vaccination',
         shortFr: 'Campagne de vaccination organisée en milieu de travail pour vos équipes.',
         shortEn: 'Workplace vaccination campaign organized for your teams.',
-        longFr: 'Nous organisons une campagne de vaccination clé en main sur votre lieu de travail — planification, logistique et infirmières incluses.',
-        longEn: 'We run a turnkey vaccination campaign at your workplace — planning, logistics and nurses included.',
+        longFr: 'Nous organisons une campagne de vaccination clé en main sur votre lieu de travail : planification, logistique et infirmières incluses.',
+        longEn: 'We run a turnkey vaccination campaign at your workplace: planning, logistics and nurses included.',
         pointsFr: ['Campagne clé en main', 'Sur le lieu de travail', 'Planification incluse'],
         pointsEn: ['Turnkey campaign', 'At your workplace', 'Planning included'] },
       { slug: 'bilan-sante-entreprise', nameFr: 'Bilan santé entreprise', nameEn: 'Corporate health check',

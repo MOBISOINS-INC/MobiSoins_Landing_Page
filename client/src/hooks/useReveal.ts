@@ -21,6 +21,10 @@ import type { CSSProperties } from 'react';
 export const useReveal = <T extends HTMLElement = HTMLDivElement>(delay = 0) => {
   const ref = useRef<T>(null);
   const [shown, setShown] = useState(false);
+  // Already on screen when first observed (e.g. a lazily-loaded section that
+  // mounts in view): skip the entrance, otherwise the visible content blinks
+  // to opacity 0 and slides back in — the flash seen on mobile.
+  const [animate, setAnimate] = useState(true);
 
   useEffect(() => {
     const el = ref.current;
@@ -32,9 +36,20 @@ export const useReveal = <T extends HTMLElement = HTMLDivElement>(delay = 0) => 
       return;
     }
 
+    let first = true;
     const io = new IntersectionObserver(
       (entries) => {
-        if (entries.some((e) => e.isIntersecting)) {
+        const hit = entries.some((e) => e.isIntersecting);
+        if (first) {
+          first = false;
+          if (hit) {
+            setAnimate(false);
+            setShown(true);
+            io.disconnect();
+            return;
+          }
+        }
+        if (hit) {
           setShown(true);
           io.disconnect();
         }
@@ -45,7 +60,7 @@ export const useReveal = <T extends HTMLElement = HTMLDivElement>(delay = 0) => 
     return () => io.disconnect();
   }, [shown]);
 
-  const style: CSSProperties = shown
+  const style: CSSProperties = shown && animate
     ? {
         animation: 'slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) backwards',
         animationDelay: `${delay}s`,

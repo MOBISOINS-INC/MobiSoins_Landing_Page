@@ -14,6 +14,8 @@ import { animate, useMotionValueEvent, useScroll, useTransform } from 'framer-mo
  */
 
 const PINNED_QUERY = '(min-width: 1024px) and (prefers-reduced-motion: no-preference)';
+// Callers with a phone-sized pinned layout opt in to pinning at every width.
+const PINNED_QUERY_ALL = '(prefers-reduced-motion: no-preference)';
 
 // Scroll progress with a short rest at every step: the track holds still for the
 // first and last tenth of each leg and eases across the rest, so a step settles
@@ -44,19 +46,22 @@ export const panelPose = (position: number, index: number, last: number) => {
   return { opacity: 1 - away * 0.85, y: position < index / last ? away * 32 : 0 };
 };
 
-export const usePinnedSteps = <T extends HTMLElement = HTMLElement>(count: number) => {
+export const usePinnedSteps = <T extends HTMLElement = HTMLElement>(
+  count: number,
+  { mobile = false }: { mobile?: boolean } = {}
+) => {
   const last = count - 1;
   const ref = useRef<T>(null);
   const [pinned, setPinned] = useState(false);
   const [active, setActive] = useState(0);
 
   useEffect(() => {
-    const mq = window.matchMedia(PINNED_QUERY);
+    const mq = window.matchMedia(mobile ? PINNED_QUERY_ALL : PINNED_QUERY);
     const sync = () => setPinned(mq.matches);
     sync();
     mq.addEventListener('change', sync);
     return () => mq.removeEventListener('change', sync);
-  }, []);
+  }, [mobile]);
 
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end end'] });
   // Function transforms, not [input] -> [output] ranges: Framer hands scroll-linked

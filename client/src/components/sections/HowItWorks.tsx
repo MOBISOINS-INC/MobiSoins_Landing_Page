@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useReveal } from '../../hooks/useReveal';
@@ -64,28 +65,80 @@ const Radio = ({ on = false }: { on?: boolean }) => (
   />
 );
 
+type StepData = { num: string; title: string; meta: string; panel: ReactNode };
+
+const LOOP_MS = 4000;
+
+// Mobile-only carousel. Every slide sits in the same grid cell so the box
+// always takes the height of the tallest step — no layout jump between slides.
+const StepLoop = ({ steps }: { steps: StepData[] }) => {
+  const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    if (paused) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const id = window.setInterval(() => {
+      if (!document.hidden) setActive((a) => (a + 1) % steps.length);
+    }, LOOP_MS);
+    return () => window.clearInterval(id);
+  }, [paused, steps.length]);
+
+  return (
+    <div className="lg:hidden">
+      <div
+        className="grid"
+        onTouchStart={() => setPaused(true)}
+        onTouchEnd={() => setPaused(false)}
+      >
+        {steps.map((st, i) => (
+          <div
+            key={st.num}
+            aria-hidden={i !== active}
+            className={`col-start-1 row-start-1 flex flex-col gap-2.5 transition-[opacity,transform] duration-500 ease-out ${
+              i === active ? 'translate-x-0 opacity-100' : 'pointer-events-none translate-x-3 opacity-0'
+            }`}
+          >
+            <div className="flex items-baseline gap-3">
+              <div className="font-display text-[26px] font-light leading-none text-ink-faint">{st.num}</div>
+              <div>
+                <h3 className="font-sans text-[15px] font-semibold tracking-normal text-ink">{st.title}</h3>
+                <div className="mt-0.5 text-[11px] font-medium text-leaf-text">{st.meta}</div>
+              </div>
+            </div>
+            <div className="text-[12px] [&_*]:!text-[12px] [&_.px-4]:!px-3 [&_[class*=py-3]]:!py-2 [&_.p-4]:!p-3 [&_img]:!h-11 [&_img]:!w-11">{st.panel}</div>
+          </div>
+        ))}
+      </div>
+      <div className="mt-3 flex items-center gap-2" role="tablist">
+        {steps.map((st, i) => (
+          <button
+            key={st.num}
+            type="button"
+            role="tab"
+            aria-selected={i === active}
+            aria-label={st.title}
+            onClick={() => setActive(i)}
+            className="flex h-6 items-center"
+          >
+            <span
+              className={`block h-[3px] rounded-full transition-all duration-300 ${
+                i === active ? 'w-8 bg-ink' : 'w-4 bg-rule'
+              }`}
+            />
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 export const HowItWorks = () => {
   const { t } = useLanguage();
   const { ref, style } = useReveal();
 
-  return (
-    <section id="how-it-works" className="bg-paper py-[72px] lg:pb-[136px] lg:pt-32">
-      <div className="container-custom">
-        <div
-          ref={ref}
-          style={style}
-          className="grid grid-cols-1 gap-y-10 lg:grid-cols-[minmax(0,400px)_minmax(0,1fr)] lg:gap-x-[120px]"
-        >
-          <div className="flex flex-col gap-4 lg:sticky lg:top-28 lg:gap-6 lg:self-start">
-            <Eyebrow>{t('v2.stepsEyebrow')}</Eyebrow>
-            <h2 className={`${DISPLAY} text-[40px] leading-[1.04] lg:text-[60px] lg:leading-[1.02]`}>
-              {t('v2.stepsTitle')}
-            </h2>
-          </div>
-
-          <div className="flex flex-col">
-            {/* 01 — the request */}
-            <Step num={t('v2.step1Num')} title={t('v2.step1Title')} meta={t('v2.step1Meta')}>
+  const steps = [
+    { num: t('v2.step1Num'), title: t('v2.step1Title'), meta: t('v2.step1Meta'), panel: (
               <div className={`${PANEL} flex flex-col text-[15px]`}>
                 <div className="flex items-center justify-between border-b border-rule px-4 py-3.5 font-medium text-ink">
                   {t('v2.step1Opt1')}
@@ -104,10 +157,8 @@ export const HowItWorks = () => {
                   <span className="font-semibold tabular-nums text-ink">{t('v2.step1FootValue')}</span>
                 </div>
               </div>
-            </Step>
-
-            {/* 02 — the match */}
-            <Step num={t('v2.step2Num')} title={t('v2.step2Title')} meta={t('v2.step2Meta')}>
+    ) },
+    { num: t('v2.step2Num'), title: t('v2.step2Title'), meta: t('v2.step2Meta'), panel: (
               <div className={`${PANEL} flex items-center gap-3.5 p-4`}>
                 <Image
                   src="/nurses/step-nurse-avatar.jpg"
@@ -124,13 +175,11 @@ export const HowItWorks = () => {
                   </div>
                 </div>
               </div>
-            </Step>
-
-            {/* 03 — the report */}
-            <Step num={t('v2.step3Num')} title={t('v2.step3Title')} meta={t('v2.step3Meta')} last>
+    ) },
+    { num: t('v2.step3Num'), title: t('v2.step3Title'), meta: t('v2.step3Meta'), panel: (
               <div className={`${PANEL} flex flex-col`}>
-                <Row label={t('v2.step3Row1')} value="—" />
-                <Row label={t('v2.step3Row2')} value="—" />
+                <Row label={t('v2.step3Row1')} value="·" />
+                <Row label={t('v2.step3Row2')} value="·" />
                 <Row label={t('v2.step3Row3')} value={t('v2.step3Row3Value')} />
                 <Row
                   last
@@ -142,7 +191,34 @@ export const HowItWorks = () => {
                   }
                 />
               </div>
-            </Step>
+    ) },
+  ];
+
+  return (
+    <section id="how-it-works" className="bg-paper py-10 lg:pb-[136px] lg:pt-32">
+      <div className="container-custom">
+        <div
+          ref={ref}
+          style={style}
+          className="grid grid-cols-1 gap-y-5 lg:gap-y-10 lg:grid-cols-[minmax(0,400px)_minmax(0,1fr)] lg:gap-x-[120px]"
+        >
+          <div className="flex flex-col gap-2 lg:sticky lg:top-28 lg:gap-6 lg:self-start">
+            <Eyebrow>{t('v2.stepsEyebrow')}</Eyebrow>
+            <h2 className={`${DISPLAY} text-[26px] leading-[1.08] lg:text-[60px] lg:leading-[1.02]`}>
+              {t('v2.stepsTitle')}
+            </h2>
+          </div>
+
+          {/* Phone: one compact step at a time, looping. */}
+          <StepLoop steps={steps} />
+
+          {/* Desktop: ruled rows. */}
+          <div className="hidden flex-col lg:flex">
+            {steps.map((st, i) => (
+              <Step key={st.num} num={st.num} title={st.title} meta={st.meta} last={i === steps.length - 1}>
+                {st.panel}
+              </Step>
+            ))}
           </div>
         </div>
       </div>

@@ -172,14 +172,14 @@ export const Hero = () => {
           </p>
 
           <div
-            className="mb-8 flex flex-col items-stretch gap-4 sm:flex-row sm:items-center sm:gap-6"
+            className="mb-6 flex flex-col items-start gap-4 sm:mb-8 sm:flex-row sm:items-center sm:gap-6"
             style={entrance(0.24)}
           >
             <a
               href="https://docs.google.com/forms/d/1TaBNJ9M7Ks6LW5_Vfyqx5DodEPQZbo06bxX8PvJFLiw/viewform"
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex h-14 items-center justify-center gap-3 rounded bg-white px-7 text-[16px] font-semibold text-ink transition-colors hover:bg-leaf-on-dark hover:text-ink-deep"
+              className="group inline-flex h-11 items-center justify-center gap-2.5 rounded bg-white px-5 text-[14.5px] sm:h-14 sm:gap-3 sm:px-7 sm:text-[16px] font-semibold text-ink transition-colors hover:bg-leaf-on-dark hover:text-ink-deep"
             >
               {t('hero.bookNow')}
               <svg
@@ -201,7 +201,7 @@ export const Hero = () => {
 
           {/* Store buttons */}
           <div
-            className="flex flex-wrap items-center gap-4"
+            className="flex flex-wrap items-center gap-2.5 sm:gap-4"
             style={entrance(0.32)}
           >
             <AppStoreButton />

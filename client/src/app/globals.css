@@ -125,7 +125,7 @@
     overflow-x: hidden;
     max-width: 100%;
     /* Dark base so mobile overscroll (rubber-band) never flashes white. */
-    background-color: #04142a;
+    background-color: var(--color-ink);
   }
   body {
     /* `hidden` on body (on top of html) makes body its own scroll container,
@@ -134,7 +134,7 @@
        `clip` keep the `hidden` above. */
     overflow-x: clip;
     position: relative;
-    background-color: #04142a;
+    background-color: var(--color-ink);
     color: #1a1a24;
     font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
     -webkit-font-smoothing: antialiased;

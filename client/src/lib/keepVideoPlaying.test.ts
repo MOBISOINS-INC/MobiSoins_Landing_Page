@@ -220,3 +220,30 @@ test('cleanup removes every listener and stops retrying', async () => {
   doc.emit('click');
   assert.equal(v.playCalls, calls);
 });
+
+// Regression: on a first visit (nothing cached, slow mobile data) the video can
+// take well over `stallMs` to buffer its first frames. The watchdog used to read
+// that as "frozen" and call load() — restarting the download from zero, forever —
+// so the hero only played after a tap or a refresh.
+test('slow first download that is still arriving is never restarted', async () => {
+  const { v, tick } = setup();
+  await flush();
+  v.readyState = 1; // HAVE_METADATA: still buffering, clock at 0
+  for (let i = 0; i < 10; i++) {
+    v.emit('progress'); // bytes keep arriving
+    tick();
+  }
+  assert.equal(v.loadCalls, 0);
+  assert.equal(v.paused, false);
+});
+
+test('buffering that stops receiving data is still recovered', async () => {
+  const { v, tick, logs } = setup();
+  await flush();
+  v.readyState = 1;
+  v.emit('progress');
+  tick();
+  tick(); // no progress, no clock movement -> genuinely stuck
+  assert.equal(v.loadCalls, 1);
+  assert.ok(logs.some((l) => l.startsWith('warn:stalled')));
+});

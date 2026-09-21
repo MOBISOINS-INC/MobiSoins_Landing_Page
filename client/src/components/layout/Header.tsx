@@ -16,8 +16,6 @@ export const Header = () => {
   const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [articlesOpen, setArticlesOpen] = useState(false);
-  const [mobileArticlesOpen, setMobileArticlesOpen] = useState(false);
-  const [mobileLangOpen, setMobileLangOpen] = useState(false);
   const lastScrollY = useRef(0);
   const articlesRef = useRef<HTMLDivElement>(null);
   const { language, setLanguage, t } = useLanguage();
@@ -132,13 +130,13 @@ export const Header = () => {
     : {
         text: '#ffffff',
         muted: 'rgba(255,255,255,0.45)',
-        panelBg: 'rgba(10,25,48,0.97)',
+        panelBg: 'var(--color-ink)',
         panelBorder: 'rgba(255,255,255,0.1)',
         panelShadow: '0 20px 60px rgba(0,0,0,0.5)',
         rowHover: 'hover:bg-white/5',
         thumbBorder: 'rgba(255,255,255,0.1)',
         langBg: 'rgba(255,255,255,0.15)',
-        menuBg: 'rgba(6,20,40,0.98)',
+        menuBg: 'var(--color-ink)',
         menuBorder: '1px solid rgba(255,255,255,0.08)',
         menuLink: 'text-white/85 active:text-white',
         menuMuted: 'rgba(255,255,255,0.6)',
@@ -156,7 +154,7 @@ export const Header = () => {
         background: light
           ? 'rgba(251,250,247,0.94)'
           : isMobileOpen
-          ? 'rgba(6,20,40,0.98)'
+          ? 'var(--color-ink)'
           : 'linear-gradient(to bottom, rgba(3,18,38,0.55) 0%, rgba(3,18,38,0.28) 55%, rgba(3,18,38,0) 100%)',
         borderBottom: light ? '1px solid #d9e2ec' : 'none',
         backdropFilter: overHero && !isMobileOpen ? 'none' : 'blur(16px)',
@@ -364,120 +362,35 @@ export const Header = () => {
             className="md:hidden overflow-hidden"
             style={{ background: ui.menuBg, borderTop: ui.menuBorder, backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)' }}
           >
-            <div className="container-custom py-3 flex flex-col">
-              {/* Nav links — 2-up grid to keep the menu compact */}
-              <div className="grid grid-cols-3 gap-x-3 gap-y-1">
-                {navLinks.map((link) => (
+            <div className="container-custom pb-6 pt-5">
+              <nav className="grid grid-cols-2 gap-x-6 gap-y-1">
+                {[...navLinks.slice(0, 3), { name: 'Articles', href: '/articles', external: false }, ...navLinks.slice(3)].map((link) => (
                   <a
                     key={link.name}
                     href={localizePath(link.href, language)}
                     target={link.external ? '_blank' : undefined}
                     rel={link.external ? 'noopener noreferrer' : undefined}
-                    className={`py-2 text-sm font-medium transition-colors whitespace-nowrap ${ui.menuLink}`}
+                    className={`py-2 font-display text-[17px] font-light leading-tight transition-colors ${ui.menuLink}`}
                     onClick={() => setIsMobileOpen(false)}
                   >
                     {link.name}
                   </a>
                 ))}
-              </div>
-
-              {/* Articles + Language triggers — same row */}
-              <div className="grid grid-cols-3 gap-x-3">
-                <button
-                  onClick={() => setMobileArticlesOpen((v) => !v)}
-                  className={`flex items-center gap-1.5 py-2 text-[15px] font-medium transition-colors ${ui.menuLink}`}
-                  aria-expanded={mobileArticlesOpen}
-                >
-                  <span>Articles</span>
-                  <svg
-                    width="16" height="16" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"
-                    className="transition-transform duration-300"
-                    style={{ color: ui.menuMuted, transform: mobileArticlesOpen ? 'rotate(180deg)' : 'none' }}
-                  >
-                    <polyline points="6 9 12 15 18 9" />
-                  </svg>
-                </button>
-
-                <button
-                  onClick={() => setMobileLangOpen((v) => !v)}
-                  className={`flex items-center gap-2 py-2 text-[15px] font-medium transition-colors ${ui.menuLink}`}
-                  aria-expanded={mobileLangOpen}
-                >
-                  <span>{t('header.language')}</span>
-                  <span className="flex items-center gap-1.5" style={{ color: ui.menuMuted }}>
-                    <span className="text-xs font-semibold tracking-wide">{language}</span>
-                    <svg
-                      width="16" height="16" viewBox="0 0 24 24" fill="none"
-                      stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"
-                      className="transition-transform duration-300"
-                      style={{ transform: mobileLangOpen ? 'rotate(180deg)' : 'none' }}
+                <div className="flex items-center gap-4 text-[12px] font-semibold tracking-[0.12em]">
+                  {(['FR', 'EN'] as const).map((code) => (
+                    <button
+                      key={code}
+                      type="button"
+                      onClick={() => { setLanguage(code); setIsMobileOpen(false); }}
+                      aria-pressed={language === code}
+                      className="py-1"
+                      style={{ color: language === code ? ui.text : ui.menuMuted }}
                     >
-                      <polyline points="6 9 12 15 18 9" />
-                    </svg>
-                  </span>
-                </button>
-              </div>
-
-              {/* Articles panel — full width below the row */}
-              <AnimatePresence initial={false}>
-                {mobileArticlesOpen && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.25, ease: [0.32, 0.72, 0, 1] }}
-                    className="overflow-hidden"
-                  >
-                    <div className="flex flex-col gap-1 px-4 pb-2 pt-1">
-                      {articles.map((a, i) => (
-                        <Link
-                          key={i}
-                          href={a.href}
-                          className="flex items-center gap-2.5 py-2"
-                          onClick={() => setIsMobileOpen(false)}
-                        >
-                          <div className="w-9 h-9 rounded-lg overflow-hidden shrink-0">
-                            <img src={a.img} alt={a.title} className="w-full h-full object-cover" loading="lazy" onError={(e) => { (e.target as HTMLImageElement).src = a.fallback; }} />
-                          </div>
-                          <p className="text-xs font-medium line-clamp-1" style={{ color: ui.text }}>{a.title}</p>
-                        </Link>
-                      ))}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-
-              {/* Language panel — full width below the row */}
-              <AnimatePresence initial={false}>
-                {mobileLangOpen && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.25, ease: [0.32, 0.72, 0, 1] }}
-                    className="overflow-hidden"
-                  >
-                    <div className="flex flex-col px-4 pt-1 pb-1">
-                      {([['FR', 'Français'], ['EN', 'English']] as const).map(([code, label]) => (
-                        <button
-                          key={code}
-                          onClick={() => { setLanguage(code); setMobileLangOpen(false); setIsMobileOpen(false); }}
-                          className="flex items-center justify-between py-2 text-sm"
-                          style={{ color: language === code ? ui.text : ui.menuMuted }}
-                        >
-                          <span>{label}</span>
-                          {language === code && (
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#98B690" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                              <polyline points="20 6 9 17 4 12" />
-                            </svg>
-                          )}
-                        </button>
-                      ))}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+                      {code}
+                    </button>
+                  ))}
+                </div>
+              </nav>
             </div>
           </motion.div>
         )}

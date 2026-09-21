@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { useRef, useState } from 'react';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useReveal } from '../../hooks/useReveal';
 import { ArrowRight, DISPLAY, Eyebrow } from '../ui/editorial';
@@ -19,6 +20,57 @@ const H2 = `${DISPLAY} text-[36px] leading-[1.06] lg:text-[60px] lg:leading-[1.0
 
 const TEAM = [1, 2, 3] as const;
 const VALUES = [1, 2, 3, 4] as const;
+
+// Mobile-only slider for the founding story: one paragraph per card, arrows +
+// counter. Desktop keeps the three-column layout.
+const StorySlider = ({ items, lang }: { items: string[]; lang: 'fr' | 'en' }) => {
+  const track = useRef<HTMLDivElement>(null);
+  const [slide, setSlide] = useState(0);
+  const go = (dir: 1 | -1) => {
+    const el = track.current;
+    if (el) el.scrollBy({ left: dir * el.clientWidth, behavior: 'smooth' });
+  };
+  return (
+    <div className="flex flex-col gap-4 lg:hidden">
+      <div
+        ref={track}
+        onScroll={(e) => setSlide(Math.round(e.currentTarget.scrollLeft / e.currentTarget.clientWidth))}
+        className="flex snap-x snap-mandatory overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      >
+        {items.map((text, i) => (
+          <p key={i} className="m-0 w-full shrink-0 snap-start pr-1 text-[14px] leading-[1.6] text-leaf-text">
+            {text}
+          </p>
+        ))}
+      </div>
+      <div className="flex items-center justify-between">
+        <span className="text-[12px] font-semibold tabular-nums tracking-[0.12em] text-leaf-text">
+          {String(slide + 1).padStart(2, '0')} / {String(items.length).padStart(2, '0')}
+        </span>
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={() => go(-1)}
+            disabled={slide === 0}
+            aria-label={lang === 'fr' ? 'Précédent' : 'Previous'}
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-ink text-ink transition-opacity disabled:opacity-30"
+          >
+            <ArrowRight className="h-4 w-4 rotate-180" />
+          </button>
+          <button
+            type="button"
+            onClick={() => go(1)}
+            disabled={slide >= items.length - 1}
+            aria-label={lang === 'fr' ? 'Suivant' : 'Next'}
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-ink text-white transition-opacity disabled:opacity-30"
+          >
+            <ArrowRight className="h-4 w-4" />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export const About = () => {
   const { t, language } = useLanguage();
@@ -44,11 +96,11 @@ export const About = () => {
           >
             <div className="flex flex-col gap-5 lg:gap-7">
               <Eyebrow>{t('about.missionBadge')}</Eyebrow>
-              <h1 className={`${DISPLAY} text-[48px] leading-none tracking-[-0.03em] sm:text-[68px] lg:text-[96px] lg:leading-[0.98]`}>
+              <h1 className={`${DISPLAY} text-[40px] leading-none tracking-[-0.03em] sm:text-[68px] lg:text-[96px] lg:leading-[0.98]`}>
                 {t('about.missionTitle')}
               </h1>
             </div>
-            <p className="text-[16px] leading-[1.7] text-ink-soft lg:pb-2.5 lg:text-[18px]">
+            <p className="text-[15px] leading-[1.65] text-ink-soft sm:text-[16px] sm:leading-[1.7] lg:pb-2.5 lg:text-[18px]">
               {t('about.missionLead')}
             </p>
           </div>
@@ -65,16 +117,16 @@ export const About = () => {
               unoptimized
               className="h-[260px] w-full rounded object-cover object-[52%_50%] sm:h-[400px] lg:h-auto lg:aspect-[1983/793]"
             />
-            <dl className="m-0 grid grid-cols-1 border-b border-rule sm:grid-cols-3">
+            <dl className="m-0 grid grid-cols-3 border-b border-rule">
               {[1, 2, 3].map((n) => (
                 <div
                   key={n}
-                  className="flex flex-col gap-2 border-t border-rule py-6 first:border-t-0 sm:border-l sm:border-t-0 sm:px-8 sm:py-9 sm:first:border-l-0 sm:first:pl-0 lg:px-10"
+                  className="flex flex-col gap-1.5 border-l border-rule px-3 py-5 first:border-l-0 first:pl-0 last:pr-0 sm:gap-2 sm:px-8 sm:py-9 lg:px-10"
                 >
-                  <dt className="font-display text-[40px] font-light leading-none tracking-[-0.02em] text-ink lg:text-[56px]">
+                  <dt className="font-display text-[26px] font-light leading-none tracking-[-0.02em] text-ink sm:text-[40px] lg:text-[56px]">
                     {t(`about.fact${n}Value`)}
                   </dt>
-                  <dd className="m-0 text-[14px] leading-normal text-ink-soft lg:text-[15px]">
+                  <dd className="m-0 text-[12px] leading-snug text-ink-soft sm:text-[14px] sm:leading-normal lg:text-[15px]">
                     {t(`about.fact${n}Label`)}
                   </dd>
                 </div>
@@ -98,35 +150,36 @@ export const About = () => {
                 {t('about.problemTitle')}
               </h2>
             </div>
-            <div className="flex flex-col gap-7">
-              <p className="font-display text-[22px] font-light leading-[1.4] tracking-[-0.01em] text-ink lg:text-[28px]">
+            {/* Lead paragraph on the left, the two supporting paragraphs stacked on its right. */}
+            <div className="grid grid-cols-2 gap-x-5 lg:gap-x-12">
+              <p className="font-display text-[17px] font-light leading-[1.45] tracking-[-0.01em] text-ink sm:text-[22px] sm:leading-[1.4] lg:text-[28px]">
                 {t('about.problemText1')}
               </p>
-              <div className="grid grid-cols-1 gap-x-12 gap-y-5 border-t border-rule pt-7 sm:grid-cols-2">
-                <p className={`${BODY} text-ink-soft`}>{t('about.problemText2')}</p>
-                <p className={`${BODY} text-ink-soft`}>{t('about.problemText3')}</p>
+              <div className="flex flex-col gap-4 border-l border-rule pl-5 lg:gap-6 lg:pl-12">
+                <p className={`${BODY} text-ink-soft max-lg:text-[12.5px] max-lg:leading-[1.55]`}>{t('about.problemText2')}</p>
+                <p className={`${BODY} text-ink-soft max-lg:text-[12.5px] max-lg:leading-[1.55]`}>{t('about.problemText3')}</p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ========== Commitment ========== */}
-      <section className="bg-ink py-[72px] text-white lg:py-32">
+      {/* ========== Commitment (desktop only) ========== */}
+      <section className="hidden bg-ink py-12 text-white lg:block lg:py-32">
         <div className="container-custom">
           <div
             ref={statement.ref}
             style={statement.style}
-            className="grid grid-cols-1 gap-y-10 lg:grid-cols-[minmax(0,1fr)_440px] lg:items-start lg:gap-x-24"
+            className="grid grid-cols-[minmax(0,1fr)_34%] items-stretch gap-x-3.5 lg:grid-cols-[minmax(0,1fr)_440px] lg:items-start lg:gap-x-24"
           >
-            <div className="flex flex-col gap-7 lg:gap-9">
+            <div className="flex flex-col gap-3 lg:gap-9">
               <Eyebrow onDark>{t('about.statementBadge')}</Eyebrow>
-              <p className="font-display text-[26px] font-light leading-[1.25] tracking-[-0.015em] text-white lg:text-[40px] lg:leading-[1.22]">
+              <p className="font-display text-[15px] font-light leading-[1.3] tracking-[-0.015em] text-white lg:text-[40px] lg:leading-[1.22]">
                 {t('about.statement1')}
               </p>
-              <div className="grid grid-cols-1 gap-x-12 gap-y-5 border-t border-white/20 pt-7 sm:grid-cols-2 lg:pt-9">
-                <p className="text-[15px] leading-[1.7] text-white/80">{t('about.statement2')}</p>
-                <p className="text-[15px] leading-[1.7] text-white/80">{t('about.statement3')}</p>
+              <div className="grid grid-cols-1 gap-x-12 gap-y-3 border-t border-white/20 pt-3 lg:grid-cols-2 lg:gap-y-5 lg:pt-9">
+                <p className="text-[11.5px] leading-[1.5] text-white/80 lg:text-[15px] lg:leading-[1.7]">{t('about.statement2')}</p>
+                <p className="hidden text-[15px] leading-[1.7] text-white/80 lg:block">{t('about.statement3')}</p>
               </div>
             </div>
             <Image
@@ -134,17 +187,17 @@ export const About = () => {
               alt={lang === 'fr' ? 'Des patients de tous âges accompagnés par MobiSoins' : 'Patients of every age cared for by MobiSoins'}
               width={1493}
               height={2000}
-              sizes="(min-width: 1024px) 440px, 100vw"
-              className="h-[360px] w-full rounded object-cover lg:h-[620px]"
+              sizes="(min-width: 1024px) 440px, 40vw"
+              className="h-full min-h-[220px] w-full rounded object-cover lg:h-[620px]"
             />
           </div>
         </div>
       </section>
 
       {/* ========== Story ========== */}
-      <section className="bg-leaf-tint py-[72px] lg:py-32">
+      <section className="bg-leaf-tint py-12 lg:py-32">
         <div className="container-custom">
-          <div ref={story.ref} style={story.style} className="flex flex-col gap-10 lg:gap-[72px]">
+          <div ref={story.ref} style={story.style} className="flex flex-col gap-6 lg:gap-[72px]">
             <div className="grid grid-cols-1 items-center gap-y-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,560px)] lg:gap-x-24">
               <div className="flex flex-col gap-5 lg:gap-7">
                 <Eyebrow>{t('about.storyBadge')}</Eyebrow>
@@ -162,13 +215,14 @@ export const About = () => {
               />
             </div>
 
-            <blockquote className="m-0 border-y border-leaf py-9 font-display text-[36px] font-light italic leading-[1.08] tracking-[-0.025em] text-ink lg:py-14 lg:text-[72px] lg:leading-[1.05]">
+            <blockquote className="m-0 border-y border-leaf py-6 font-display text-[26px] font-light italic leading-[1.08] tracking-[-0.025em] text-ink lg:py-14 lg:text-[72px] lg:leading-[1.05]">
               {lang === 'fr' ? '«\u00a0' : '“'}
               {t('about.storyQuote')}
               {lang === 'fr' ? '\u00a0»' : '”'}
             </blockquote>
 
-            <div className="grid grid-cols-1 gap-x-14 gap-y-5 lg:grid-cols-3">
+            <StorySlider lang={lang} items={[t('about.storyText2'), t('about.storyText3'), t('about.storyText4')]} />
+            <div className="hidden grid-cols-3 gap-x-14 lg:grid">
               <p className={`${BODY} text-leaf-text`}>{t('about.storyText2')}</p>
               <p className={`${BODY} text-leaf-text`}>{t('about.storyText3')}</p>
               <p className={`${BODY} text-leaf-text`}>{t('about.storyText4')}</p>
@@ -189,19 +243,19 @@ export const About = () => {
                 <Eyebrow>{t('about.teamBadge')}</Eyebrow>
                 <h2 className={H2}>{t('about.teamTitle')}</h2>
               </div>
-              <p className="text-[16px] leading-[1.65] text-ink-soft lg:text-[17px]">{t('about.teamLead')}</p>
+              <p className="text-[14px] leading-[1.6] text-ink-soft sm:text-[16px] sm:leading-[1.65] lg:text-[17px]">{t('about.teamLead')}</p>
             </div>
-            <div className="grid grid-cols-1 border-t border-ink sm:grid-cols-3">
+            <div className="grid grid-cols-3 border-t border-ink">
               {TEAM.map((n) => (
                 <div
                   key={n}
-                  className="flex flex-col gap-2.5 border-b border-rule py-6 sm:border-b-0 sm:border-l sm:border-rule sm:px-8 sm:pb-2 sm:pt-9 sm:first:border-l-0 sm:first:pl-0 lg:gap-3 lg:px-10"
+                  className="flex flex-col gap-1.5 border-l border-rule px-2.5 pt-5 first:border-l-0 first:pl-0 last:pr-0 sm:gap-2.5 sm:px-8 sm:pb-2 sm:pt-9 lg:gap-3 lg:px-10"
                 >
                   <div className={NUM}>{String(n).padStart(2, '0')}</div>
-                  <h3 className="font-sans text-[19px] font-semibold tracking-normal text-ink lg:text-[22px]">
+                  <h3 className="font-sans text-[13.5px] font-semibold leading-snug tracking-normal text-ink sm:text-[19px] lg:text-[22px]">
                     {t(`about.team${n}Title`)}
                   </h3>
-                  <p className="text-[15px] leading-[1.65] text-ink-soft lg:text-[16px]">{t(`about.team${n}Desc`)}</p>
+                  <p className="text-[11.5px] leading-[1.5] text-ink-soft sm:text-[15px] sm:leading-[1.65] lg:text-[16px]">{t(`about.team${n}Desc`)}</p>
                 </div>
               ))}
             </div>
@@ -209,8 +263,8 @@ export const About = () => {
         </div>
       </section>
 
-      {/* ========== Values ========== */}
-      <section className="bg-leaf-tint py-[72px] lg:py-[120px]">
+      {/* ========== Values (desktop only) ========== */}
+      <section className="hidden bg-leaf-tint py-[72px] lg:block lg:py-[120px]">
         <div className="container-custom">
           <div
             ref={values.ref}
@@ -246,25 +300,25 @@ export const About = () => {
       </section>
 
       {/* ========== Closing CTA ========== */}
-      <section className="bg-ink py-[72px] text-white lg:py-[120px]">
+      <section className="bg-ink py-12 text-white lg:py-[120px]">
         <div className="container-custom">
           <div
             ref={cta.ref}
             style={cta.style}
-            className="grid grid-cols-1 gap-y-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,420px)] lg:items-end lg:gap-x-[120px]"
+            className="grid grid-cols-1 gap-y-4 text-center lg:grid-cols-[minmax(0,1fr)_minmax(0,420px)] lg:items-end lg:gap-x-[120px] lg:text-left"
           >
             <div className="flex flex-col gap-6 lg:gap-7">
-              <h2 className="font-display text-[48px] font-light leading-none tracking-[-0.03em] text-white lg:text-[80px]">
+              <h2 className="font-display text-[32px] font-light leading-[1.06] tracking-[-0.03em] text-white lg:text-[80px] lg:leading-none">
                 {t('about.ctaTitle')}
               </h2>
             </div>
-            <div className="flex flex-col gap-5">
-              <p className="text-[16px] leading-[1.55] text-white/85 lg:text-[18px]">{t('about.ctaBody')}</p>
+            <div className="flex flex-col items-center gap-4 lg:items-stretch lg:gap-5">
+              <p className="text-[14px] leading-[1.55] text-white/85 lg:text-[18px] lg:leading-[1.55]">{t('about.ctaBody')}</p>
               <a
                 href={WAITLIST_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex h-14 items-center justify-center gap-3 rounded bg-white px-7 text-[16px] font-semibold text-ink transition-colors hover:bg-leaf-on-dark hover:text-ink-deep"
+                className="inline-flex h-11 items-center justify-center gap-2.5 rounded bg-white px-5 text-[14.5px] font-semibold lg:h-14 lg:gap-3 lg:px-7 lg:text-[16px] text-ink transition-colors hover:bg-leaf-on-dark hover:text-ink-deep"
               >
                 {t('about.ctaButton')}
                 <ArrowRight />

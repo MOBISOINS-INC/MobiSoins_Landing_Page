@@ -102,17 +102,22 @@ export function keepVideoPlaying(v: HTMLVideoElement, opts: KeepPlayingOptions):
     );
   };
 
-  // Watchdog: visible + supposed to be playing, but the clock is frozen.
+  // Watchdog: visible + supposed to be playing, but the clock is frozen AND no
+  // data is arriving. A first visit on slow mobile data can take far longer than
+  // stallMs to buffer; while `progress` events keep coming that is buffering,
+  // not a stall — reloading there restarted the download forever.
   let lastTime = -1;
   let lastMoved = Date.now();
+  let gotData = false;
   const watchdog = win.setInterval(() => {
     if (disposed || opts.reduceMotion || !visible()) {
       lastMoved = Date.now();
       return;
     }
-    if (v.currentTime !== lastTime) {
+    if (v.currentTime !== lastTime || gotData) {
       lastTime = v.currentTime;
       lastMoved = Date.now();
+      gotData = false;
       return;
     }
     if (Date.now() - lastMoved < stallMs) return;
@@ -137,6 +142,9 @@ export function keepVideoPlaying(v: HTMLVideoElement, opts: KeepPlayingOptions):
   }, 1000);
 
   const onMedia = (e: Event) => tryPlay(e.type);
+  const onProgress = () => {
+    gotData = true;
+  };
   const onError = () => log('warn', 'media error', v.error);
   const onResume = (e: Event) => {
     if (visible()) tryPlay(e.type);
@@ -149,6 +157,7 @@ export function keepVideoPlaying(v: HTMLVideoElement, opts: KeepPlayingOptions):
 
   RESUME_MEDIA_EVENTS.forEach((n) => v.addEventListener(n, onMedia));
   v.addEventListener('error', onError);
+  v.addEventListener('progress', onProgress);
   doc.addEventListener('visibilitychange', onResume);
   win.addEventListener('pageshow', onResume);
   win.addEventListener('focus', onResume);
@@ -163,6 +172,7 @@ export function keepVideoPlaying(v: HTMLVideoElement, opts: KeepPlayingOptions):
     win.clearInterval(watchdog);
     RESUME_MEDIA_EVENTS.forEach((n) => v.removeEventListener(n, onMedia));
     v.removeEventListener('error', onError);
+    v.removeEventListener('progress', onProgress);
     doc.removeEventListener('visibilitychange', onResume);
     win.removeEventListener('pageshow', onResume);
     win.removeEventListener('focus', onResume);

@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { useState } from 'react';
 import Link from '../ui/LocaleLink';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useScrollMotion } from '../../hooks/useScrollMotion';
@@ -65,11 +66,15 @@ function Specialty({
   index,
   lang,
   c,
+  open,
+  onToggle,
 }: {
   cat: ServiceCategory;
   index: number;
   lang: Lang;
   c: (typeof COPY)[keyof typeof COPY];
+  open: boolean;
+  onToggle: () => void;
 }) {
   const m = useScrollMotion<HTMLElement>();
   const photoSlug = SPECIALTY_PHOTO[cat.id];
@@ -77,11 +82,37 @@ function Specialty({
   const n = cat.services.length;
 
   return (
-    <section ref={m.ref} id={cat.id} className="relative scroll-mt-28 py-10 lg:py-16">
-      <div className="absolute inset-x-0 top-0 h-px bg-ink" style={m.rule()} aria-hidden="true" />
-      <div className="grid grid-cols-1 gap-y-7 lg:grid-cols-[320px_minmax(0,1fr)] lg:items-start lg:gap-x-24">
+    <section ref={m.ref} id={cat.id} className="relative scroll-mt-24 lg:scroll-mt-28 lg:py-16">
+      <div className="absolute inset-x-0 top-0 h-px bg-ink/30 lg:bg-ink" style={m.rule()} aria-hidden="true" />
+      {/* Phones: each specialty is a collapsed row; tap to open its services. */}
+      <button
+        type="button"
+        onClick={onToggle}
+        aria-expanded={open}
+        aria-controls={`${cat.id}-panel`}
+        className="grid w-full grid-cols-[32px_minmax(0,1fr)_auto_20px] items-center gap-x-3 py-4 text-left lg:hidden"
+      >
+        <span className="text-[12px] font-semibold tracking-[0.1em] text-leaf-text">
+          {String(index + 1).padStart(2, '0')}
+        </span>
+        <span className="font-sans text-[17px] font-semibold leading-tight text-ink">
+          {lang === 'fr' ? cat.nameFr : cat.nameEn}
+        </span>
+        <span className="text-[12px] tabular-nums text-ink-soft">{n}</span>
+        <svg
+          width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"
+          strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"
+          className={`text-ink transition-transform duration-300 ${open ? 'rotate-45' : ''}`}
+        >
+          <path d="M12 5v14M5 12h14" />
+        </svg>
+      </button>
+      <div
+        id={`${cat.id}-panel`}
+        className={`${open ? 'grid' : 'hidden'} grid-cols-1 gap-y-5 pb-6 lg:grid lg:grid-cols-[320px_minmax(0,1fr)] lg:items-start lg:gap-x-24 lg:pb-0`}
+      >
         <div className="flex flex-col gap-3.5 lg:sticky lg:top-28">
-          <div className="flex items-baseline gap-4" style={m.rise(0, 0.1)}>
+          <div className="hidden items-baseline gap-4 lg:flex" style={m.rise(0, 0.1)}>
             <span className="font-display text-[44px] font-light leading-none text-ink-faint lg:text-[56px]">
               {String(index + 1).padStart(2, '0')}
             </span>
@@ -90,13 +121,13 @@ function Specialty({
             </span>
           </div>
           <h2
-            className={`${DISPLAY} text-[32px] leading-[1.05] lg:text-[40px]`}
+            className={`${DISPLAY} hidden text-[32px] leading-[1.05] lg:block lg:text-[40px]`}
             style={m.rise(1, 0.1)}
           >
             {lang === 'fr' ? cat.nameFr : cat.nameEn}
           </h2>
           {photo && (
-            <div className="mt-3 overflow-hidden rounded" style={m.photo(0.25)}>
+            <div className="overflow-hidden rounded lg:mt-3" style={m.photo(0.25)}>
               <Image
                 src={photo.src}
                 alt={photo[lang]}
@@ -114,7 +145,7 @@ function Specialty({
             <li key={s.slug} style={m.rise(i, 0.2)}>
               <Link
                 href={`/services/${s.slug}`}
-                className="group grid grid-cols-[minmax(0,1fr)_24px] gap-x-5 gap-y-1.5 border-b border-rule py-5 lg:grid-cols-[250px_minmax(0,1fr)_24px] lg:gap-x-8 lg:py-6"
+                className="group grid grid-cols-[minmax(0,1fr)_32px] items-center gap-x-4 gap-y-1.5 border-b border-rule py-5 transition-colors active:bg-leaf-tint lg:items-start lg:grid-cols-[250px_minmax(0,1fr)_24px] lg:gap-x-8 lg:py-6"
               >
                 <h3 className="font-sans text-[17px] font-semibold leading-[1.3] tracking-normal text-ink lg:text-[18px]">
                   {lang === 'fr' ? s.nameFr : s.nameEn}
@@ -122,8 +153,8 @@ function Specialty({
                 <p className="col-start-1 text-[14px] leading-[1.6] text-ink-soft lg:col-start-2 lg:text-[15px]">
                   {lang === 'fr' ? s.shortFr : s.shortEn}
                 </p>
-                <span className="col-start-2 row-start-1 pt-[3px] text-leaf transition-transform duration-300 group-hover:translate-x-1 lg:col-start-3">
-                  <ArrowRight />
+                <span className="col-start-2 row-span-2 row-start-1 flex h-8 w-8 items-center justify-center rounded-full border border-ink/25 text-ink transition-transform duration-300 group-hover:translate-x-1 lg:col-start-3 lg:row-span-1 lg:h-auto lg:w-auto lg:border-0 lg:pt-[3px] lg:text-leaf">
+                  <ArrowRight className="h-4 w-4 lg:h-[18px] lg:w-[18px]" />
                 </span>
               </Link>
             </li>
@@ -142,6 +173,8 @@ export function ServicesCatalog() {
   const figure = useScrollMotion<HTMLElement>();
   const note = useScrollMotion<HTMLElement>();
   const cta = useScrollMotion();
+  // Mobile accordion: which specialty is open. A tile in the index opens its row.
+  const [openId, setOpenId] = useState<string | null>(null);
 
   return (
     <div className="bg-paper">
@@ -167,13 +200,24 @@ export function ServicesCatalog() {
               </p>
             </div>
 
-            <nav aria-label={c.indexLabel} className="relative flex flex-col lg:mt-2">
+            <nav aria-label={c.indexLabel} className="relative grid grid-cols-3 lg:mt-2 lg:flex lg:flex-col">
               <div className="absolute inset-x-0 top-0 h-px bg-ink" style={hero.rule(0.15)} aria-hidden="true" />
               {SERVICE_CATEGORIES.map((cat, i) => (
                 <a
                   key={cat.id}
                   href={`#${cat.id}`}
-                  className="group grid min-h-11 grid-cols-[36px_minmax(0,1fr)_auto] items-baseline gap-x-3 border-b border-rule py-[11px] text-[15px] font-medium text-ink"
+                  onClick={(e) => {
+                    // Open first, then scroll once the layout has settled, so a row
+                    // collapsing above doesn't make the jump land in the wrong place.
+                    // Desktop keeps the plain anchor jump.
+                    if (window.matchMedia('(min-width: 1024px)').matches) return;
+                    e.preventDefault();
+                    setOpenId(cat.id);
+                    requestAnimationFrame(() =>
+                      document.getElementById(cat.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                    );
+                  }}
+                  className="group relative flex min-h-[84px] flex-col justify-between gap-1.5 border-b border-rule px-2.5 py-3 pr-6 transition-colors active:bg-leaf-tint text-[13px] font-medium leading-tight text-ink [&:not(:nth-of-type(3n+1))]:border-l lg:grid lg:min-h-11 lg:grid-cols-[36px_minmax(0,1fr)_auto] lg:items-baseline lg:gap-x-3 lg:px-0 lg:py-[11px] lg:text-[15px] lg:leading-normal lg:[&:not(:nth-of-type(3n+1))]:border-l-0"
                   style={hero.rise(i, 0.2)}
                 >
                   <span className="text-[12px] font-semibold tracking-[0.1em] text-leaf-text">
@@ -182,7 +226,11 @@ export function ServicesCatalog() {
                   <span className="transition-transform duration-300 group-hover:translate-x-1">
                     {lang === 'fr' ? cat.nameFr : cat.nameEn}
                   </span>
-                  <span className="text-[13px] font-normal tabular-nums text-ink-soft">{cat.services.length}</span>
+                  {/* Phones: arrow so the tile reads as tappable */}
+                  <span className="absolute bottom-3 right-2.5 text-leaf-text lg:hidden" aria-hidden="true">
+                    <ArrowRight className="h-3.5 w-3.5" />
+                  </span>
+                  <span className="hidden text-[13px] font-normal tabular-nums text-ink-soft lg:inline">{cat.services.length}</span>
                 </a>
               ))}
             </nav>
@@ -217,9 +265,17 @@ export function ServicesCatalog() {
         labels={c}
         photoSlugs={SPECIALTY_PHOTO}
         stacked={
-          <div className="container-custom pb-6 pt-14 lg:pb-10 lg:pt-24">
+          <div className="container-custom pb-6 pt-10 lg:pb-10 lg:pt-24">
             {SERVICE_CATEGORIES.map((cat, i) => (
-              <Specialty key={cat.id} cat={cat} index={i} lang={lang} c={c} />
+              <Specialty
+                key={cat.id}
+                cat={cat}
+                index={i}
+                lang={lang}
+                c={c}
+                open={openId === cat.id}
+                onToggle={() => setOpenId((cur) => (cur === cat.id ? null : cat.id))}
+              />
             ))}
           </div>
         }
@@ -241,15 +297,15 @@ export function ServicesCatalog() {
       </section>
 
       {/* ========== Closing CTA ========== */}
-      <section className="bg-ink py-[72px] text-white lg:py-[120px]">
+      <section className="bg-ink py-12 text-white lg:py-[120px]">
         <div className="container-custom">
           <div
             ref={cta.ref}
-            className="grid grid-cols-1 gap-y-7 lg:grid-cols-[minmax(0,1fr)_minmax(0,420px)] lg:items-end lg:gap-x-[120px]"
+            className="grid grid-cols-1 justify-items-center gap-y-5 text-center lg:justify-items-stretch lg:text-left lg:grid-cols-[minmax(0,1fr)_minmax(0,420px)] lg:items-end lg:gap-x-[120px]"
           >
             <div className="flex flex-col gap-6 lg:gap-7">
               <h2
-                className="font-display text-[44px] font-light leading-none tracking-[-0.03em] text-white lg:text-[80px]"
+                className="font-display text-[32px] font-light leading-[1.05] tracking-[-0.03em] text-white lg:text-[80px] lg:leading-none"
                 style={cta.rise(0, 0.15)}
               >
                 {c.ctaTitle}
@@ -259,7 +315,7 @@ export function ServicesCatalog() {
               href={WAITLIST_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex h-14 items-center justify-center gap-3 rounded bg-white px-7 text-[16px] font-semibold text-ink transition-colors hover:bg-leaf-on-dark hover:text-ink-deep"
+              className="inline-flex h-11 items-center justify-center gap-2.5 rounded bg-white px-5 text-[14.5px] font-semibold text-ink transition-colors hover:bg-leaf-on-dark hover:text-ink-deep lg:h-14 lg:gap-3 lg:px-7 lg:text-[16px]"
               style={cta.rise(1, 0.15)}
             >
               {c.ctaButton}
