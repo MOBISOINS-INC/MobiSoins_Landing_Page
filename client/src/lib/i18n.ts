@@ -26,3 +26,24 @@ export const localizePath = (href: string, lang: Language): string => {
   if (lang === 'FR') return base;
   return base === '/' ? EN_PREFIX : base.startsWith('/#') ? `${EN_PREFIX}${base.slice(1)}` : `${EN_PREFIX}${base}`;
 };
+
+/** Crawlers keep no storage, so they would be redirected on every visit and the
+ *  French pages would drop out of the index. They always get the URL as asked. */
+const BOT_UA = /bot|crawl|spider|slurp|facebookexternalhit|embedly|preview|lighthouse|headless/i;
+
+/**
+ * English is the default language: a first-time visitor who lands on a French
+ * URL is sent to its English twin. Anyone who has picked a language with the
+ * switcher (stored as 'FR' or 'EN') is never redirected again.
+ */
+export const englishRedirectFor = (
+  pathname: string,
+  hash: string,
+  saved: string | null,
+  userAgent: string,
+): string | null => {
+  if (saved === 'FR' || saved === 'EN') return null;
+  if (BOT_UA.test(userAgent)) return null;
+  if (localeFromPath(pathname) === 'EN') return null;
+  return localizePath(pathname + hash, 'EN');
+};

@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useEffect } from 'react';
 import type { ReactNode } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import { localeFromPath, localizePath, stripLocale } from '../lib/i18n';
+import { englishRedirectFor, localeFromPath, localizePath, stripLocale } from '../lib/i18n';
 import type { Language } from '../lib/i18n';
 
 interface LanguageContextType {
@@ -32,6 +32,23 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
   const pathname = usePathname() ?? '/';
   const router = useRouter();
   const language: Language = localeFromPath(pathname);
+
+  // English-first: a first-time visitor on a French URL is sent to the English
+  // twin. Runs once on load; a saved choice from the switcher always wins.
+  useEffect(() => {
+    let saved: string | null = null;
+    try {
+      saved = localStorage.getItem('language');
+    } catch (err) {
+      console.error('[i18n] could not read language preference', err);
+    }
+    const target = englishRedirectFor(pathname, window.location.hash, saved, navigator.userAgent);
+    if (target) {
+      console.info(`[i18n] first visit: ${pathname} -> ${target}`);
+      router.replace(target);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     document.documentElement.lang = language === 'EN' ? 'en-CA' : 'fr-CA';
@@ -347,6 +364,7 @@ const translations = {
       detailsTitle: 'Coordonnées',
       address: 'Adresse',
       phone: 'Téléphone',
+      fax: 'Télécopieur',
       email: 'Courriel',
       web: 'Web',
       firstName: 'Prénom',
@@ -854,6 +872,7 @@ const translations = {
       detailsTitle: 'Contact details',
       address: 'Address',
       phone: 'Phone',
+      fax: 'Fax',
       email: 'Email',
       web: 'Web',
       firstName: 'First name',

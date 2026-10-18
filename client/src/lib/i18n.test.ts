@@ -1,7 +1,7 @@
 // Run: npm test. Locale routing: French at the root, English under /en.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { localeFromPath, localizePath, stripLocale } from './i18n.ts';
+import { englishRedirectFor, localeFromPath, localizePath, stripLocale } from './i18n.ts';
 
 test('localeFromPath', () => {
   assert.equal(localeFromPath('/'), 'FR');
@@ -37,4 +37,26 @@ test('localizePath leaves non-page links alone', () => {
   for (const href of ['https://docs.google.com/x', 'mailto:a@b.ca', '#faq', '/favicon.png', '/Healthcare_Access_On_Demand.pdf', '/_next/static/x.js', '/api/waitlist', '//cdn.example.com/a']) {
     assert.equal(localizePath(href, 'EN'), href, href);
   }
+});
+
+// English-first default: first visit on a French URL goes to its English twin.
+test('first visit to / redirects to /en', () => {
+  assert.equal(englishRedirectFor('/', '', null, 'Mozilla/5.0 (iPhone)'), '/en');
+});
+test('first visit keeps the page and the hash', () => {
+  assert.equal(englishRedirectFor('/services/pansements', '', null, 'Mozilla/5.0'), '/en/services/pansements');
+  assert.equal(englishRedirectFor('/', '#how-it-works', null, 'Mozilla/5.0'), '/en#how-it-works');
+});
+test('someone who chose French is never redirected', () => {
+  assert.equal(englishRedirectFor('/', '', 'FR', 'Mozilla/5.0'), null);
+});
+test('someone who chose English on a French link is left alone', () => {
+  assert.equal(englishRedirectFor('/faq', '', 'EN', 'Mozilla/5.0'), null);
+});
+test('already on English: no redirect', () => {
+  assert.equal(englishRedirectFor('/en/faq', '', null, 'Mozilla/5.0'), null);
+});
+test('crawlers are never redirected (French pages stay indexable)', () => {
+  assert.equal(englishRedirectFor('/', '', null, 'Mozilla/5.0 (compatible; Googlebot/2.1)'), null);
+  assert.equal(englishRedirectFor('/', '', null, 'facebookexternalhit/1.1'), null);
 });

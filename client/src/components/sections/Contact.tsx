@@ -21,6 +21,7 @@ const TOPIC_KEY: Record<ContactTopic, string> = {
 const CONTACT_DETAILS = [
   { labelKey: 'contact.email', value: 'info@mobisoins.com', href: 'mailto:info@mobisoins.com' },
   { labelKey: 'contact.phone', value: '(263) 588-6196', href: 'tel:+12635886196' },
+  { labelKey: 'contact.fax', value: '(800) 307-7231', href: 'tel:+18003077231' },
   {
     labelKey: 'contact.address',
     value: '8457 Blvd Newman Bur 118, Lasalle, QC H8N 0A2',
@@ -194,10 +195,10 @@ export const Contact = () => {
             <div className="overflow-hidden rounded-2xl bg-panel">
               <div className="relative aspect-[16/10]">
                 <img
-                  src="/nurses/contact-nurse.jpeg"
+                  src="/nurses/contact-nurse-2.jpg"
                   alt={t('contact.photoAlt')}
                   loading="lazy"
-                  className="absolute inset-0 h-full w-full object-cover"
+                  className="absolute inset-0 h-full w-full object-cover object-[50%_18%]"
                 />
               </div>
               <div className="p-7 sm:p-8">
