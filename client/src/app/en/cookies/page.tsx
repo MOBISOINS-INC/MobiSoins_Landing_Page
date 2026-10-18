@@ -1,1 +1,1 @@
-export { default } from '../../cookies/page';
+export { default } from '@/app/(fr)/cookies/page';

@@ -30,9 +30,9 @@ export const Credentials = () => {
                 {String(i + 1).padStart(2, '0')}
               </div>
               <div>
-                <h3 className="mt-2 font-sans text-[16px] font-semibold tracking-normal text-ink lg:mt-2.5 lg:text-[17px]">
+                <h2 className="mt-2 font-sans text-[16px] font-semibold tracking-normal text-ink lg:mt-2.5 lg:text-[17px]">
                   {t(`v2.${key}Title`)}
-                </h3>
+                </h2>
                 <p className="mt-1 text-[14px] leading-normal text-ink-soft lg:mt-2.5 lg:text-[15px]">
                   {t(`v2.${key}Body`)}
                 </p>

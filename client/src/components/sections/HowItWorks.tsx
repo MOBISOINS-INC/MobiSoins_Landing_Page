@@ -31,7 +31,7 @@ const Step = ({
     }`}
   >
     <div className="flex items-baseline gap-4 lg:contents">
-      <div className="font-display text-[44px] font-light leading-none text-ink-faint lg:text-[64px]">
+      <div className="font-display text-[44px] font-light leading-none text-ink-soft lg:text-[64px]">
         {num}
       </div>
       <div className="lg:pt-2">
@@ -100,7 +100,7 @@ const StepLoop = ({ steps }: { steps: StepData[] }) => {
             }`}
           >
             <div className="flex items-baseline gap-3">
-              <div className="font-display text-[26px] font-light leading-none text-ink-faint">{st.num}</div>
+              <div className="font-display text-[26px] font-light leading-none text-ink-soft">{st.num}</div>
               <div>
                 <h3 className="font-sans text-[15px] font-semibold tracking-normal text-ink">{st.title}</h3>
                 <div className="mt-0.5 text-[11px] font-medium text-leaf-text">{st.meta}</div>

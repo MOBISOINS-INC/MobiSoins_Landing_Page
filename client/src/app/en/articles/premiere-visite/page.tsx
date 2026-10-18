@@ -1,1 +1,1 @@
-export { default } from '../../../articles/premiere-visite/page';
+export { default } from '@/app/(fr)/articles/premiere-visite/page';

@@ -1,1 +1,1 @@
-export { default } from '../../faq/page';
+export { default } from '@/app/(fr)/faq/page';

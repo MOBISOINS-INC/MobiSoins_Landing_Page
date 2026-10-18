@@ -9,6 +9,16 @@
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
+# Apex -> www is canonical. `force = true` makes the Netlify edge answer the 301
+# itself instead of forwarding the request to the Next.js function first (Lighthouse
+# measured that hop at ~800 ms on mobile). The primary-domain setting in the Netlify
+# UI should also point at www.mobisoins.com so both agree.
+[[redirects]]
+  from = "https://mobisoins.com/*"
+  to = "https://www.mobisoins.com/:splat"
+  status = 301
+  force = true
+
 [[headers]]
   for = "/*"
   [headers.values]

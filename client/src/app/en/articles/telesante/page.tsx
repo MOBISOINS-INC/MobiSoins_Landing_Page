@@ -1,1 +1,1 @@
-export { default } from '../../../articles/telesante/page';
+export { default } from '@/app/(fr)/articles/telesante/page';

@@ -10,7 +10,7 @@ import { getServiceBySlug } from './services.ts';
 
 const SRC = join(dirname(fileURLToPath(import.meta.url)), '..');
 const PUBLIC = join(SRC, '..', 'public');
-const pageSource = (slug: string) => readFileSync(join(SRC, 'app', 'articles', slug, 'page.tsx'), 'utf8');
+const pageSource = (slug: string) => readFileSync(join(SRC, 'app', '(fr)', 'articles', slug, 'page.tsx'), 'utf8');
 
 /** Split a page into its FR and EN halves. */
 const halves = (source: string) => {

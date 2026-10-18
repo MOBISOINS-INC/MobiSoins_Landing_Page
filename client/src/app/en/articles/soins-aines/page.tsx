@@ -1,1 +1,1 @@
-export { default } from '../../../articles/soins-aines/page';
+export { default } from '@/app/(fr)/articles/soins-aines/page';

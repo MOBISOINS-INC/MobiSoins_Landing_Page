@@ -33,8 +33,9 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
   const router = useRouter();
   const language: Language = localeFromPath(pathname);
 
-  // English-first: a first-time visitor on a French URL is sent to the English
-  // twin. Runs once on load; a saved choice from the switcher always wins.
+  // English-first for non-French browsers: a first-time visitor on a French URL
+  // whose browser lists no French language is sent to the English twin. Runs
+  // once on load; a saved choice from the switcher always wins.
   useEffect(() => {
     let saved: string | null = null;
     try {
@@ -42,9 +43,10 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
     } catch (err) {
       console.error('[i18n] could not read language preference', err);
     }
-    const target = englishRedirectFor(pathname, window.location.hash, saved, navigator.userAgent);
+    const languages: readonly string[] = navigator.languages?.length ? navigator.languages : [navigator.language];
+    const target = englishRedirectFor(pathname, window.location.hash, saved, navigator.userAgent, languages);
     if (target) {
-      console.info(`[i18n] first visit: ${pathname} -> ${target}`);
+      console.info(`[i18n] first visit: ${pathname} -> ${target} (browser languages: ${languages.join(', ')})`);
       router.replace(target);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

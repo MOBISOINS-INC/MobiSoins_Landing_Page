@@ -8,7 +8,7 @@ import { CONTACT_TOPICS, buildContactPayload, readContactFields } from '../../li
 import type { ContactTopic } from '../../lib/contactPayload';
 
 const FIELD =
-  'w-full rounded-[10px] border border-rule bg-white px-4 text-[15px] text-ink placeholder:text-ink-faint transition-colors focus-visible:border-ink focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ink disabled:cursor-not-allowed disabled:opacity-50';
+  'w-full rounded-[12px] border border-rule bg-white px-3.5 text-[16px] sm:rounded-[10px] sm:px-4 text-ink placeholder:text-ink-faint sm:text-[15px] transition-colors focus-visible:border-ink focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ink disabled:cursor-not-allowed disabled:opacity-50';
 const LABEL = 'text-[13px] font-medium text-ink';
 
 const TOPIC_KEY: Record<ContactTopic, string> = {
@@ -82,12 +82,12 @@ export const Contact = () => {
     <section id="contact">
       {/* Title band */}
       <div className="bg-ink-deep">
-        <div className="container-custom py-16 sm:py-20 lg:py-24">
+        <div className="container-custom py-14 sm:py-20 lg:py-24">
           <Eyebrow onDark>{t('contact.eyebrow')}</Eyebrow>
           <h1 className="mt-5 max-w-[760px] font-display text-[44px] font-light leading-[1.04] tracking-[-0.025em] text-white sm:text-[60px] lg:text-[76px]">
             {t('contact.title')}
           </h1>
-          <p className="mt-6 max-w-[620px] text-[17px] leading-[1.6] text-white/75 sm:text-[19px]">
+          <p className="mt-5 max-w-[620px] text-[16.5px] leading-[1.6] text-white/75 sm:mt-6 sm:text-[19px]">
             {t('contact.description')}
           </p>
         </div>
@@ -97,7 +97,7 @@ export const Contact = () => {
         <div
           ref={ref}
           style={style}
-          className="container-custom grid gap-14 lg:grid-cols-[1.4fr_1fr] lg:items-start lg:gap-20"
+          className="container-custom grid gap-12 sm:gap-14 lg:grid-cols-[1.4fr_1fr] lg:items-start lg:gap-20"
         >
           {/* Form */}
           {sent ? (
@@ -116,7 +116,7 @@ export const Contact = () => {
               </button>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+            <form onSubmit={handleSubmit} className="flex flex-col gap-4 sm:gap-6">
               <h2 className="font-display text-[30px] font-light leading-[1.12] tracking-[-0.02em] text-ink sm:text-[38px]">
                 {t('contact.formTitle')}
               </h2>
@@ -125,14 +125,14 @@ export const Contact = () => {
               <fieldset>
                 <legend className={LABEL}>{t('contact.topicLabel')}</legend>
                 <input type="hidden" name="topic" value={topic} />
-                <div className="mt-3 flex flex-wrap gap-2">
+                <div className="mt-2.5 grid grid-cols-2 gap-2 sm:mt-3 sm:flex sm:flex-wrap">
                   {CONTACT_TOPICS.map((value) => (
                     <button
                       key={value}
                       type="button"
                       aria-pressed={topic === value}
                       onClick={() => setTopic(value)}
-                      className={`h-11 rounded-full border px-5 text-[14.5px] font-medium transition-colors ${
+                      className={`h-11 rounded-full border px-3 text-[14px] font-medium transition-colors sm:px-5 sm:text-[14.5px] ${
                         topic === value
                           ? 'border-ink bg-ink text-white'
                           : 'border-rule bg-white text-ink hover:border-leaf hover:bg-leaf-tint'
@@ -144,42 +144,42 @@ export const Contact = () => {
                 </div>
               </fieldset>
 
-              <div className="grid gap-5 sm:grid-cols-2">
-                <div className="grid gap-2">
+              <div className="grid grid-cols-2 gap-3 sm:gap-5">
+                <div className="grid gap-1.5 sm:gap-2">
                   <label htmlFor="firstname" className={LABEL}>{t('contact.firstName')}</label>
-                  <input type="text" id="firstname" name="firstname" autoComplete="given-name" placeholder={t('contact.firstNamePlaceholder')} className={`${FIELD} h-[52px]`} required />
+                  <input type="text" id="firstname" name="firstname" autoComplete="given-name" placeholder={t('contact.firstNamePlaceholder')} className={`${FIELD} h-12 sm:h-[52px]`} required />
                 </div>
-                <div className="grid gap-2">
+                <div className="grid gap-1.5 sm:gap-2">
                   <label htmlFor="lastname" className={LABEL}>{t('contact.lastName')}</label>
-                  <input type="text" id="lastname" name="lastname" autoComplete="family-name" placeholder={t('contact.lastNamePlaceholder')} className={`${FIELD} h-[52px]`} required />
+                  <input type="text" id="lastname" name="lastname" autoComplete="family-name" placeholder={t('contact.lastNamePlaceholder')} className={`${FIELD} h-12 sm:h-[52px]`} required />
                 </div>
               </div>
 
-              <div className="grid gap-2">
+              <div className="grid gap-1.5 sm:gap-2">
                 <label htmlFor="email" className={LABEL}>{t('contact.emailLabel')}</label>
-                <input type="email" id="email" name="email" autoComplete="email" placeholder={t('contact.emailPlaceholder')} className={`${FIELD} h-[52px]`} required />
+                <input type="email" id="email" name="email" autoComplete="email" placeholder={t('contact.emailPlaceholder')} className={`${FIELD} h-12 sm:h-[52px]`} required />
               </div>
 
-              <div className="grid gap-2">
+              <div className="grid gap-1.5 sm:gap-2">
                 <label htmlFor="subject" className={LABEL}>{t('contact.subject')}</label>
-                <input type="text" id="subject" name="subject" placeholder={t('contact.subjectPlaceholder')} className={`${FIELD} h-[52px]`} required />
+                <input type="text" id="subject" name="subject" placeholder={t('contact.subjectPlaceholder')} className={`${FIELD} h-12 sm:h-[52px]`} required />
               </div>
 
-              <div className="grid gap-2">
+              <div className="grid gap-1.5 sm:gap-2">
                 <label htmlFor="message" className={LABEL}>{t('contact.message')}</label>
-                <textarea id="message" name="message" rows={6} placeholder={t('contact.messagePlaceholder')} className={`${FIELD} min-h-[150px] resize-y py-3.5 leading-[1.6]`} required />
+                <textarea id="message" name="message" rows={5} placeholder={t('contact.messagePlaceholder')} className={`${FIELD} min-h-[120px] resize-y py-3 leading-[1.6] sm:min-h-[150px] sm:py-3.5`} required />
               </div>
 
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
+              <div className="mt-1 flex flex-col gap-3 sm:mt-0 sm:flex-row sm:items-center sm:gap-6">
                 <button
                   type="submit"
                   disabled={sending}
-                  className="cta-navy inline-flex h-[52px] w-full items-center justify-center gap-3 rounded-[10px] px-7 text-[15px] font-medium disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+                  className="cta-navy inline-flex h-12 w-full sm:h-[52px] items-center justify-center gap-3 rounded-[10px] px-7 text-[15px] font-medium disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
                 >
                   {sending ? t('contact.sending') : t('contact.send')}
                   {!sending && <ArrowRight />}
                 </button>
-                <p className="text-[13.5px] leading-[1.5] text-ink-soft">{t('contact.responseTime')}</p>
+                <p className="text-center text-[13.5px] leading-[1.5] text-ink-soft sm:text-left">{t('contact.responseTime')}</p>
               </div>
 
               {error && (
@@ -192,27 +192,30 @@ export const Contact = () => {
 
           {/* Details */}
           <aside className="lg:sticky lg:top-32">
-            <div className="overflow-hidden rounded-2xl bg-panel">
-              <div className="relative aspect-[16/10]">
+            <div className="flex flex-row-reverse overflow-hidden rounded-[20px] border border-rule bg-white sm:rounded-2xl lg:block">
+              {/* Photo: narrow column on the right below lg, full-width portrait on lg+ */}
+              <div className="relative w-[38%] shrink-0 self-stretch lg:aspect-[1194/1600] lg:w-auto lg:self-auto">
                 <img
                   src="/nurses/contact-nurse-2.jpg"
                   alt={t('contact.photoAlt')}
+                  width={1194}
+                  height={1600}
                   loading="lazy"
-                  className="absolute inset-0 h-full w-full object-cover object-[50%_18%]"
+                  className="absolute inset-0 h-full w-full object-cover object-[55%_30%] lg:object-center"
                 />
               </div>
-              <div className="p-7 sm:p-8">
+              <div className="min-w-0 flex-1 p-5 sm:p-6 lg:p-8">
                 <Eyebrow>{t('contact.detailsTitle')}</Eyebrow>
-                <dl className="mt-3 divide-y divide-rule">
+                <dl className="mt-2 divide-y divide-rule lg:mt-3">
                   {CONTACT_DETAILS.map((item) => (
-                    <div key={item.labelKey} className="py-4">
-                      <dt className="text-[12.5px] text-ink-soft">{t(item.labelKey)}</dt>
-                      <dd className="mt-1">
+                    <div key={item.labelKey} className="py-2.5 lg:py-4">
+                      <dt className="text-[11.5px] text-ink-soft lg:text-[12.5px]">{t(item.labelKey)}</dt>
+                      <dd className="mt-0.5 lg:mt-1">
                         <a
                           href={item.href}
                           target={item.external ? '_blank' : undefined}
                           rel={item.external ? 'noopener noreferrer' : undefined}
-                          className="text-[16px] font-medium leading-[1.4] text-ink underline decoration-transparent underline-offset-4 transition-colors hover:decoration-ink"
+                          className="break-words text-[14.5px] font-medium leading-[1.35] text-ink underline decoration-transparent underline-offset-4 transition-colors hover:decoration-ink lg:text-[16px] lg:leading-[1.4]"
                         >
                           {item.value}
                         </a>
@@ -223,7 +226,7 @@ export const Contact = () => {
               </div>
             </div>
 
-            <div className="mt-5 rounded-2xl border border-rule p-6 sm:p-7">
+            <div className="mt-4 rounded-[20px] border border-rule p-6 sm:mt-5 sm:rounded-2xl sm:p-7">
               <Eyebrow>{t('contact.emergencyTitle')}</Eyebrow>
               <p className="mt-3 text-[14.5px] leading-[1.65] text-ink-soft">
                 {t('contact.emergencyText')}{' '}
