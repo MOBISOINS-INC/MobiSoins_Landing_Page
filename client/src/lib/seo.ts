@@ -4,8 +4,8 @@
  * small server `layout.tsx` that calls pageMetadata() for its <head>.
  */
 import type { Metadata } from 'next';
-import { localizePath } from './i18n';
-import type { Language } from './i18n';
+import { localizePath } from './i18n.ts';
+import type { Language } from './i18n.ts';
 
 /** The live, canonical origin (www.mobisoins.com). Override per environment if needed. */
 export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.mobisoins.com').replace(/\/$/, '');
@@ -59,3 +59,19 @@ export function pageMetadata({ title, description, path, lang = 'FR', image = DE
 
 /** Serialize JSON-LD safely for a <script> tag (no closing-tag injection). */
 export const jsonLd = (data: unknown) => JSON.stringify(data).replace(/</g, '\\u003c');
+
+/**
+ * Search-engine ownership verification tags, driven by env vars so the owner
+ * can paste tokens from Google Search Console / Bing Webmaster Tools without a
+ * code change. Returns undefined when nothing is set so no empty <meta> is
+ * rendered. Reads NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION and
+ * NEXT_PUBLIC_BING_SITE_VERIFICATION.
+ */
+export function verificationMetadata(env: NodeJS.ProcessEnv): Metadata['verification'] | undefined {
+  const google = env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION?.trim();
+  const bing = env.NEXT_PUBLIC_BING_SITE_VERIFICATION?.trim();
+  const verification: NonNullable<Metadata['verification']> = {};
+  if (google) verification.google = google;
+  if (bing) verification.other = { 'msvalidate.01': bing };
+  return Object.keys(verification).length ? verification : undefined;
+}

@@ -95,3 +95,55 @@ test('articles have English meta descriptions', () => {
     assert.ok(a.descriptionEn.length >= 110 && a.descriptionEn.length <= 165, `${a.slug}: EN description is ${a.descriptionEn.length} chars`);
   }
 });
+
+test('organization structured data carries the local-business fields Google needs', async () => {
+  const { ORGANIZATION_LD, ORGANIZATION_ID } = await import('../lib/organizationLd.ts');
+  const org = ORGANIZATION_LD['@graph'][0] as Record<string, any>;
+  assert.ok((org['@type'] as string[]).includes('MedicalBusiness'));
+  assert.equal(org['@id'], ORGANIZATION_ID);
+  assert.match(org.telephone, /^\+1\d{10}$/, 'telephone must be E.164');
+  assert.match(org.faxNumber, /^\+1\d{10}$/, 'faxNumber must be E.164');
+  assert.equal(org.telephone, '+12635886196');
+  assert.equal(org.email, 'info@mobisoins.com');
+  assert.equal(org.address.streetAddress, '8457 Boulevard Newman, Bureau 118');
+  assert.equal(org.address.postalCode, 'H8N 0A2');
+  assert.equal(org.address.addressCountry, 'CA');
+  for (const key of ['name', 'url', 'image', 'logo', 'address', 'telephone']) assert.ok(org[key], `missing ${key}`);
+  assert.equal(org.contactPoint.telephone, org.telephone);
+  assert.deepEqual(org.contactPoint.availableLanguage, ['French', 'English']);
+  // Hours and prices are not stated on the site, so they must not be invented here.
+  assert.equal(org.openingHoursSpecification, undefined);
+  assert.equal(org.priceRange, undefined);
+  // The whole graph serializes without undefined/null leaves.
+  const json = JSON.stringify(ORGANIZATION_LD);
+  assert.ok(!json.includes('null'));
+  const web = ORGANIZATION_LD['@graph'][1] as Record<string, any>;
+  assert.equal(web.publisher['@id'], ORGANIZATION_ID);
+});
+
+// --- Search-engine verification meta (Google Search Console / Bing) ---------
+// RootDocument.tsx reads `verification: verificationMetadata(process.env)`.
+// An empty <meta name="google-site-verification"> must never be rendered.
+import { verificationMetadata } from '../lib/seo.ts';
+
+test('verification: unset env vars → undefined (no meta tags rendered)', () => {
+  assert.equal(verificationMetadata({}), undefined);
+  assert.equal(verificationMetadata({ NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION: '', NEXT_PUBLIC_BING_SITE_VERIFICATION: '  ' }), undefined);
+});
+
+test('verification: google only → google key, no "other"', () => {
+  const v = verificationMetadata({ NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION: 'g-token' });
+  assert.deepEqual(v, { google: 'g-token' });
+  assert.ok(!('other' in (v ?? {})));
+});
+
+test('verification: bing only → msvalidate.01 under other, no google key', () => {
+  const v = verificationMetadata({ NEXT_PUBLIC_BING_SITE_VERIFICATION: 'b-token' });
+  assert.deepEqual(v, { other: { 'msvalidate.01': 'b-token' } });
+  assert.ok(!('google' in (v ?? {})));
+});
+
+test('verification: both set → both keys, whitespace trimmed', () => {
+  const v = verificationMetadata({ NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION: ' g ', NEXT_PUBLIC_BING_SITE_VERIFICATION: 'b\n' });
+  assert.deepEqual(v, { google: 'g', other: { 'msvalidate.01': 'b' } });
+});

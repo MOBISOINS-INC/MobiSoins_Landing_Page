@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono, Instrument_Serif, Inter, Newsreader } from 'next/font/google';
 import { LanguageProvider } from '../contexts/LanguageContext';
 import './globals.css';
-import { DEFAULT_IMAGE, SITE_NAME, SITE_URL, absoluteUrl, jsonLd, languageAlternates } from '../lib/seo';
+import { DEFAULT_IMAGE, SITE_NAME, SITE_URL, jsonLd, languageAlternates, verificationMetadata } from '../lib/seo';
+import { HOME_DESCRIPTION, ORGANIZATION_LD } from '../lib/organizationLd';
 
 // Body/heading face. Self-hosted by next/font so it is no longer a render-blocking
 // stylesheet from fonts.googleapis.com (globals.css reads it as var(--font-inter)).
@@ -27,8 +28,6 @@ const newsreader = Newsreader({
 });
 
 const HOME_TITLE = 'MobiSoins | Soins infirmiers à domicile à Montréal, Québec';
-const HOME_DESCRIPTION =
-  'Soins infirmiers à domicile au Québec par des infirmières membres de l’OIIQ. Lancement à Montréal, Laval et Longueuil. Inscrivez-vous à la liste d’attente.';
 
 /**
  * Site-wide metadata shared by both root layouts (French at /, English at /en).
@@ -57,6 +56,7 @@ export const rootMetadata: Metadata = {
     description: HOME_DESCRIPTION,
     images: [DEFAULT_IMAGE],
   },
+  verification: verificationMetadata(process.env),
   robots: {
     index: true,
     follow: true,
@@ -69,46 +69,6 @@ export const rootMetadata: Metadata = {
     icon: '/favicon.png',
     apple: '/mobisoins-logo.jpeg',
   },
-};
-
-/** Site-wide structured data: who MobiSoins is and where it operates. */
-const ORGANIZATION_LD = {
-  '@context': 'https://schema.org',
-  '@graph': [
-    {
-      '@type': ['Organization', 'MedicalBusiness'],
-      '@id': `${SITE_URL}/#organization`,
-      name: SITE_NAME,
-      legalName: 'MobiSoins Inc.',
-      alternateName: ['MobiSoins Québec', 'MobiSoins Canada'],
-      // Google's AI Overview confused us with an unrelated French home-hospitalization
-      // software of the same name: say plainly who and where we are.
-      disambiguatingDescription:
-        'Service québécois de soins infirmiers à domicile (Canada), basé à Montréal. Sans lien avec le logiciel français de même nom.',
-      url: SITE_URL,
-      address: { '@type': 'PostalAddress', addressLocality: 'Montréal', addressRegion: 'QC', addressCountry: 'CA' },
-      sameAs: ['https://www.instagram.com/mobisoins/', 'https://www.facebook.com/p/MobiSoins-Inc-61562813077289/'],
-      logo: absoluteUrl('/mobisoins-logo-navy.png'),
-      image: absoluteUrl(DEFAULT_IMAGE),
-      description: HOME_DESCRIPTION,
-      medicalSpecialty: 'Nursing',
-      // Launch area only. Québec City, Gatineau and Sherbrooke are waitlist cities, not served yet.
-      areaServed: ['Montréal', 'Laval', 'Longueuil'].map((name) => ({
-        '@type': 'City',
-        name,
-        containedInPlace: { '@type': 'State', name: 'Québec', containedInPlace: { '@type': 'Country', name: 'Canada' } },
-      })),
-      knowsLanguage: ['fr-CA', 'en-CA'],
-    },
-    {
-      '@type': 'WebSite',
-      '@id': `${SITE_URL}/#website`,
-      url: SITE_URL,
-      name: SITE_NAME,
-      inLanguage: ['fr-CA', 'en-CA'],
-      publisher: { '@id': `${SITE_URL}/#organization` },
-    },
-  ],
 };
 
 export type HtmlLang = 'fr-CA' | 'en-CA';

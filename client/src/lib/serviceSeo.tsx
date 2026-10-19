@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { allServiceSlugs, getServiceBySlug } from '../data/services';
 import { SERVICE_PHOTOS } from '../data/servicePhotos';
-import { SITE_URL, absoluteUrl, jsonLd, pageMetadata } from './seo';
+import { absoluteUrl, jsonLd, pageMetadata } from './seo';
+import { AREA_SERVED, ORGANIZATION_ID } from './organizationLd';
 import { localizePath } from './i18n';
 import type { Language } from './i18n';
 
@@ -37,12 +38,15 @@ export async function ServiceLayout({ children, params, lang }: { children: Reac
     '@context': 'https://schema.org',
     '@graph': [
       {
-        '@type': 'MedicalProcedure',
-        name: en ? service.nameEn : service.nameFr,
+        '@type': 'Service',
+        '@id': `${url(`/services/${service.slug}`)}#service`,
+        serviceType: en ? service.nameEn : service.nameFr,
+        name: en ? `${service.nameEn} at home` : `${service.nameFr} à domicile`,
         description: en ? service.longEn : service.longFr,
-        inLanguage: en ? 'en-CA' : 'fr-CA',
+        category: en ? category.nameEn : category.nameFr,
         url: url(`/services/${service.slug}`),
-        provider: { '@id': `${SITE_URL}/#organization` },
+        provider: { '@id': ORGANIZATION_ID },
+        areaServed: AREA_SERVED,
       },
       {
         '@type': 'BreadcrumbList',
